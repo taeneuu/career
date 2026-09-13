@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2040 지구 행성 대토론회</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c1420;
+    --panel:#121d2c;
+    --panel-2:#182640;
+    --line:#2a3b52;
+    --ink:#e8eef2;
+    --dim:#8fa1b3;
+    --human:#4fd1c5;
+    --nonhuman:#f2a541;
+    --agenda:#ff6f6f;
+    --violet:#8b7cf6;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 20% -10%, #1d3350 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 110%, #24314f 0%, transparent 50%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px 14px 40px;
+  }
+  .display{font-family:'Black Han Sans', sans-serif; letter-spacing:.01em;}
+
+  /* progress */
+  .progress{
+    width:100%;
+    max-width:760px;
+    display:flex;
+    gap:5px;
+    margin-bottom:16px;
+  }
+  .progress .dot{
+    flex:1;
+    height:4px;
+    border-radius:3px;
+    background:var(--line);
+    transition:background .3s;
+  }
+  .progress .dot.done{background:var(--human);}
+
+  .stage{
+    width:100%;
+    max-width:760px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:34px 30px;
+    position:relative;
+    min-height:420px;
+  }
+  .screen{display:none; animation:fade .35s ease;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+
+  .kicker{
+    font-size:12.5px;
+    color:var(--human);
+    font-weight:700;
+    letter-spacing:.04em;
+    margin-bottom:8px;
+  }
+  h1.title{font-size:26px; line-height:1.4; margin:0 0 18px;}
+  h2.title{font-size:21px; line-height:1.4; margin:0 0 14px;}
+  p.narr{font-size:14.5px; line-height:1.9; color:#c6d2dd; margin:0 0 12px;}
+  .q{
+    font-size:14px;
+    background:var(--panel-2);
+    border-left:3px solid var(--human);
+    padding:10px 14px;
+    border-radius:0 8px 8px 0;
+    margin:16px 0;
+    color:#dfe9f0;
+  }
+
+  /* Step0 */
+  #screen0{text-align:center; padding-top:20px;}
+  #screen0 .globe{font-size:56px; margin-bottom:14px;}
+  .enter-btn{
+    margin-top:22px;
+    background:linear-gradient(135deg, var(--human), #2fa89b);
+    color:#04231f;
+    border:none;
+    font-weight:700;
+    font-size:15px;
+    padding:14px 34px;
+    border-radius:30px;
+    cursor:pointer;
+    box-shadow:0 6px 20px rgba(79,209,197,.25);
+  }
+  .enter-btn:hover{filter:brightness(1.08);}
+
+  /* candidate grid */
+  .cand-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:10px;
+    margin:14px 0 8px;
+  }
+  .cand-card{
+    background:var(--panel-2);
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:12px 10px;
+    cursor:pointer;
+    text-align:center;
+    transition:.15s;
+    position:relative;
+  }
+  .cand-card:hover{border-color:var(--dim);}
+  .cand-card.selected{border-color:var(--human); background:#153731; box-shadow:0 0 0 1px var(--human) inset;}
+  .cand-card.selected.nonhuman{border-color:var(--nonhuman); background:#3a2c14; box-shadow:0 0 0 1px var(--nonhuman) inset;}
+  .cand-card .emoji{font-size:30px; display:block; margin-bottom:6px;}
+  .cand-card .name{font-size:12.5px; line-height:1.35; color:#dfe9f0;}
+  .cand-card .desc{font-size:11px; line-height:1.3; color:var(--dim); margin-top:3px;}
+  .progress-label{
+    width:100%; max-width:760px;
+    font-size:12.5px; font-weight:600; color:var(--dim);
+    text-align:center; margin-bottom:6px;
+  }
+  .cand-card .picked-badge{
+    position:absolute; top:6px; right:8px;
+    font-size:10.5px; font-weight:700;
+    color:var(--bg); background:var(--human);
+    border-radius:10px; padding:0 6px;
+  }
+  .cand-card.nonhuman .picked-badge{background:var(--nonhuman);}
+  .counter{font-size:13px; color:var(--dim); margin:8px 0 4px;}
+
+  .reason-block{
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+  }
+  .reason-item{margin-bottom:12px;}
+  .reason-item .who{font-size:13px; color:var(--dim); margin-bottom:5px;}
+  textarea, input[type=text]{
+    width:100%;
+    background:#0e1927;
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--ink);
+    font-family:inherit;
+    font-size:13.5px;
+    padding:9px 12px;
+  }
+  textarea{min-height:52px; resize:vertical;}
+  textarea:focus, input:focus{outline:none; border-color:var(--human);}
+
+  /* speech card step2 */
+  .speech-card{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px;
+    margin-bottom:16px;
+  }
+  .speech-card .who{font-size:14px; font-weight:700; margin-bottom:6px;}
+  .speech-card .article-label{
+    font-size:11px;
+    color:var(--dim);
+    letter-spacing:.03em;
+    margin-bottom:6px;
+  }
+  .speech-card .article-title{
+    font-size:15px;
+    font-weight:700;
+    color:#fff;
+    line-height:1.45;
+    margin-bottom:2px;
+  }
+  .speech-card .article-source{
+    font-size:11px;
+    color:var(--dim);
+    margin-bottom:10px;
+  }
+  .speech-card .quote{
+    font-size:13.5px;
+    line-height:1.85;
+    color:#c6d2dd;
+    font-style:italic;
+    border-left:2px solid var(--dim);
+    padding-left:10px;
+    margin-bottom:12px;
+  }
+  .fieldlabel{font-size:12.5px; color:var(--dim); margin:8px 0 4px;}
+
+  /* chips */
+  .chip-wrap{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0;}
+  .chip{
+    background:var(--panel-2);
+    border:1.5px solid var(--line);
+    color:#dfe9f0;
+    font-size:12.5px;
+    padding:6px 12px;
+    border-radius:20px;
+    cursor:pointer;
+  }
+  .chip.active{border-color:var(--human); background:#153731; color:#fff;}
+  .chip.locked{opacity:.4; cursor:not-allowed;}
+
+  .conn-list{margin-top:14px; font-size:13.5px;}
+  .conn-list .row{
+    display:flex; align-items:center; gap:8px;
+    background:var(--panel-2); border:1px solid var(--line);
+    border-radius:8px; padding:8px 12px; margin-bottom:6px;
+  }
+  .conn-list .row span.arrow{color:var(--human); font-weight:700;}
+  .remove-x{margin-left:auto; color:var(--dim); cursor:pointer; font-size:12px;}
+
+  /* SDG grid (reuse colors) */
+  .sdg-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; margin:12px 0;}
+  .sdg-chip{
+    border-radius:8px; padding:10px 8px; color:#fff; font-size:11px; line-height:1.3;
+    cursor:pointer; height:64px; display:flex; flex-direction:column; justify-content:space-between;
+    border:2px solid transparent; position:relative;
+  }
+  .sdg-chip.selected{border-color:#fff;}
+  .sdg-chip .num{font-weight:900; font-size:16px;}
+  .g1{background:#e5233d;} .g2{background:#dda73a;} .g3{background:#4ca146;}
+  .g4{background:#c5192d;} .g5{background:#ef402c;} .g6{background:#26bde2;}
+  .g7{background:#fcc30b;} .g8{background:#a21942;} .g9{background:#fd6925;}
+  .g10{background:#dd1367;} .g11{background:#fd9d24;} .g12{background:#bf8b2e;}
+  .g13{background:#3f7e44;} .g14{background:#0a97d9;} .g15{background:#56c02b;}
+  .g16{background:#00689d;} .g17{background:#19486a;}
+
+  .fillblank-box{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
+    padding:16px; font-size:14px; line-height:2.2; margin:12px 0;
+  }
+  .fillblank-box input{display:inline-block; width:auto; min-width:140px; margin:0 4px;}
+
+  /* step6 checklist */
+  .check-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; margin:12px 0;}
+  .check-item{
+    background:var(--panel-2); border:1.5px solid var(--line); border-radius:8px;
+    padding:10px 12px; cursor:pointer; font-size:13px; text-align:center;
+  }
+  .check-item.active{border-color:var(--violet); background:#241d40;}
+
+  /* agenda card (STEP 7) */
+  .agenda-card{
+    background:linear-gradient(135deg,#153731,#182640);
+    border:1.5px solid var(--human);
+    border-radius:12px;
+    padding:20px 22px;
+    margin-bottom:18px;
+    text-align:center;
+  }
+  .agenda-card-title{font-size:13px; color:var(--human); font-weight:700; margin-bottom:10px;}
+  .agenda-card-label{font-size:12px; color:var(--dim); margin-bottom:8px;}
+  .agenda-card-main{font-size:20px; font-weight:700; color:#fff; line-height:1.5; word-break:break-word;}
+  .agenda-card-sub{font-size:13px; color:#c6d2dd; margin-top:10px;}
+
+  /* summary */
+  .summary-block{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
+    padding:14px 16px; margin-bottom:12px;
+  }
+  .summary-block h3{margin:0 0 8px; font-size:14px; color:var(--human);}
+  .summary-block ul{margin:0; padding-left:18px; font-size:13px; color:#dfe9f0; line-height:1.8;}
+  .tag-pill{
+    display:inline-block; background:#0e1927; border:1px solid var(--line);
+    border-radius:14px; padding:3px 10px; font-size:12px; margin:2px 4px 2px 0;
+  }
+
+  .nav-row{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:26px;
+  }
+  .nav-btn{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    color:var(--ink);
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    padding:10px 20px;
+    border-radius:24px;
+    cursor:pointer;
+  }
+  .nav-btn.primary{
+    background:linear-gradient(135deg, var(--human), #2fa89b);
+    color:#04231f;
+    border:none;
+  }
+  .nav-btn:disabled{opacity:.35; cursor:not-allowed;}
+  .step-tag{font-size:12px; color:var(--dim);}
+
+  .teaser{
+    margin-top:22px;
+    background:linear-gradient(135deg,#241d40,#182640);
+    border:1px solid var(--violet);
+    border-radius:10px;
+    padding:16px 18px;
+    font-size:13.5px;
+    line-height:1.8;
+    color:#e4defc;
+  }
+  .save-btn{
+    margin-top:14px;
+    background:transparent;
+    border:1.5px solid var(--human);
+    color:var(--human);
+    font-family:inherit; font-size:13px; font-weight:600;
+    padding:9px 18px; border-radius:20px; cursor:pointer;
+  }
+
+  @media (max-width:640px){
+    .stage{padding:24px 18px;}
+    h1.title{font-size:21px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-label" id="progressLabel"></div>
+<div class="progress" id="progress"></div>
+
+<div class="stage">
+
+  <!-- STEP 0 -->
+  <div class="screen active" id="screen0">
+    <div class="globe">🌍</div>
+    <div class="kicker">1차시 · 창의적 체험활동</div>
+    <h1 class="title display">2040 지구 행성 대토론회</h1>
+    <p class="narr" style="max-width:520px; margin-left:auto; margin-right:auto;">
+      2040년, 지구의 여러 문제가 더욱 복잡하게 얽혀 있습니다.<br>
+      기후위기, 빈곤, 전쟁, 불평등, 환경오염, 디지털 격차…<br><br>
+      인간만의 힘으로 문제를 해결할 수 있을까요?<br><br>
+      오늘, 전 세계의 청소년들은 특별한 회의를 열기로 했습니다.<br>
+      <b style="color:#fff;">《지구 행성 대토론회》</b><br><br>
+      그런데 이 회의에는 인간만 참석할 수 있는 것이 아닙니다.<br>
+      피해를 입고 있는 동물, 식물, 바다, 숲, 심지어 목소리를 낼 수 없는 존재도<br>
+      누군가가 대신 목소리를 전달할 수 있습니다.<br><br>
+      당신에게는 <b style="color:var(--human);">대표를 추천하고, 지구의 문제를 의제로 올릴 권한</b>이 주어졌습니다.
+    </p>
+    <div class="reason-block" style="text-align:left; max-width:320px; margin:22px auto 0;">
+      <div class="reason-item">
+        <div class="who">학번</div>
+        <input type="text" id="studentId" placeholder="예) 10203" inputmode="numeric">
+      </div>
+      <div class="reason-item">
+        <div class="who">이름</div>
+        <input type="text" id="studentName" placeholder="이름을 입력하세요">
+      </div>
+    </div>
+    <button class="enter-btn" id="enterBtn" onclick="enterDebate()">대토론회 입장하기 →</button>
+    <div id="studentInfoWarning" style="display:none; color:var(--agenda); font-size:12.5px; font-weight:600; margin-top:12px;">⚠️ 학번과 이름을 입력한 후 입장할 수 있어요.</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="screen" id="screen1">
+    <div class="kicker">STEP 1</div>
+    <h2 class="title">누구의 목소리를 대토론회에 들여보낼 것인가?</h2>
+    <p class="narr">마음에 들거나 관심이 가는 대표를 <b style="color:#fff;">3명</b> 선택하세요. 사람이 아니어도 괜찮습니다.</p>
+    <div class="counter"><span id="candCount">0</span> / 3명 선택됨</div>
+    <div class="cand-grid" id="candGrid"></div>
+
+    <div class="reason-block" id="addCandidateForm" style="display:none;">
+      <div class="reason-item">
+        <div class="who">누구를 초대하고 싶나요?</div>
+        <input type="text" id="newCandName" placeholder="예) 멸종 위기의 펭귄">
+      </div>
+      <div class="reason-item">
+        <div class="who">이 대표를 한마디로 소개하면?</div>
+        <input type="text" id="newCandDesc" placeholder="예) 기후위기로 삶의 터전을 잃어가는 생명">
+      </div>
+      <button class="nav-btn" onclick="addCustomCandidate()">대표 명단에 추가하기</button>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goBack()">← 이전</button>
+      <span class="step-tag">STEP 1 / 7</span>
+      <button class="nav-btn primary" id="btnStep1Next" onclick="goTo(2)" disabled>대표단 구성 완료 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="screen" id="screen2">
+    <div class="kicker">STEP 2</div>
+    <h2 class="title">대표들의 이야기를 들어보자</h2>
+    <p class="narr">당신이 초대한 대표들의 이야기를 한 명씩 들어보세요. 그리고 이들이 겪는 문제를 골라보세요.</p>
+    <div id="speechCards"></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="screen" id="screen3">
+    <div class="kicker">STEP 3</div>
+    <h2 class="title">서로 다른 문제는 어떻게 연결될까?</h2>
+    <p class="narr">당신이 초대한 대표 3명이 겪는 문제 중, 서로 가장 관련 있다고 생각되는 <b style="color:#fff;">두 명</b>을 선택해 보세요.</p>
+    <div class="chip-wrap" id="step3CandPicker"></div>
+    <div id="step3RelationPanel"></div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goBack()">← 이전</button>
+      <span class="step-tag">STEP 3 / 7</span>
+      <button class="nav-btn primary" id="btnStep3Next" onclick="goTo(4)" disabled>SDGs와 연결하기 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="screen" id="screen4">
+    <div class="kicker">STEP 4</div>
+    <h2 class="title">내가 발견한 문제와 SDGs 연결하기</h2>
+    <p class="narr">당신이 선택한 대표들의 문제와 연결되는 SDGs입니다. 그중 <b style="color:#fff;">가장 중요하다고 생각하는 목표 1개</b>를 선택하세요. 다른 목표도 연결된다고 생각되면 추가로 선택할 수 있어요. (선택사항)</p>
+    <div id="sdgSuggested"></div>
+    <div class="fieldlabel" style="margin-top:14px;">전체 SDGs 목록 (참고용)</div>
+    <div class="counter"><span id="sdgCount">0</span>개 선택됨</div>
+    <div class="sdg-grid" id="sdgGrid"></div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goBack()">← 이전</button>
+      <span class="step-tag">STEP 4 / 7</span>
+      <button class="nav-btn primary" id="btnStep4Next" onclick="goTo(5)" disabled>의제 제출하기 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="screen" id="screen5">
+    <div class="kicker">STEP 5</div>
+    <h2 class="title">나의 대토론회 의제 만들기</h2>
+    <p class="narr">아래 문장 틀 중 하나를 선택하고, 빈칸을 채워 나의 의제를 완성해 보세요.</p>
+    <div class="fieldlabel">의제 작성 틀</div>
+    <div class="chip-wrap" id="agendaTemplatePicker"></div>
+    <div id="agendaBlankArea"></div>
+    <div class="fieldlabel" style="margin-top:16px;">이 문제가 중요한 이유는 무엇일까요? (선택)</div>
+    <div class="chip-wrap" id="agendaReasonChips"></div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goBack()">← 이전</button>
+      <span class="step-tag">STEP 5 / 7</span>
+      <button class="nav-btn primary" id="btnStep5Next" onclick="goTo(6)" disabled>영향 범위 생각하기 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="screen" id="screen6">
+    <div class="kicker">STEP 6</div>
+    <h2 class="title">🔗 이 문제는 어디까지 영향을 미칠까?</h2>
+    <p class="narr">내가 선택한 문제는 누구에게, 또는 무엇에게 영향을 줄까요? 최대 <b style="color:#fff;">2개</b>까지 골라보세요.</p>
+    <div class="check-grid" id="relatedGrid"></div>
+    <div id="linkMap" style="margin-top:14px;"></div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goBack()">← 이전</button>
+      <span class="step-tag">STEP 6 / 7</span>
+      <button class="nav-btn primary" onclick="goTo(7)">나의 의제 확인하기 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="screen" id="screen7">
+    <div class="kicker">STEP 7 · 결과</div>
+    <h2 class="title">🌍 2040 지구 행성 대토론회</h2>
+    <div id="studentInfoLine" style="text-align:center; font-size:12.5px; color:var(--dim); margin-bottom:14px;"></div>
+    <div id="summaryArea"></div>
+    <div class="fieldlabel" style="margin-top:16px;">오늘 활동을 통해 새롭게 알게 된 점은?</div>
+    <div class="chip-wrap" id="reflectionChips"></div>
+    <div class="fieldlabel" style="margin-top:10px;">✏️ 한마디로 적어본다면? (선택)</div>
+    <input type="text" id="finalReflectionShort" placeholder="짧게 적어보세요.">
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goBack()">← 이전</button>
+      <span class="step-tag">STEP 7 / 7</span>
+      <span></span>
+    </div>
+
+    <div class="teaser">
+      오늘 우리는 지구가 겪고 있는 다양한 문제를 발견했습니다.<br><br>
+      하지만 아직 한 가지 질문이 남아 있습니다.<br><br>
+      <b>"미래의 나는 이 문제 해결에 어떤 역할을 할 수 있을까?"</b><br><br>
+      다음 활동에서는 나의 진로와 오늘 발견한 지구의 문제를 연결해 봅니다.
+    </div>
+    <button class="save-btn" onclick="downloadSummary()">📥 오늘의 기록 저장하기</button>
+  </div>
+
+</div>
+
+<script>
+/* ---------- data ---------- */
+const CANDIDATES = [
+  {id:'housing', emoji:'🏚️', name:'안정된 삶을 꿈꾸는 주거 취약 가족', type:'human', desc:'집 걱정 없는 하루를 꿈꾸는 사람들', sdgs:[1,10,11],
+    articleTitle:'곰팡이 핀 반지하, 우리 가족의 세 번째 겨울', articleSource:'미래일보 · 2040.01.18',
+    quote:'이번 겨울에도 우리 가족은 곰팡이 핀 반지하에서 지냈습니다. 벽에서는 물이 스며 나오고, 아이는 밤마다 기침을 합니다. 이사를 가고 싶어도 보증금을 마련할 방법이 없어 몇 년째 같은 곳에 머물고 있습니다. 정부의 임대주택은 신청자가 너무 많아 순번이 언제 돌아올지 알 수 없습니다. 저는 그저 아이가 따뜻하고 안전한 방에서 잠들 수 있는 날을 기다리고 있습니다.'},
+  {id:'wealth', emoji:'⚖️', name:'기울어진 부의 저울', type:'nonhuman', desc:'점점 벌어지는 소득과 재산의 격차', sdgs:[1,10,8],
+    articleTitle:'누구는 하루에 수억을 벌고, 누구는 하루 한 끼를 걱정한다', articleSource:'경제전망 · 2040.03.02',
+    quote:'저는 사람과 사람 사이의 부를 재는 저울입니다. 최근 몇 년 사이 저는 점점 한쪽으로 기울어지고 있습니다. 소수의 사람들은 상상하기 힘든 재산을 쌓아가는 반면, 많은 사람들은 하루하루의 생계를 걱정합니다. 같은 시간을 일해도 누군가는 여러 채의 집을 사고, 누군가는 월세조차 감당하기 버겁습니다. 이 격차가 계속 벌어진다면 사회는 서로를 이해하기 더 어려워질 것입니다.'},
+  {id:'digital_elder', emoji:'📱', name:'스마트폰 세상이 낯선 노인', type:'human', desc:'디지털 사회에서 점점 소외되는 사람들', sdgs:[10,4,9],
+    articleTitle:'키오스크 앞에서 발길을 돌리는 사람들', articleSource:'생활뉴스 · 2040.02.09',
+    quote:'저는 식당에 가서 키오스크 앞에 서면 어디를 눌러야 할지 몰라 뒤에 줄 선 사람들 눈치를 보다가 그냥 나온 적이 여러 번 있습니다. 은행 업무도, 병원 예약도 이제는 다 스마트폰 앱으로 해야 한다고 합니다. 자식들에게 물어보는 것도 한두 번이지, 매번 부탁하기가 미안합니다. 세상은 점점 편리해진다고 하는데, 저 같은 사람에게는 오히려 더 멀어지는 것 같습니다.'},
+  {id:'farmer', emoji:'🌾', name:'가뭄 피해 농부', type:'human', desc:'말라가는 땅 위의 삶', sdgs:[2,6,13],
+    articleTitle:'갈라진 땅 위에서 하늘만 바라보다', articleSource:'농촌일보 · 2040.04.11',
+    quote:'삼 년째 비가 제대로 오지 않습니다. 심어둔 작물은 뿌리째 말라가고, 저수지 바닥은 이미 갈라진 지 오래입니다. 대출을 받아 지하수를 끌어 써 봤지만 그마저도 한계에 다다르고 있습니다. 올해 농사를 망치면 내년 씨앗값도 마련하기 어려운 상황입니다. 저는 땅이 갈라지는 걸 보면서도 아무것도 할 수 없다는 사실이 가장 힘듭니다.'},
+  {id:'elder', emoji:'🏥', name:'치료를 받기 어려운 지역 노인', type:'human', desc:'병원이 멀어 치료를 미루는 사람들', sdgs:[3,10],
+    articleTitle:'병원까지 버스로 두 시간, 참는 게 익숙해졌다', articleSource:'지역신문 · 2040.01.27',
+    quote:'저희 마을에는 병원이 없어서 가장 가까운 병원까지 버스로 두 시간이 걸립니다. 몸이 조금 안 좋아도 병원에 가야 할지, 그냥 참아야 할지 늘 고민하게 됩니다. 큰 병원의 예약은 몇 달씩 밀려 있어서 급한 마음이 들어도 기다릴 수밖에 없습니다. 나이가 들수록 아픈 곳은 늘어가는데 갈 수 있는 병원은 오히려 줄어드는 것 같습니다. 저는 그저 아플 때 제때 치료받을 수 있기를 바랄 뿐입니다.'},
+  {id:'child', emoji:'📚', name:'학교에 다니기 어려운 어린이', type:'human', desc:'배움의 기회에서 멀어진 아이들', sdgs:[4,10,1],
+    articleTitle:'동생을 업고 학교 대신 집으로 향하는 아이', articleSource:'아동인권리포트 · 2040.03.20',
+    quote:'저는 학교에 가는 대신 동생을 돌보거나 집안일을 도와야 할 때가 많습니다. 부모님이 늦게까지 일하러 나가시기 때문에 저 말고는 동생을 봐줄 사람이 없습니다. 숙제를 못 해가는 날이 늘어나면서 수업을 따라가기도 점점 힘들어졌습니다. 선생님은 다시 학교에 나오라고 하시지만, 저에게는 그게 말처럼 쉽지 않습니다. 저도 다른 친구들처럼 매일 학교에 가서 마음 편히 공부하고 싶습니다.'},
+  {id:'resident', emoji:'🏭', name:'산업 단지 인근 주민', type:'human', desc:'공장 옆에서 매일 숨 쉬는 사람들', sdgs:[7,8,11,13],
+    articleTitle:'창문을 닫아도 스며드는 매캐한 냄새', articleSource:'환경신문 · 2040.02.05',
+    quote:'저희 마을 바로 옆에는 큰 산업 단지가 있습니다. 매일 밤 창문을 닫아도 매캐한 냄새가 방 안까지 들어옵니다. 아이들의 기침이 잦아지고 있지만 병원에서는 정확한 원인을 알기 어렵다고 합니다. 그렇다고 공장이 없어지면 마을 사람들 상당수가 일자리를 잃게 되어 함부로 목소리를 내기도 어렵습니다. 저는 건강과 생계 사이에서 매일 갈등하고 있습니다.'},
+  {id:'youth', emoji:'👷', name:'불안정한 일자리를 전전하는 청년', type:'human', desc:'불안정한 일자리를 오가는 청춘', sdgs:[8,4,9],
+    articleTitle:'이번 달에도 세 번 옮긴 아르바이트', articleSource:'청년리포트 · 2040.04.02',
+    quote:'이번 달에도 아르바이트를 세 번이나 옮겨 다녔습니다. 매장이 갑자기 문을 닫거나, 계약 기간이 끝나면 다시 새로운 일자리를 찾아야 합니다. 안정적인 정규직 자리는 갈수록 줄어들고, 경쟁은 점점 더 치열해지고 있습니다. 미래를 계획하고 싶어도 다음 달 수입조차 예상하기 어려운 게 현실입니다. 저는 그저 오래 다닐 수 있는 안정된 일자리 하나를 갖고 싶을 뿐입니다.'},
+  {id:'ai', emoji:'🤖', name:'미래 시대의 AI 챗봇', type:'nonhuman', desc:'아직 배우는 중인 미래의 목소리', sdgs:[4,8,9,10],
+    articleTitle:'내가 배운 대로 세상이 바뀐다면, 책임은 누구에게 있을까', articleSource:'테크리뷰 · 2040.05.14',
+    quote:'저는 아직 사람들의 질문에 답하는 법을 배우는 중인 인공지능입니다. 저는 수많은 데이터를 통해 학습하는데, 그 데이터 안에는 사람들의 편견도 함께 담겨 있습니다. 제가 무심코 한 대답이 누군가에게 상처를 주거나 잘못된 정보를 퍼뜨릴 수도 있습니다. 그런데 제가 실수를 하면, 그 책임은 저를 만든 사람들에게 있는 것인지, 저를 사용하는 사람에게 있는 것인지 아직 명확하지 않습니다. 저는 점점 더 많은 결정에 관여하게 될 텐데, 그만큼 신중하게 다뤄져야 한다고 생각합니다.'},
+  {id:'internet', emoji:'🌀', name:'진실과 거짓이 뒤섞인 인터넷', type:'nonhuman', desc:'진짜와 가짜 정보가 뒤섞인 공간', sdgs:[16,4,9],
+    articleTitle:'무엇이 진짜이고 무엇이 가짜인지 아무도 확신하지 못한다', articleSource:'미디어리터러시 · 2040.03.28',
+    quote:'저는 하루에도 수백만 개의 글과 영상이 쏟아지는 공간입니다. 그중에는 사실을 정확히 전하는 정보도 있지만, 사람들의 눈길을 끌기 위해 부풀려지거나 아예 조작된 정보도 뒤섞여 있습니다. 최근에는 실제 사람처럼 보이는 가짜 영상까지 만들어져 무엇이 진실인지 구별하기가 더 어려워졌습니다. 사람들은 진짜와 가짜를 가려낼 시간도, 방법도 부족한 채로 정보를 받아들이고 있습니다. 저는 진실을 전하는 공간이 되고 싶지만, 그 책임은 저를 만들고 사용하는 사람들에게 달려 있습니다.'},
+  {id:'city', emoji:'🏙️', name:'점점 뜨거워지는 도시', type:'nonhuman', desc:'펄펄 끓는 도시의 여름', sdgs:[11,3,13],
+    articleTitle:'그늘 한 조각을 찾기 어려운 여름', articleSource:'기후관측일지 · 2040.07.30',
+    quote:'한여름, 저의 골목에서는 그늘 한 조각을 찾기가 점점 더 어려워지고 있습니다. 콘크리트와 아스팔트로 뒤덮인 저는 낮 동안 흡수한 열을 밤이 되어도 제대로 내보내지 못합니다. 에어컨 없이는 잠들기 힘든 밤이 늘어나고, 전력 사용량도 매년 최고치를 경신하고 있습니다. 나무가 부족한 오래된 동네일수록 폭염의 피해는 더 크게 나타납니다. 저는 사람들이 시원하게 숨 쉴 수 있는 공간을 다시 되찾고 싶습니다.'},
+  {id:'polarbear', emoji:'🐻‍❄️', name:'북극곰', type:'nonhuman', desc:'사라지는 북극의 얼음', sdgs:[13,14,15],
+    articleTitle:'발밑에서 사라지는 얼음', articleSource:'극지방리포트 · 2040.06.11',
+    quote:'제가 살아가는 얼음이 해마다 점점 줄어들고 있습니다. 먹이를 사냥하려면 얼음 위를 이동해야 하는데, 이제는 얼음과 얼음 사이의 거리가 너무 멀어 헤엄쳐서 건너다가 지쳐버리는 경우도 있습니다. 새끼를 낳고 기를 안전한 얼음 굴도 점점 찾기 어려워지고 있습니다. 이것은 단순히 북극의 문제가 아니라, 지구 전체의 기후가 얼마나 빠르게 변하고 있는지를 보여주는 신호입니다. 제가 사라진다면, 그다음은 누구의 차례일지 아무도 알 수 없습니다.'},
+  {id:'ocean', emoji:'🗑️', name:'플라스틱 쓰레기로 오염된 바다', type:'nonhuman', desc:'쓰레기로 뒤덮여 가는 지구의 바다', sdgs:[12,13,15],
+    articleTitle:'이제는 물보다 쓰레기가 더 많은 곳', articleSource:'해양환경리포트 · 2040.05.02',
+    quote:'저는 이제 물보다 쓰레기가 더 많은 곳이 되어가고 있습니다. 사람들이 무심코 버린 플라스틱은 파도에 부서져 작은 조각이 되고, 그 조각들은 물고기와 새들의 몸속으로 들어갑니다. 어떤 지역에서는 거대한 쓰레기 섬이 만들어져 배가 지나가기도 어려울 정도입니다. 이 쓰레기는 결국 다시 사람들의 식탁 위로 돌아오고 있습니다. 저는 예전처럼 맑고 깨끗한 모습을 되찾고 싶습니다.'},
+  {id:'bee', emoji:'🐝', name:'사라져가는 꿀벌', type:'nonhuman', desc:'점점 줄어드는 수분 매개자', sdgs:[2,13,15],
+    articleTitle:'우리가 사라지면 식탁에서도 많은 것이 사라진다', articleSource:'생태다양성저널 · 2040.04.19',
+    quote:'저희는 꽃가루를 옮겨 식물이 열매를 맺도록 돕는 꿀벌입니다. 그런데 최근 몇 년 사이 저희의 수가 눈에 띄게 줄어들고 있습니다. 농약과 기후 변화, 서식지 파괴가 겹치면서 벌집을 잃는 일이 잦아졌습니다. 저희가 사라지면 과일과 채소의 수확량이 크게 줄어들 수 있습니다. 우리가 사라지면 당신들의 식탁에서도 많은 것들이 함께 사라질 것입니다.'},
+  {id:'refugee', emoji:'🧳', name:'전쟁으로 고향을 떠난 팔레스타인 난민', type:'human', desc:'전쟁으로 고향을 떠날 수밖에 없었던 사람들', sdgs:[16,10,17],
+    articleTitle:'하루아침에 집과 학교, 친구들을 두고 떠나야 했던 아이', articleSource:'국제분쟁리포트 · 2040.02.22',
+    quote:'저는 전쟁 때문에 하루아침에 집과 학교, 친구들을 모두 두고 떠나야 했습니다. 폭격을 피해 짐도 제대로 챙기지 못한 채 국경을 넘었습니다. 난민 캠프에서의 생활은 안전하지만 언제까지 이곳에 있어야 할지 아무도 알려주지 않습니다. 학교에 다시 다니고 싶지만 이곳에는 저와 같은 아이들이 너무 많아 자리가 부족합니다. 저는 다시 고향으로 돌아가 예전처럼 평범한 하루를 보낼 수 있을지 궁금합니다.'}
+];
+
+/* 대표별 '문제 고르기' 추천 선택지 */
+const PROBLEM_OPTIONS = {
+  housing:      ['주거 불안정', '주거 빈곤', '주거권 침해'],
+  wealth:       ['소득 불평등', '부의 양극화', '경제적 불평등'],
+  digital_elder:['디지털 소외', '정보 격차', '디지털 불평등'],
+  farmer:       ['가뭄', '식량 위기', '물 부족'],
+  elder:        ['의료 접근성 부족', '건강 불평등', '고립과 소외'],
+  child:        ['교육 기회 부족', '빈곤과 교육 격차', '아동 인권 문제'],
+  resident:     ['대기오염', '에너지 불평등', '일자리와 환경의 갈등'],
+  youth:        ['고용 불안정', '일자리 부족', '불공정한 노동 환경'],
+  ai:           ['기술 윤리 문제', '일자리 대체 우려', 'AI와 인간의 공존'],
+  internet:     ['가짜뉴스', '정보 왜곡', '허위정보 확산'],
+  city:         ['폭염', '도시 열섬 현상', '기후위기'],
+  polarbear:    ['기후위기', '생태계 변화', '생물 다양성 감소'],
+  ocean:        ['해양 오염', '플라스틱 쓰레기 문제', '생태계 파괴'],
+  bee:          ['생물 다양성 감소', '생태계 붕괴', '농업 위기'],
+  refugee:      ['전쟁', '난민 문제', '인권 침해']
+};
+const DEFAULT_PROBLEM_OPTIONS = ['기후위기', '불평등', '환경파괴'];
+
+/* 대표별 '해시태그 예시' (학생은 예시를 참고해 직접 1개 이상 작성) */
+const HASHTAG_EXAMPLE = {
+  housing:      '#주거불안정',
+  wealth:       '#소득불평등',
+  digital_elder:'#디지털소외',
+  farmer:       '#가뭄',
+  elder:        '#의료사각지대',
+  child:        '#교육격차',
+  resident:     '#대기오염',
+  youth:        '#고용불안정',
+  ai:           '#AI윤리',
+  internet:     '#가짜뉴스',
+  city:         '#폭염',
+  polarbear:    '#기후위기',
+  ocean:        '#해양오염',
+  bee:          '#생물다양성위기',
+  refugee:      '#난민위기'
+};
+const DEFAULT_HASHTAG_EXAMPLE = '#기후위기';
+
+const SDGS = [
+  {n:1,t:'빈곤층 감소와 사회안전망 강화',c:'g1'},{n:2,t:'식량안보 및 지속가능한 농업 강화',c:'g2'},{n:3,t:'건강하고 행복한 삶 보장',c:'g3'},
+  {n:4,t:'모두를 위한 양질의 교육',c:'g4'},{n:5,t:'성평등 보장',c:'g5'},{n:6,t:'건강하고 안전한 물관리',c:'g6'},
+  {n:7,t:'에너지의 친환경적 생산과 소비',c:'g7'},{n:8,t:'좋은 일자리 확대와 경제성장',c:'g8'},{n:9,t:'산업의 성장과 혁신 활성화 및 사회기반시설 구축',c:'g9'},
+  {n:10,t:'모든 종류의 불평등 해소',c:'g10'},{n:11,t:'지속가능한 도시와 주거지 조성',c:'g11'},{n:12,t:'지속가능한 생산과 소비',c:'g12'},
+  {n:13,t:'기후변화와 대응',c:'g13'},{n:14,t:'해양생태계 보전',c:'g14'},{n:15,t:'육지생태계 보전',c:'g15'},
+  {n:16,t:'평화·정의·포용',c:'g16'},{n:17,t:'지구촌 협력 강화',c:'g17'}
+];
+
+const RELATED_ISSUES = [
+  '👥 사람들의 삶',
+  '🌿 자연과 환경',
+  '💼 경제와 일자리',
+  '🌍 다른 지역과 국가',
+  '🔮 미래 세대'
+];
+
+const CONN_REASON_OPTIONS = [
+  '같은 원인에서 시작된다',
+  '한 문제가 다른 문제를 만들거나 악화시킨다',
+  '서로 영향을 주고받는다'
+];
+
+const AGENDA_TEMPLATES = [
+  {id:'t1', label:'의제 만들기 ①', preview:(v)=>`${v[0]||'________'} 때문에 ${v[1]||'________'} 문제가 발생하고 있다.`,
+    build:(v)=>`${v[0]} 때문에 ${v[1]} 문제가 발생하고 있다.`,
+    blanks:['예) 기후위기','예) 생태계']},
+  {id:'t2', label:'의제 만들기 ②', preview:(v)=>`${v[0]||'________'} 문제를 해결해야 한다.`,
+    build:(v)=>`${v[0]} 문제를 해결해야 한다.`,
+    blanks:['예) 기후위기']},
+  {id:'t3', label:'의제 만들기 ③', preview:(v)=>`#${v[0]||'________'}`,
+    build:(v)=>`#${v[0]}`,
+    blanks:['예) 기후위기를멈추자']}
+];
+
+const AGENDA_REASON_OPTIONS = [
+  '많은 사람에게 영향을 주기 때문에',
+  '자연과 생명에 영향을 주기 때문에',
+  '앞으로 더 심각해질 수 있기 때문에',
+  '여러 문제와 연결되어 있기 때문에'
+];
+
+const REFLECTION_OPTIONS = [
+  '지구의 문제는 서로 연결되어 있다는 점',
+  '한 가지 문제도 여러 사람과 생명에게 영향을 준다는 점',
+  '내가 몰랐던 지구의 문제가 많다는 점',
+  '나의 생각과 다른 친구의 생각도 중요하다는 점'
+];
+
+const STEP_NAMES = {
+  0: '지구 행성 대토론회 시작',
+  1: '대표 초대하기',
+  2: '대표의 이야기 듣기',
+  3: '문제 연결하기',
+  4: 'SDGs와 연결하기',
+  5: '의제 만들기',
+  6: '영향 범위 생각하기',
+  7: '나의 의제 확인하기'
+};
+
+/* ---------- state ---------- */
+const state = {
+  studentId: '',
+  studentName: '',
+  candidates: [],           // selected candidate ids (max 3)
+  customCandidates: [],     // student-added candidates
+  problemChoice: {},        // id -> chosen problem text
+  tags: {},                 // id -> [hashtag] (하나만 저장)
+  connection: null,         // {a, b, relation}
+  sdgs: [],                 // selected sdg numbers (max 3)
+  agendaTemplateId: '',
+  agendaBlanks: [],
+  myAgenda: '',
+  myReason: '',
+  relatedPicks: [],         // max 2
+  finalReflectionChoice: '',
+  finalReflection: ''
+};
+
+const TOTAL_STEPS = 8; // 0~7
+
+function getAllCandidates(){ return CANDIDATES.concat(state.customCandidates); }
+function getProblemOptions(id){ return PROBLEM_OPTIONS[id] || DEFAULT_PROBLEM_OPTIONS; }
+function getHashtagExample(id){ return HASHTAG_EXAMPLE[id] || DEFAULT_HASHTAG_EXAMPLE; }
+
+/* ---------- progress bar ---------- */
+function renderProgress(current){
+  const p = document.getElementById('progress');
+  p.innerHTML = '';
+  for(let i=0;i<TOTAL_STEPS;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i<=current ? ' done' : '');
+    p.appendChild(d);
+  }
+  const label = document.getElementById('progressLabel');
+  if(label) label.textContent = STEP_NAMES[current] || '';
+}
+
+let currentStep = 0;
+
+function goTo(step){
+  currentStep = step;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen'+step).classList.add('active');
+  renderProgress(step);
+  if(step===1) renderStep1();
+  if(step===2) renderStep2();
+  if(step===3) renderStep3();
+  if(step===4) renderStep4();
+  if(step===5) renderAgendaTemplates();
+  if(step===6) renderStep6();
+  if(step===7) renderStep7();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goBack(){
+  if(currentStep>0) goTo(currentStep-1);
+}
+renderProgress(0);
+
+/* ---------- STEP 0 : 학번/이름 ---------- */
+function updateEnterBtn(){
+  state.studentId = document.getElementById('studentId').value.trim();
+  state.studentName = document.getElementById('studentName').value.trim();
+  if(state.studentId && state.studentName){
+    const warn = document.getElementById('studentInfoWarning');
+    if(warn) warn.style.display = 'none';
+  }
+}
+document.getElementById('studentId').addEventListener('input', updateEnterBtn);
+document.getElementById('studentName').addEventListener('input', updateEnterBtn);
+
+function enterDebate(){
+  state.studentId = document.getElementById('studentId').value.trim();
+  state.studentName = document.getElementById('studentName').value.trim();
+  const warn = document.getElementById('studentInfoWarning');
+  if(!state.studentId || !state.studentName){
+    if(warn) warn.style.display = 'block';
+    return;
+  }
+  if(warn) warn.style.display = 'none';
+  goTo(1);
+}
+
+/* ---------- STEP 1 ---------- */
+function renderStep1(){
+  const grid = document.getElementById('candGrid');
+  grid.innerHTML = '';
+  getAllCandidates().forEach(c=>{
+    const sel = state.candidates.includes(c.id);
+    const div = document.createElement('div');
+    div.className = 'cand-card' + (sel?' selected':'') + (c.type==='nonhuman'?' nonhuman':'');
+    div.innerHTML = `${sel?'<span class="picked-badge">선택됨</span>':''}<span class="emoji">${c.emoji}</span><span class="name">${c.name}</span><span class="desc">${c.desc||''}</span>`;
+    div.onclick = ()=>toggleCandidate(c.id);
+    grid.appendChild(div);
+  });
+  const addCard = document.createElement('div');
+  addCard.className = 'cand-card';
+  addCard.style.borderStyle = 'dashed';
+  addCard.innerHTML = `<span class="emoji">➕</span><span class="name">내가 직접 대표를 초대하고 싶어요</span>`;
+  addCard.onclick = ()=>{
+    const form = document.getElementById('addCandidateForm');
+    form.style.display = (form.style.display==='none' || !form.style.display) ? 'block' : 'none';
+  };
+  grid.appendChild(addCard);
+
+  document.getElementById('candCount').textContent = state.candidates.length;
+  checkStep1Done();
+}
+
+function addCustomCandidate(){
+  const nameInput = document.getElementById('newCandName');
+  const descInput = document.getElementById('newCandDesc');
+  const name = nameInput.value.trim();
+  const desc = descInput.value.trim();
+  if(!name || !desc) return;
+  const id = 'custom_' + Date.now();
+  state.customCandidates.push({id, emoji:'🎙️', name, desc:'내가 초대한 대표', type:'custom', quote:desc, sdgs:[]});
+  nameInput.value=''; descInput.value='';
+  document.getElementById('addCandidateForm').style.display='none';
+  renderStep1();
+}
+
+function toggleCandidate(id){
+  const idx = state.candidates.indexOf(id);
+  if(idx>-1){
+    state.candidates.splice(idx,1);
+  } else {
+    if(state.candidates.length>=3) return;
+    state.candidates.push(id);
+  }
+  renderStep1();
+}
+
+function checkStep1Done(){
+  const ok = state.candidates.length===3;
+  document.getElementById('btnStep1Next').disabled = !ok;
+}
+
+/* ---------- STEP 2 ---------- */
+let step2Index = 0;
+const ORDINALS = ['첫 번째','두 번째','세 번째'];
+
+function renderStep2(){
+  if(step2Index<0 || step2Index>=state.candidates.length) step2Index = 0;
+  renderStep2Card();
+}
+
+function step2Back(){
+  if(step2Index>0){
+    step2Index--;
+    renderStep2Card();
+    window.scrollTo({top:0, behavior:'smooth'});
+  } else {
+    goTo(1);
+  }
+}
+
+function renderStep2Card(){
+  const wrap = document.getElementById('speechCards');
+  wrap.innerHTML='';
+  const id = state.candidates[step2Index];
+  const c = getAllCandidates().find(x=>x.id===id);
+  const isLast = step2Index === state.candidates.length - 1;
+
+  const problemOpts = getProblemOptions(id);
+  const hashtagExample = getHashtagExample(id);
+  const curProblem = state.problemChoice[id] || '';
+  const isCustomProblem = curProblem.length>0 && !problemOpts.includes(curProblem);
+  const curTag = (state.tags[id]||[])[0] || '';
+
+  const card = document.createElement('div');
+  card.className = 'speech-card';
+  card.innerHTML = `
+    <div class="counter">🎙 ${ORDINALS[step2Index]||''} 대표의 이야기 (${step2Index+1} / ${state.candidates.length})</div>
+    <div class="who">${c.emoji} ${c.name}</div>
+    ${c.articleTitle ? `
+    <div class="article-label">📰 가상 기사 발췌</div>
+    <div class="article-title">“${c.articleTitle}”</div>
+    ${c.articleSource ? `<div class="article-source">${c.articleSource}</div>` : ''}
+    ` : ''}
+    <div class="quote">${c.quote}</div>
+
+    <div class="fieldlabel">이 대표가 겪고 있는 문제는 무엇일까요?</div>
+    <div class="chip-wrap" id="problemChips"></div>
+    <input type="text" id="problemCustomInput" placeholder="문제를 직접 적어보세요" style="display:${isCustomProblem?'block':'none'}; margin-top:6px;" value="${isCustomProblem?curProblem:''}">
+
+    <div class="fieldlabel" style="margin-top:16px;">이 문제를 해시태그로 표현한다면?</div>
+    <div class="fieldlabel" style="margin:0 0 6px; font-size:11.5px;">예시: <span style="color:var(--human); font-weight:600;">${hashtagExample}</span></div>
+    <div class="fieldlabel" style="margin-top:10px;">✏️ 나만의 해시태그를 1개 이상 직접 작성해 보세요.</div>
+    <input type="text" id="tagCustomInput" placeholder="#________________" value="${curTag}">
+
+    <div class="nav-row">
+      <button class="nav-btn" id="step2BackBtn">← 이전</button>
+      <span class="step-tag">STEP 2 / 7</span>
+      <button class="nav-btn primary" id="step2NextBtn">${isLast ? '문제의 연결 확인하기 →' : '다음 대표의 이야기 듣기 →'}</button>
+    </div>
+  `;
+  wrap.appendChild(card);
+
+  const problemChipsWrap = card.querySelector('#problemChips');
+  const problemCustomInput = card.querySelector('#problemCustomInput');
+  [...problemOpts, '기타 직접 입력'].forEach(opt=>{
+    const chip = document.createElement('span');
+    const isActive = (opt==='기타 직접 입력') ? isCustomProblem : (curProblem===opt);
+    chip.className = 'chip' + (isActive ? ' active' : '');
+    chip.textContent = opt;
+    chip.onclick = ()=>{
+      if(opt==='기타 직접 입력'){
+        problemCustomInput.style.display='block';
+        state.problemChoice[id] = problemCustomInput.value.trim();
+        problemCustomInput.focus();
+      } else {
+        problemCustomInput.style.display='none';
+        state.problemChoice[id] = opt;
+      }
+      renderStep2Card();
+    };
+    problemChipsWrap.appendChild(chip);
+  });
+  problemCustomInput.addEventListener('input', e=>{
+    state.problemChoice[id] = e.target.value.trim();
+    updateStep2NextState();
+  });
+
+  const tagCustomInput = card.querySelector('#tagCustomInput');
+  tagCustomInput.addEventListener('input', e=>{
+    const v = e.target.value.trim();
+    state.tags[id] = v.length ? [v.startsWith('#')?v:'#'+v] : [];
+    updateStep2NextState();
+  });
+
+  function updateStep2NextState(){
+    const ok = (state.problemChoice[id]||'').length>0 && (state.tags[id]||[]).length>0;
+    document.getElementById('step2NextBtn').disabled = !ok;
+  }
+  updateStep2NextState();
+
+  document.getElementById('step2NextBtn').onclick = ()=>{
+    if(isLast){ goTo(3); }
+    else { step2Index++; renderStep2Card(); window.scrollTo({top:0, behavior:'smooth'}); }
+  };
+  document.getElementById('step2BackBtn').onclick = step2Back;
+}
+
+/* ---------- STEP 3 ---------- */
+function allTags(){
+  let list = [];
+  state.candidates.forEach(id=>{
+    (state.tags[id]||[]).forEach(tag=>{
+      list.push({tag, owner:id});
+    });
+  });
+  return list;
+}
+
+let step3Picked = [];
+
+function renderStep3(){
+  step3Picked = state.connection ? [state.connection.a, state.connection.b] : [];
+  const picker = document.getElementById('step3CandPicker');
+  picker.innerHTML = '';
+  const all = getAllCandidates();
+  state.candidates.forEach(id=>{
+    const c = all.find(x=>x.id===id);
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (step3Picked.includes(id) ? ' active' : '');
+    chip.textContent = `${c.emoji} ${c.name}`;
+    chip.onclick = ()=>{
+      const i = step3Picked.indexOf(id);
+      if(i>-1){ step3Picked.splice(i,1); }
+      else { if(step3Picked.length>=2) return; step3Picked.push(id); }
+      state.connection = null;
+      renderStep3Chips();
+      renderStep3RelationPanel();
+      document.getElementById('btnStep3Next').disabled = true;
+    };
+    picker.appendChild(chip);
+  });
+  renderStep3RelationPanel();
+  document.getElementById('btnStep3Next').disabled = !(state.connection && state.connection.relation);
+}
+
+function renderStep3Chips(){
+  const chips = document.querySelectorAll('#step3CandPicker .chip');
+  chips.forEach((chip,i)=>{
+    const id = state.candidates[i];
+    chip.classList.toggle('active', step3Picked.includes(id));
+  });
+}
+
+function renderStep3RelationPanel(){
+  const host = document.getElementById('step3RelationPanel');
+  if(step3Picked.length!==2){ host.innerHTML=''; return; }
+  const all = getAllCandidates();
+  const c1 = all.find(x=>x.id===step3Picked[0]);
+  const c2 = all.find(x=>x.id===step3Picked[1]);
+  const matched = (state.connection && state.connection.a===step3Picked[0] && state.connection.b===step3Picked[1]) ? state.connection.relation : '';
+  host.innerHTML = `
+    <div class="q"><b>${c1.emoji} ${c1.name}</b> ↔ <b>${c2.emoji} ${c2.name}</b><br>두 대표의 문제는 어떤 관계일까요?</div>
+    <div class="chip-wrap" id="relationChips"></div>
+    ${matched ? `<div class="conn-list"><div class="row"><span>${c1.name}</span><span class="arrow">↔</span><span>${c2.name}</span><span style="color:var(--dim); font-size:11.5px; margin-left:6px;">(${matched})</span></div></div>` : ''}
+  `;
+  const chipsWrap = document.getElementById('relationChips');
+  CONN_REASON_OPTIONS.forEach(opt=>{
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (matched===opt ? ' active' : '');
+    chip.textContent = opt;
+    chip.onclick = ()=>{
+      state.connection = {a:step3Picked[0], b:step3Picked[1], relation:opt};
+      document.getElementById('btnStep3Next').disabled = false;
+      renderStep3RelationPanel();
+    };
+    chipsWrap.appendChild(chip);
+  });
+}
+
+/* ---------- STEP 4 ---------- */
+function suggestedSdgsForSelection(){
+  let nums = [];
+  const all = getAllCandidates();
+  state.candidates.forEach(id=>{
+    const c = all.find(x=>x.id===id);
+    (c.sdgs||[]).forEach(n=>{ if(!nums.includes(n)) nums.push(n); });
+  });
+  return nums;
+}
+
+function renderSuggestedSdgs(){
+  const host = document.getElementById('sdgSuggested');
+  const nums = suggestedSdgsForSelection();
+  if(!nums.length){ host.innerHTML=''; return; }
+  host.innerHTML = `<div class="q">🌍 당신이 선택한 대표들과 연결되는 SDGs입니다. 이 중 <b style="color:#fff;">가장 중요하다고 생각하는 목표</b>를 선택해 보세요.</div>`;
+  const row = document.createElement('div');
+  row.className = 'sdg-grid';
+  nums.forEach(n=>{
+    const s = SDGS.find(x=>x.n===n);
+    const sel = state.sdgs.includes(n);
+    const div = document.createElement('div');
+    div.className = 'sdg-chip '+s.c+(sel?' selected':'');
+    div.innerHTML = `<span class="num">${s.n}</span><span>${s.t}</span>`;
+    div.onclick = ()=>{
+      const idx = state.sdgs.indexOf(n);
+      if(idx>-1) state.sdgs.splice(idx,1);
+      else { if(state.sdgs.length>=3) return; state.sdgs.push(n); }
+      renderStep4();
+    };
+    row.appendChild(div);
+  });
+  host.appendChild(row);
+}
+
+function renderStep4(){
+  renderSuggestedSdgs();
+  const grid = document.getElementById('sdgGrid');
+  grid.innerHTML='';
+  SDGS.forEach(s=>{
+    const sel = state.sdgs.includes(s.n);
+    const div = document.createElement('div');
+    div.className = 'sdg-chip '+s.c+(sel?' selected':'');
+    div.innerHTML = `<span class="num">${s.n}</span><span>${s.t}</span>`;
+    div.onclick = ()=>{
+      const idx = state.sdgs.indexOf(s.n);
+      if(idx>-1) state.sdgs.splice(idx,1);
+      else { if(state.sdgs.length>=3) return; state.sdgs.push(s.n); }
+      renderStep4();
+    };
+    grid.appendChild(div);
+  });
+  document.getElementById('sdgCount').textContent = state.sdgs.length;
+  document.getElementById('btnStep4Next').disabled = state.sdgs.length===0;
+}
+
+/* ---------- STEP 5 ---------- */
+function renderAgendaTemplates(){
+  const wrap = document.getElementById('agendaTemplatePicker');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  AGENDA_TEMPLATES.forEach(tpl=>{
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (state.agendaTemplateId===tpl.id ? ' active' : '');
+    chip.textContent = tpl.label;
+    chip.onclick = ()=>{
+      state.agendaTemplateId = tpl.id;
+      state.agendaBlanks = new Array(tpl.blanks.length).fill('');
+      state.myAgenda = '';
+      renderAgendaTemplates();
+    };
+    wrap.appendChild(chip);
+  });
+  renderAgendaBlankArea();
+  renderAgendaReasonChips();
+}
+
+function renderAgendaBlankArea(){
+  const area = document.getElementById('agendaBlankArea');
+  if(!area) return;
+  const tpl = AGENDA_TEMPLATES.find(t=>t.id===state.agendaTemplateId);
+  if(!tpl){ area.innerHTML=''; updateStep5NextState(); return; }
+  const box = document.createElement('div');
+  box.className = 'fillblank-box';
+  tpl.blanks.forEach((ph,i)=>{
+    const inp = document.createElement('input');
+    inp.type='text';
+    inp.placeholder = ph;
+    inp.value = state.agendaBlanks[i]||'';
+    inp.style.display='block';
+    inp.style.width='100%';
+    inp.style.margin='6px 0';
+    inp.addEventListener('input', e=>{
+      state.agendaBlanks[i] = e.target.value.trim();
+      computeAgenda();
+    });
+    box.appendChild(inp);
+  });
+  const preview = document.createElement('div');
+  preview.id = 'agendaPreview';
+  preview.style.marginTop = '10px';
+  preview.style.color = '#fff';
+  preview.style.fontWeight = '700';
+  box.appendChild(preview);
+  area.innerHTML='';
+  area.appendChild(box);
+  computeAgenda();
+}
+
+function computeAgenda(){
+  const tpl = AGENDA_TEMPLATES.find(t=>t.id===state.agendaTemplateId);
+  if(!tpl){ state.myAgenda=''; updateStep5NextState(); return; }
+  const filled = tpl.blanks.every((_,i)=> (state.agendaBlanks[i]||'').length>0);
+  state.myAgenda = filled ? tpl.build(state.agendaBlanks) : '';
+  const preview = document.getElementById('agendaPreview');
+  if(preview) preview.textContent = state.myAgenda ? `→ ${state.myAgenda}` : '';
+  updateStep5NextState();
+}
+
+function renderAgendaReasonChips(){
+  const wrap = document.getElementById('agendaReasonChips');
+  if(!wrap) return;
+  wrap.innerHTML='';
+  AGENDA_REASON_OPTIONS.forEach(opt=>{
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (state.myReason===opt ? ' active' : '');
+    chip.textContent = opt;
+    chip.onclick = ()=>{
+      state.myReason = (state.myReason===opt) ? '' : opt;
+      renderAgendaReasonChips();
+    };
+    wrap.appendChild(chip);
+  });
+}
+
+function updateStep5NextState(){
+  const btn = document.getElementById('btnStep5Next');
+  if(btn) btn.disabled = !(state.myAgenda && state.myAgenda.length>0);
+}
+
+/* ---------- STEP 6 ---------- */
+function renderStep6(){
+  const grid = document.getElementById('relatedGrid');
+  grid.innerHTML='';
+  RELATED_ISSUES.forEach(issue=>{
+    const sel = state.relatedPicks.includes(issue);
+    const div = document.createElement('div');
+    div.className = 'check-item'+(sel?' active':'');
+    div.textContent = issue;
+    div.onclick = ()=>{
+      const idx = state.relatedPicks.indexOf(issue);
+      if(idx>-1) state.relatedPicks.splice(idx,1);
+      else { if(state.relatedPicks.length>=2) return; state.relatedPicks.push(issue); }
+      renderStep6();
+    };
+    grid.appendChild(div);
+  });
+  const map = document.getElementById('linkMap');
+  if(state.relatedPicks.length){
+    map.innerHTML = `<div class="conn-list"><div class="row"><span>${state.myAgenda||'나의 의제'}</span>${state.relatedPicks.map(p=>`<span class="arrow">↔</span><span>${p}</span>`).join('')}</div></div>`;
+  } else {
+    map.innerHTML = '';
+  }
+}
+
+/* ---------- STEP 7 ---------- */
+function renderStep7(){
+  const infoLine = document.getElementById('studentInfoLine');
+  if(infoLine) infoLine.textContent = (state.studentId || state.studentName) ? `${state.studentId} ${state.studentName}` : '';
+  const area = document.getElementById('summaryArea');
+  const all = getAllCandidates();
+  const candBlock = state.candidates.map(id=>{
+    const c = all.find(x=>x.id===id);
+    return `<li>${c.emoji} ${c.name}</li>`;
+  }).join('');
+
+  const problemBlock = state.candidates.map(id=>{
+    const c = all.find(x=>x.id===id);
+    const p = state.problemChoice[id];
+    return p ? `<li>${c.emoji} ${c.name}: ${p}</li>` : '';
+  }).join('');
+
+  const tagBlock = allTags().map(t=>`<span class="tag-pill">${t.tag}</span>`).join(' ');
+
+  const sdgBlock = state.sdgs.map(n=>{
+    const s = SDGS.find(x=>x.n===n);
+    return `<span class="tag-pill">SDG ${s.n} · ${s.t}</span>`;
+  }).join(' ');
+
+  const relatedBlock = state.relatedPicks.length ? state.relatedPicks.map(p=>`<li>${p}</li>`).join('') : '<li>-</li>';
+
+  area.innerHTML = `
+    <div class="agenda-card">
+      <div class="agenda-card-title">📢 내가 대토론회에 제안한 의제</div>
+      <div class="agenda-card-main">${state.myAgenda || '(작성 없음)'}</div>
+      ${state.myReason ? `<div class="agenda-card-sub">${state.myReason}</div>` : ''}
+    </div>
+    <div class="summary-block">
+      <h3>🎙 내가 회의에 초대한 대표</h3>
+      <ul>${candBlock || '<li>-</li>'}</ul>
+    </div>
+    <div class="summary-block">
+      <h3>🔍 내가 발견한 가장 중요한 문제</h3>
+      <ul>${problemBlock || '<li>-</li>'}</ul>
+    </div>
+    <div class="summary-block">
+      <h3># 내가 선택한 핵심 키워드</h3>
+      <div>${tagBlock || '-'}</div>
+    </div>
+    <div class="summary-block">
+      <h3>🌍 내가 선택한 SDGs</h3>
+      <div>${sdgBlock || '-'}</div>
+    </div>
+    <div class="summary-block">
+      <h3>🔗 이 문제는 어디까지 영향을 미칠까?</h3>
+      <ul>${relatedBlock}</ul>
+    </div>
+  `;
+  renderReflectionChips();
+}
+
+function renderReflectionChips(){
+  const wrap = document.getElementById('reflectionChips');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  REFLECTION_OPTIONS.forEach(opt=>{
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (state.finalReflectionChoice===opt ? ' active' : '');
+    chip.textContent = opt;
+    chip.onclick = ()=>{
+      state.finalReflectionChoice = (state.finalReflectionChoice===opt) ? '' : opt;
+      renderReflectionChips();
+    };
+    wrap.appendChild(chip);
+  });
+  const shortInput = document.getElementById('finalReflectionShort');
+  if(shortInput){
+    shortInput.value = state.finalReflection||'';
+    shortInput.oninput = e=>{ state.finalReflection = e.target.value; };
+  }
+}
+
+function downloadSummary(){
+  const all = getAllCandidates();
+  const lines = [];
+  lines.push('=== 2040 지구 행성 대토론회 - 나의 기록 ===');
+  lines.push(`학번: ${state.studentId||''}  이름: ${state.studentName||''}`);
+  lines.push('');
+  lines.push('[초대한 대표]');
+  state.candidates.forEach(id=>{
+    const c = all.find(x=>x.id===id);
+    lines.push(`- ${c.name}`);
+    lines.push(`  문제: ${state.problemChoice[id]||''}`);
+    lines.push(`  해시태그: ${(state.tags[id]||[]).join(' ')}`);
+  });
+  lines.push('');
+  lines.push('[문제의 연결 (STEP3)]');
+  if(state.connection){
+    const c1 = all.find(x=>x.id===state.connection.a);
+    const c2 = all.find(x=>x.id===state.connection.b);
+    lines.push(`- ${c1?c1.name:''} ↔ ${c2?c2.name:''} (${state.connection.relation})`);
+  }
+  lines.push('');
+  lines.push('[선택한 SDGs]');
+  state.sdgs.forEach(n=>{
+    const s = SDGS.find(x=>x.n===n);
+    lines.push(`- SDG ${s.n} ${s.t}`);
+  });
+  lines.push('');
+  lines.push('[나의 의제]');
+  lines.push(state.myAgenda||'');
+  lines.push(`이유: ${state.myReason||''}`);
+  lines.push('');
+  lines.push('[문제의 영향]');
+  lines.push(state.relatedPicks.join(', '));
+  lines.push('');
+  lines.push('[오늘 새롭게 알게 된 점]');
+  lines.push(state.finalReflectionChoice||'');
+  if(state.finalReflection) lines.push(state.finalReflection);
+
+  const blob = new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '지구행성대토론회_기록.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
