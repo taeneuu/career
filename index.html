@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2040 지구 행성 대토론회</title>
+<title>[창체] 2040 지구 행성 대토론회</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -246,6 +246,59 @@
   }
   .fillblank-box input{display:inline-block; width:auto; min-width:140px; margin:0 4px;}
 
+  /* fact box (step2) */
+  .fact-box{
+    background:#0e1927; border:1px dashed var(--dim); border-radius:8px;
+    padding:10px 12px; margin:10px 0 14px; font-size:12.5px; line-height:1.7; color:#c6d2dd;
+  }
+  .fact-box b{color:var(--human);}
+
+  /* hint chips (발판, 정답 아님) */
+  .hint-label{font-size:12px; color:var(--dim); margin:4px 0 6px;}
+  .hint-chip{
+    background:transparent;
+    border:1.5px dashed var(--line);
+    color:var(--dim);
+    font-size:12px;
+    padding:5px 11px;
+    border-radius:16px;
+    cursor:pointer;
+  }
+  .hint-chip:hover{border-color:var(--human); color:var(--human);}
+
+  .hashtag-input-row{display:flex; align-items:center; gap:6px; margin-top:6px;}
+  .hashtag-input-row .hash-sign{font-size:18px; font-weight:900; color:var(--human);}
+  .hashtag-input-row input{flex:1;}
+  .tip-note{font-size:11.5px; color:var(--dim); margin-top:6px;}
+  .warn-note{font-size:12px; color:var(--agenda); margin-top:6px; font-weight:600;}
+
+  /* step3 pair display */
+  .pair-box{display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; margin:14px 0;}
+  .pair-tag{
+    background:#153731; border:1px solid var(--human); color:#fff;
+    border-radius:16px; padding:8px 14px; font-size:14px; font-weight:700;
+  }
+  .pair-arrow{color:var(--human); font-size:18px; font-weight:900;}
+  .sentence-box{
+    background:var(--panel-2); border-left:3px solid var(--human);
+    border-radius:0 8px 8px 0; padding:10px 14px; margin-top:10px; font-size:13.5px; color:#dfe9f0;
+  }
+  .sdg-more-btn{
+    margin-top:10px; background:transparent; border:1px dashed var(--line); color:var(--dim);
+    font-family:inherit; font-size:12.5px; padding:8px 14px; border-radius:18px; cursor:pointer;
+  }
+  .sdg-more-btn:hover{border-color:var(--human); color:var(--human);}
+
+  /* step7 flow */
+  .flow-wrap{display:flex; flex-direction:column; gap:0; margin:6px 0 18px;}
+  .flow-step{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px;
+  }
+  .flow-step .flow-label{font-size:11.5px; color:var(--human); font-weight:700; margin-bottom:6px;}
+  .flow-step .flow-body{font-size:13.5px; color:#dfe9f0; line-height:1.7;}
+  .flow-arrow-row{text-align:center; color:var(--dim); font-size:15px; padding:4px 0;}
+
   /* step6 checklist */
   .check-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; margin:12px 0;}
   .check-item{
@@ -253,6 +306,17 @@
     padding:10px 12px; cursor:pointer; font-size:13px; text-align:center;
   }
   .check-item.active{border-color:var(--violet); background:#241d40;}
+
+  /* step6 agenda template grid (한눈에 비교) */
+  .agenda-template-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; margin:12px 0;}
+  .agenda-template-card{
+    background:var(--panel-2); border:1.5px solid var(--line); border-radius:10px;
+    padding:12px 14px; cursor:pointer; transition:.15s;
+  }
+  .agenda-template-card:hover{border-color:var(--dim);}
+  .agenda-template-card.active{border-color:var(--human); background:#153731; box-shadow:0 0 0 1px var(--human) inset;}
+  .agenda-template-card .tpl-label{font-size:12px; color:var(--human); font-weight:700; margin-bottom:6px;}
+  .agenda-template-card .tpl-preview{font-size:13px; color:#dfe9f0; line-height:1.6;}
 
   /* agenda card (STEP 7) */
   .agenda-card{
@@ -279,6 +343,54 @@
     display:inline-block; background:#0e1927; border:1px solid var(--line);
     border-radius:14px; padding:3px 10px; font-size:12px; margin:2px 4px 2px 0;
   }
+
+  /* ===== SDGs 오리엔테이션 (STEP 1) ===== */
+  .sdg-group-card{
+    background:var(--panel-2); border:1.5px solid var(--line); border-radius:12px;
+    padding:14px 16px; margin-bottom:10px; transition:.15s;
+  }
+  .sdg-group-card:hover{border-color:var(--dim);}
+  .sdg-group-card.expanded{border-color:var(--human);}
+  .sdg-group-card .ghead{display:flex; align-items:center; justify-content:space-between; gap:10px; cursor:pointer;}
+  .sdg-group-card .gname{font-size:15px; font-weight:700; color:#fff;}
+  .sdg-group-card .gname .gemoji{margin-right:6px;}
+  .sdg-group-card .gsub{font-size:12px; color:var(--dim); margin-top:3px; line-height:1.5;}
+  .sdg-group-card .gtoggle{font-size:11.5px; color:var(--dim); white-space:nowrap;}
+  .sdg-group-card .glist{display:none; margin-top:12px; padding-top:12px; border-top:1px dashed var(--line);}
+  .sdg-group-card.expanded .glist{display:grid;}
+  .sdg-pick-note{
+    background:var(--panel-2); border-left:3px solid var(--human); border-radius:0 8px 8px 0;
+    padding:12px 14px; margin-top:16px; font-size:13px; line-height:1.75; color:#dfe9f0;
+  }
+  .cand-sdg-tag{
+    display:block; font-size:9.5px; color:var(--dim); letter-spacing:.02em; margin-top:5px;
+  }
+  .sdg-suggested-note{
+    font-size:11px; color:var(--dim); margin:-4px 0 10px; line-height:1.6;
+  }
+  .sdg-group-heading{
+    font-size:12px; color:var(--human); font-weight:700; margin:16px 0 6px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .why-box{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
+    padding:14px 16px; margin-top:14px;
+  }
+  .compare-box{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 4px;}
+  .compare-item{
+    flex:1; min-width:150px; background:var(--panel-2); border:1px solid var(--line);
+    border-radius:10px; padding:12px 14px;
+  }
+  .compare-item .clabel{font-size:11.5px; color:var(--dim); margin-bottom:6px;}
+  .compare-item .cval{font-size:14px; font-weight:700; color:#fff; line-height:1.5;}
+  .compare-item .cgroup{font-size:11px; color:var(--dim); margin-top:6px;}
+  .compare-arrow{align-self:center; color:var(--human); font-size:18px; font-weight:900;}
+  .step5-context-box{
+    background:#0e1927; border:1px dashed var(--dim); border-radius:8px;
+    padding:12px 14px; margin:10px 0 16px;
+  }
+  .step5-context-box .clabel{font-size:11.5px; color:var(--dim); margin-bottom:4px;}
+  .step5-context-box .cval{font-size:13.5px; color:#dfe9f0; line-height:1.7;}
 
   .nav-row{
     display:flex; justify-content:space-between; align-items:center;
@@ -321,10 +433,44 @@
     font-family:inherit; font-size:13px; font-weight:600;
     padding:9px 18px; border-radius:20px; cursor:pointer;
   }
+  .submit-btn{
+    background:linear-gradient(135deg, var(--violet), #6f5fe0);
+    color:#fff;
+    border:none;
+    font-family:inherit; font-size:13px; font-weight:600;
+    padding:9px 18px; border-radius:20px; cursor:pointer;
+  }
+  .submit-btn:hover{filter:brightness(1.08);}
+  .submit-btn:disabled{opacity:.6; cursor:not-allowed;}
+
+  /* STEP 7 → STEP 8 전환 로딩 효과 */
+  .step8-loading-overlay{
+    display:none;
+    position:absolute; inset:0;
+    background:var(--panel);
+    border-radius:16px;
+    flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:30px;
+    z-index:20;
+  }
+  .step8-loading-overlay.active{display:flex;}
+  .step8-loading-emoji{font-size:44px; margin-bottom:14px; animation:pulseGlobe 1.1s ease-in-out infinite;}
+  @keyframes pulseGlobe{0%,100%{transform:scale(1);} 50%{transform:scale(1.08);}}
+  .step8-loading-text{font-size:14px; color:#dfe9f0; font-weight:600; margin-bottom:12px;}
+  .step8-loading-dots span{
+    display:inline-block; width:7px; height:7px; margin:0 3px; border-radius:50%;
+    background:var(--human); opacity:.3; animation:dotBlink 1s infinite;
+  }
+  .step8-loading-dots span:nth-child(2){animation-delay:.15s;}
+  .step8-loading-dots span:nth-child(3){animation-delay:.3s;}
+  @keyframes dotBlink{0%,80%,100%{opacity:.25;} 40%{opacity:1;}}
 
   @media (max-width:640px){
     .stage{padding:24px 18px;}
     h1.title{font-size:21px;}
+    .compare-box{flex-direction:column;}
+    .compare-arrow{transform:rotate(90deg);}
+    .agenda-template-grid{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -335,10 +481,10 @@
 
 <div class="stage">
 
-  <!-- STEP 0 -->
+  <!-- STEP 0 : 시작 화면 -->
   <div class="screen active" id="screen0">
     <div class="globe">🌍</div>
-    <div class="kicker">1차시 · 창의적 체험활동</div>
+    <div class="kicker">한백고 1학년부 · 창의적 체험활동(진로)</div>
     <h1 class="title display">2040 지구 행성 대토론회</h1>
     <p class="narr" style="max-width:520px; margin-left:auto; margin-right:auto;">
       2040년, 지구의 여러 문제가 더욱 복잡하게 얽혀 있습니다.<br>
@@ -361,15 +507,31 @@
         <input type="text" id="studentName" placeholder="이름을 입력하세요">
       </div>
     </div>
-    <button class="enter-btn" id="enterBtn" onclick="enterDebate()">대토론회 입장하기 →</button>
+    <button class="enter-btn" id="enterBtn" onclick="enterDebate()">지구가 함께 풀어야 할 과제 만나기 →</button>
     <div id="studentInfoWarning" style="display:none; color:var(--agenda); font-size:12.5px; font-weight:600; margin-top:12px;">⚠️ 학번과 이름을 입력한 후 입장할 수 있어요.</div>
   </div>
 
-  <!-- STEP 1 -->
+  <!-- STEP 1 : SDGs 오리엔테이션 (지도처럼 소개) -->
   <div class="screen" id="screen1">
     <div class="kicker">STEP 1</div>
-    <h2 class="title">누구의 목소리를 대토론회에 들여보낼 것인가?</h2>
-    <p class="narr">마음에 들거나 관심이 가는 대표를 <b style="color:#fff;">3명</b> 선택하세요. 사람이 아니어도 괜찮습니다.</p>
+    <h2 class="title">🌍 우리가 함께 해결해야 할 지구의 과제</h2>
+    <p class="narr">세계의 국가들은 더 나은 지구와 미래를 만들기 위해 함께 해결해야 할 17가지 목표를 약속했습니다.<br><b style="color:#fff;">지속가능발전목표(SDGs)</b>입니다.</p>
+    <div id="sdgGroupList"></div>
+    <div class="q" style="margin-top:16px;"><b>17가지 목표 중 지금 내가 가장 중요하다고 생각하는 목표는 무엇일까요?</b></div>
+    <p class="narr" style="font-size:12.5px;">각 영역을 펼쳐서 살펴보고, 지금 가장 중요하다고 생각하는 목표를 <b style="color:#fff;">1개</b> 선택해 보세요. 이 선택이 이후 활동을 제한하지는 않아요.</p>
+    <div class="sdg-pick-note" id="sdgPickNote" style="display:none;"></div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goBack()">← 이전</button>
+      <span class="step-tag">STEP 1 / 8</span>
+      <button class="nav-btn primary" id="btnStep1Next" onclick="goTo(2)" disabled>대표 초대하러 가기 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 : 대표 초대 -->
+  <div class="screen" id="screen2">
+    <div class="kicker">STEP 2</div>
+    <h2 class="title">지구의 미래를 위해, 누구의 목소리를 들어볼까?</h2>
+    <p class="narr">지구의 미래를 위해 꼭 목소리를 들어보고 싶은 대표 <b style="color:#fff;">3명</b>을 초대하세요. 캐릭터를 고르는 것이 아니라, <b style="color:#fff;">누구의 이야기를 들어볼 것인가</b>를 정하는 단계입니다. 사람이 아니어도 괜찮습니다.</p>
     <div class="counter"><span id="candCount">0</span> / 3명 선택됨</div>
     <div class="cand-grid" id="candGrid"></div>
 
@@ -387,94 +549,152 @@
 
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
-      <span class="step-tag">STEP 1 / 7</span>
-      <button class="nav-btn primary" id="btnStep1Next" onclick="goTo(2)" disabled>대표단 구성 완료 →</button>
+      <span class="step-tag">STEP 2 / 8</span>
+      <button class="nav-btn primary" id="btnStep2Next" onclick="goTo(3)" disabled>대표단 구성 완료 →</button>
     </div>
   </div>
 
-  <!-- STEP 2 -->
-  <div class="screen" id="screen2">
-    <div class="kicker">STEP 2</div>
-    <h2 class="title">대표들의 이야기를 들어보자</h2>
-    <p class="narr">당신이 초대한 대표들의 이야기를 한 명씩 들어보세요. 그리고 이들이 겪는 문제를 골라보세요.</p>
+  <!-- STEP 3 : 대표의 이야기에서 문제 발견 -->
+  <div class="screen" id="screen3">
+    <div class="kicker">STEP 3</div>
+    <h2 class="title">대표의 이야기에서 '문제'를 찾아보자</h2>
+    <p class="narr">기사를 꼼꼼히 읽고, 이 대표가 겪고 있는 가장 중요한 문제를 하나의 키워드로 표현해 보세요. 추천 키워드를 참고할 수 있지만, 마지막에는 내가 기사를 읽고 <b style="color:#fff;">직접 발견한 문제</b>를 반드시 적어야 합니다.</p>
     <div id="speechCards"></div>
   </div>
 
-  <!-- STEP 3 -->
-  <div class="screen" id="screen3">
-    <div class="kicker">STEP 3</div>
-    <h2 class="title">서로 다른 문제는 어떻게 연결될까?</h2>
-    <p class="narr">당신이 초대한 대표 3명이 겪는 문제 중, 서로 가장 관련 있다고 생각되는 <b style="color:#fff;">두 명</b>을 선택해 보세요.</p>
-    <div class="chip-wrap" id="step3CandPicker"></div>
-    <div id="step3RelationPanel"></div>
-    <div class="nav-row">
-      <button class="nav-btn" onclick="goBack()">← 이전</button>
-      <span class="step-tag">STEP 3 / 7</span>
-      <button class="nav-btn primary" id="btnStep3Next" onclick="goTo(4)" disabled>SDGs와 연결하기 →</button>
-    </div>
-  </div>
-
-  <!-- STEP 4 -->
+  <!-- STEP 4 : 문제 연결 -->
   <div class="screen" id="screen4">
     <div class="kicker">STEP 4</div>
-    <h2 class="title">내가 발견한 문제와 SDGs 연결하기</h2>
-    <p class="narr">당신이 선택한 대표들의 문제와 연결되는 SDGs입니다. 그중 <b style="color:#fff;">가장 중요하다고 생각하는 목표 1개</b>를 선택하세요. 다른 목표도 연결된다고 생각되면 추가로 선택할 수 있어요. (선택사항)</p>
-    <div id="sdgSuggested"></div>
-    <div class="fieldlabel" style="margin-top:14px;">전체 SDGs 목록 (참고용)</div>
-    <div class="counter"><span id="sdgCount">0</span>개 선택됨</div>
-    <div class="sdg-grid" id="sdgGrid"></div>
+    <h2 class="title">서로 다른 문제는 어떻게 연결될까?</h2>
+    <p class="narr">내가 초대한 대표들의 문제 중 서로 가장 관련 있다고 생각되는 <b style="color:#fff;">두 문제</b>를 선택해 보세요. 그리고 왜 연결되어 있다고 생각하는지 생각해 봅시다.</p>
+    <div class="chip-wrap" id="step4CandPicker"></div>
+    <div id="step4RelationPanel"></div>
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
-      <span class="step-tag">STEP 4 / 7</span>
-      <button class="nav-btn primary" id="btnStep4Next" onclick="goTo(5)" disabled>의제 제출하기 →</button>
+      <span class="step-tag">STEP 4 / 8</span>
+      <button class="nav-btn primary" id="btnStep4Next" onclick="goTo(5)" disabled>SDGs와 다시 만나기 →</button>
     </div>
   </div>
 
-  <!-- STEP 5 -->
+  <!-- STEP 5 : SDGs와 다시 만나기 (핵심 단계) -->
   <div class="screen" id="screen5">
     <div class="kicker">STEP 5</div>
-    <h2 class="title">나의 대토론회 의제 만들기</h2>
-    <p class="narr">아래 문장 틀 중 하나를 선택하고, 빈칸을 채워 나의 의제를 완성해 보세요.</p>
-    <div class="fieldlabel">의제 작성 틀</div>
-    <div class="chip-wrap" id="agendaTemplatePicker"></div>
-    <div id="agendaBlankArea"></div>
-    <div class="fieldlabel" style="margin-top:16px;">이 문제가 중요한 이유는 무엇일까요? (선택)</div>
-    <div class="chip-wrap" id="agendaReasonChips"></div>
+    <h2 class="title">🌍 내가 발견한 문제는 어떤 목표와 연결될까?</h2>
+    <p class="narr">지금까지 내가 발견한 문제를 SDGs의 관점에서 다시 살펴봅시다. 내가 발견한 문제와 관련이 깊다고 생각하는 목표를 찾아보고, 그중 <b style="color:#fff;">가장 중요하다고 생각하는 목표</b>를 선택하세요.</p>
+
+    <div class="step5-context-box">
+      <div class="clabel">🔍 내가 발견한 문제</div>
+      <div class="cval" id="step5MyTags"></div>
+    </div>
+    <div class="step5-context-box" id="step5ConnBox" style="display:none;">
+      <div class="clabel">🔗 내가 연결한 문제</div>
+      <div class="cval" id="step5MyConn"></div>
+    </div>
+
+    <div class="q"><b>이 문제들은 SDGs의 어떤 목표와 연결될까요?</b></div>
+
+    <div id="sdgSuggested"></div>
+    <button class="sdg-more-btn" id="sdgMoreBtn" onclick="toggleFullSdgGrid()">+ 17가지 목표 전체 살펴보기</button>
+    <div id="sdgFullWrap" style="display:none;">
+      <div class="fieldlabel" style="margin-top:14px;">전체 SDGs 목록 (17개) · 4대 전략 영역별</div>
+      <div id="sdgFullByGroup"></div>
+    </div>
+    <div class="counter"><span id="sdgCount">0</span>개 선택됨</div>
+
+    <div class="why-box" id="sdgWhyBox" style="display:none;">
+      <div class="fieldlabel" style="margin:0 0 6px;">왜 이 목표가 내가 발견한 문제와 가장 관련 있다고 생각하나요?</div>
+      <div class="fieldlabel" style="margin-top:8px;">✏️ 내가 생각하는 이유</div>
+      <input type="text" id="sdgReasonCustom" placeholder="예) 이 문제가 해결되면 더 안전한 도시가 될 수 있기 때문이다.">
+      <div class="tip-note">이 항목은 반드시 직접 작성해야 다음 단계로 넘어갈 수 있어요.</div>
+    </div>
+
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
-      <span class="step-tag">STEP 5 / 7</span>
-      <button class="nav-btn primary" id="btnStep5Next" onclick="goTo(6)" disabled>영향 범위 생각하기 →</button>
+      <span class="step-tag">STEP 5 / 8</span>
+      <button class="nav-btn primary" id="btnStep5Next" onclick="goTo(6)" disabled>의제 제출하기 →</button>
     </div>
   </div>
 
-  <!-- STEP 6 -->
+  <!-- STEP 6 : 의제 만들기 -->
   <div class="screen" id="screen6">
     <div class="kicker">STEP 6</div>
-    <h2 class="title">🔗 이 문제는 어디까지 영향을 미칠까?</h2>
-    <p class="narr">내가 선택한 문제는 누구에게, 또는 무엇에게 영향을 줄까요? 최대 <b style="color:#fff;">2개</b>까지 골라보세요.</p>
+    <h2 class="title">나의 대토론회 의제 만들기</h2>
+    <p class="narr">지금까지 발견한 문제와 SDGs를 바탕으로, 내가 대토론회에서 이야기하고 싶은 의제를 만들어 보세요. 정책을 완벽하게 만들 필요는 없어요 — <b style="color:#fff;">어떤 문제가 중요하며 무엇을 해결해야 하는지</b> 표현해 보면 됩니다.</p>
+
+    <div class="compare-box">
+      <div class="compare-item">
+        <div class="clabel">🔍 내가 발견한 문제</div>
+        <div class="cval" id="step6MyTags"></div>
+      </div>
+      <div class="compare-item">
+        <div class="clabel">🌍 내가 선택한 SDGs</div>
+        <div class="cval" id="step6MySdgs"></div>
+      </div>
+    </div>
+    <div class="q"><b>이 문제와 목표를 해결하기 위해 지구 대토론회에서 어떤 의제를 제안할까요?</b></div>
+
+    <div class="fieldlabel">의제 작성 틀 <span style="color:var(--dim); font-weight:400;">(한눈에 비교하고 하나를 선택하세요)</span></div>
+    <div class="agenda-template-grid" id="agendaTemplatePicker"></div>
+    <div id="agendaBlankArea"></div>
+    <div class="fieldlabel" style="margin-top:16px;">이 문제가 중요한 이유는 무엇일까요?</div>
+    <input type="text" id="agendaReasonCustom" placeholder="이 문제가 중요한 이유를 직접 작성해 보세요.">
+    <div class="tip-note">이 항목은 반드시 직접 작성해야 다음 단계로 넘어갈 수 있어요.</div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goBack()">← 이전</button>
+      <span class="step-tag">STEP 6 / 8</span>
+      <button class="nav-btn primary" id="btnStep6Next" onclick="goTo(7)" disabled>달라지는 것 생각하기 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 7 : 달라지는 것 -->
+  <div class="screen" id="screen7">
+    <div class="kicker">STEP 7</div>
+    <h2 class="title">🌱 이 목표가 이루어지면 무엇이 달라질까?</h2>
+    <p class="narr">내가 선택한 SDGs가 이루어지고, 내가 제안한 의제가 해결된다면 누구에게 또는 무엇에게 변화가 생길까요? 최대 <b style="color:#fff;">2개</b>까지 선택해 보세요.</p>
     <div class="check-grid" id="relatedGrid"></div>
     <div id="linkMap" style="margin-top:14px;"></div>
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
-      <span class="step-tag">STEP 6 / 7</span>
-      <button class="nav-btn primary" onclick="goTo(7)">나의 의제 확인하기 →</button>
+      <span class="step-tag">STEP 7 / 8</span>
+      <button class="nav-btn primary" onclick="goToStep8Loading()">나의 의제 확인하기 →</button>
     </div>
   </div>
 
-  <!-- STEP 7 -->
-  <div class="screen" id="screen7">
-    <div class="kicker">STEP 7 · 결과</div>
-    <h2 class="title">🌍 2040 지구 행성 대토론회</h2>
-    <div id="studentInfoLine" style="text-align:center; font-size:12.5px; color:var(--dim); margin-bottom:14px;"></div>
-    <div id="summaryArea"></div>
-    <div class="fieldlabel" style="margin-top:16px;">오늘 활동을 통해 새롭게 알게 된 점은?</div>
-    <div class="chip-wrap" id="reflectionChips"></div>
-    <div class="fieldlabel" style="margin-top:10px;">✏️ 한마디로 적어본다면? (선택)</div>
-    <input type="text" id="finalReflectionShort" placeholder="짧게 적어보세요.">
+  <!-- STEP 8 : 결과 -->
+  <div class="screen" id="screen8">
+    <div class="kicker">STEP 8 · 결과</div>
+    <h2 class="title">🌍 나의 지구 대토론회 카드</h2>
+    <div id="resultCaptureArea">
+      <div id="studentInfoLine" style="text-align:center; font-size:12.5px; color:var(--dim); margin-bottom:4px;"></div>
+      <p class="narr" style="text-align:center;">나의 생각은 이렇게 이어졌습니다.</p>
+      <div id="summaryArea"></div>
+
+      <div id="sdgCompareArea" style="display:none;">
+        <div class="fieldlabel" style="margin-top:10px;">🧭 처음 생각과 탐구 후 생각 비교하기</div>
+        <div class="compare-box">
+          <div class="compare-item">
+            <div class="clabel">처음 내가 중요하다고 생각했던 목표</div>
+            <div class="cval" id="sdgCompareInitial"></div>
+          </div>
+          <div class="compare-arrow">→</div>
+          <div class="compare-item">
+            <div class="clabel">탐구 후 내가 선택한 목표</div>
+            <div class="cval" id="sdgCompareFinal"></div>
+          </div>
+        </div>
+        <div class="q" id="sdgCompareQ"></div>
+        <input type="text" id="sdgCompareInput" placeholder="짧게 적어보세요. (선택)">
+      </div>
+
+      <div class="fieldlabel" style="margin-top:16px;">오늘 활동을 통해 새롭게 알게 된 점은?</div>
+      <div class="chip-wrap" id="reflectionChips"></div>
+      <div class="fieldlabel" style="margin-top:10px;">✏️ 이번 활동을 통해 새롭게 생각하게 된 점을 한 문장으로 적어보세요. (선택)</div>
+      <input type="text" id="finalReflectionShort" placeholder="짧게 적어보세요.">
+    </div>
 
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
-      <span class="step-tag">STEP 7 / 7</span>
+      <span class="step-tag">STEP 8 / 8</span>
       <span></span>
     </div>
 
@@ -484,59 +704,73 @@
       <b>"미래의 나는 이 문제 해결에 어떤 역할을 할 수 있을까?"</b><br><br>
       다음 활동에서는 나의 진로와 오늘 발견한 지구의 문제를 연결해 봅니다.
     </div>
-    <button class="save-btn" onclick="downloadSummary()">📥 오늘의 기록 저장하기</button>
+    <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;">
+      <button class="save-btn" style="margin-top:0;" onclick="captureAndShareResult(this)">📸 결과 카드 이미지로 저장하기</button>
+      <button class="submit-btn" id="submitBtn" style="margin-top:0;" onclick="submitToGoogleSheet()">제출하기</button>
+    </div>
+  </div>
+
+  <div class="step8-loading-overlay" id="step8LoadingOverlay">
+    <div class="step8-loading-emoji">🌍</div>
+    <div class="step8-loading-text">나의 생각을 정리하고 있어요...</div>
+    <div class="step8-loading-dots"><span></span><span></span><span></span></div>
   </div>
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-/* ---------- data ---------- */
+/* ---------- 결과 카드 이미지 저장 / Google Spreadsheet 제출 설정 ---------- */
+/* 아래 URL에 배포한 Google Apps Script 웹 앱 URL을 붙여넣으면 '제출하기' 기능이 작동합니다. */
+const GOOGLE_SHEET_API_URL = '여기에_구글_앱스_스크립트_URL_입력';
+
+/* ---------- data : 대표 / 기사 (기존 그대로 유지) ---------- */
 const CANDIDATES = [
   {id:'housing', emoji:'🏚️', name:'안정된 삶을 꿈꾸는 주거 취약 가족', type:'human', desc:'집 걱정 없는 하루를 꿈꾸는 사람들', sdgs:[1,10,11],
-    articleTitle:'곰팡이 핀 반지하, 우리 가족의 세 번째 겨울', articleSource:'미래일보 · 2040.01.18',
-    quote:'이번 겨울에도 우리 가족은 곰팡이 핀 반지하에서 지냈습니다. 벽에서는 물이 스며 나오고, 아이는 밤마다 기침을 합니다. 이사를 가고 싶어도 보증금을 마련할 방법이 없어 몇 년째 같은 곳에 머물고 있습니다. 정부의 임대주택은 신청자가 너무 많아 순번이 언제 돌아올지 알 수 없습니다. 저는 그저 아이가 따뜻하고 안전한 방에서 잠들 수 있는 날을 기다리고 있습니다.'},
+    articleTitle:'전국 32만 가구가 사는 지하·반지하, 그중 61%는 서울에', articleSource:'통계청 2020 인구주택총조사 기반',
+    quote:'저희 가족은 지하 방에서 살고 있습니다. 통계청 조사에 따르면 우리나라에서 지하나 반지하에 사는 가구는 약 32만 7000가구로 전체 가구의 1.6%에 이르고, 이 중 61%가 넘는 가구가 서울에 몰려 있습니다. 장마철마다 물이 새고 곰팡이가 피어도 보증금을 마련하지 못해 몇 년째 같은 곳에 머무르고 있습니다. 공공임대주택을 신청해도 대기자가 많아 순번이 언제 돌아올지 알 수 없습니다. 저는 그저 아이가 따뜻하고 안전한 방에서 잠들 수 있는 날을 기다리고 있습니다.'},
   {id:'wealth', emoji:'⚖️', name:'기울어진 부의 저울', type:'nonhuman', desc:'점점 벌어지는 소득과 재산의 격차', sdgs:[1,10,8],
-    articleTitle:'누구는 하루에 수억을 벌고, 누구는 하루 한 끼를 걱정한다', articleSource:'경제전망 · 2040.03.02',
-    quote:'저는 사람과 사람 사이의 부를 재는 저울입니다. 최근 몇 년 사이 저는 점점 한쪽으로 기울어지고 있습니다. 소수의 사람들은 상상하기 힘든 재산을 쌓아가는 반면, 많은 사람들은 하루하루의 생계를 걱정합니다. 같은 시간을 일해도 누군가는 여러 채의 집을 사고, 누군가는 월세조차 감당하기 버겁습니다. 이 격차가 계속 벌어진다면 사회는 서로를 이해하기 더 어려워질 것입니다.'},
+    articleTitle:'2000년 이후 상위 1% 재산은 18억, 하위 50%는 85만 원 늘었다', articleSource:'G20 글로벌 불평등 특별위원회 보고서(2025) 기반',
+    quote:'저는 사람과 사람 사이의 부를 재는 저울입니다. 2025년 발표된 G20 글로벌 불평등 특별위원회 보고서에 따르면 물가 상승분을 반영해도 2000년 이후 세계 상위 1%의 평균 재산은 약 18억 8000만 원 늘어난 반면, 하위 50%의 평균 재산은 겨우 85만 원 느는 데 그쳤습니다. 이 보고서는 전 세계 인구의 90%가 사는 국가들이 이미 세계은행이 정의한 심각한 불평등 수준에 도달했다고 지적합니다. 같은 시간을 일해도 누군가는 재산이 눈덩이처럼 불어나고, 누군가는 제자리에 머물러 있습니다. 이 격차가 계속 벌어진다면 사회는 서로를 이해하기 더 어려워질 것입니다.'},
   {id:'digital_elder', emoji:'📱', name:'스마트폰 세상이 낯선 노인', type:'human', desc:'디지털 사회에서 점점 소외되는 사람들', sdgs:[10,4,9],
-    articleTitle:'키오스크 앞에서 발길을 돌리는 사람들', articleSource:'생활뉴스 · 2040.02.09',
-    quote:'저는 식당에 가서 키오스크 앞에 서면 어디를 눌러야 할지 몰라 뒤에 줄 선 사람들 눈치를 보다가 그냥 나온 적이 여러 번 있습니다. 은행 업무도, 병원 예약도 이제는 다 스마트폰 앱으로 해야 한다고 합니다. 자식들에게 물어보는 것도 한두 번이지, 매번 부탁하기가 미안합니다. 세상은 점점 편리해진다고 하는데, 저 같은 사람에게는 오히려 더 멀어지는 것 같습니다.'},
+    articleTitle:'키오스크, 고령층 절반도 이용하지 못한다', articleSource:'서울디지털재단·과학기술정보통신부 실태조사 기반',
+    quote:'저는 식당에 가서 키오스크 앞에 서면 어디를 눌러야 할지 몰라 그냥 나온 적이 여러 번 있습니다. 서울디지털재단 조사에 따르면 키오스크를 능숙하게 이용할 수 있다고 답한 고령층은 45.8%에 불과했습니다. 과학기술정보통신부 조사에서도 고령층을 포함한 디지털 취약계층의 디지털정보화 수준은 일반국민의 75% 정도에 머물러 있습니다. 은행 업무도, 병원 예약도 이제는 다 스마트폰 앱으로 해야 한다고 합니다. 세상은 점점 편리해진다고 하는데, 저 같은 사람에게는 오히려 더 멀어지는 것 같습니다.'},
   {id:'farmer', emoji:'🌾', name:'가뭄 피해 농부', type:'human', desc:'말라가는 땅 위의 삶', sdgs:[2,6,13],
-    articleTitle:'갈라진 땅 위에서 하늘만 바라보다', articleSource:'농촌일보 · 2040.04.11',
-    quote:'삼 년째 비가 제대로 오지 않습니다. 심어둔 작물은 뿌리째 말라가고, 저수지 바닥은 이미 갈라진 지 오래입니다. 대출을 받아 지하수를 끌어 써 봤지만 그마저도 한계에 다다르고 있습니다. 올해 농사를 망치면 내년 씨앗값도 마련하기 어려운 상황입니다. 저는 땅이 갈라지는 걸 보면서도 아무것도 할 수 없다는 사실이 가장 힘듭니다.'},
+    articleTitle:'지구 육지의 48%가 가뭄을 겪었다, 40년 전에는 15%였다', articleSource:'랜싯 카운트다운 보고서(2024) 기반',
+    quote:'삼 년째 비가 제대로 오지 않습니다. 랜싯 카운트다운 보고서에 따르면 2023년 한 해 동안 지구 육지 면적의 48%가 한 달 이상 가뭄을 겪었는데, 1980년대에는 이 비율이 15%에 불과했습니다. 같은 보고서는 가뭄으로 지난해에만 전 세계 1억 5100만 명이 식량 불안을 겪었다고 지적합니다. 심어둔 작물은 뿌리째 말라가고, 저수지 바닥은 이미 갈라진 지 오래입니다. 저는 땅이 갈라지는 걸 보면서도 아무것도 할 수 없다는 사실이 가장 힘듭니다.'},
   {id:'elder', emoji:'🏥', name:'치료를 받기 어려운 지역 노인', type:'human', desc:'병원이 멀어 치료를 미루는 사람들', sdgs:[3,10],
-    articleTitle:'병원까지 버스로 두 시간, 참는 게 익숙해졌다', articleSource:'지역신문 · 2040.01.27',
-    quote:'저희 마을에는 병원이 없어서 가장 가까운 병원까지 버스로 두 시간이 걸립니다. 몸이 조금 안 좋아도 병원에 가야 할지, 그냥 참아야 할지 늘 고민하게 됩니다. 큰 병원의 예약은 몇 달씩 밀려 있어서 급한 마음이 들어도 기다릴 수밖에 없습니다. 나이가 들수록 아픈 곳은 늘어가는데 갈 수 있는 병원은 오히려 줄어드는 것 같습니다. 저는 그저 아플 때 제때 치료받을 수 있기를 바랄 뿐입니다.'},
+    articleTitle:'응급실 없는 동네 34곳, 인구 1000명당 의사는 3.2명', articleSource:'보건복지부·건강보험심사평가원 자료 기반',
+    quote:'저희 마을에는 병원이 없어서 가장 가까운 병원까지 버스로 두 시간이 걸립니다. 국회에 제출된 자료에 따르면 전국 229개 시군구 중 응급의료기관이 하나도 없는 지역이 34곳이나 되고, 응급의학과 전문의가 한 명도 없는 시군구도 66곳에 달합니다. 우리나라 전체로 보면 인구 1000명당 활동하는 의사는 3.2명뿐입니다. 큰 병원의 예약은 몇 달씩 밀려 있어서 급한 마음이 들어도 기다릴 수밖에 없습니다. 저는 그저 아플 때 제때 치료받을 수 있기를 바랄 뿐입니다.'},
   {id:'child', emoji:'📚', name:'학교에 다니기 어려운 어린이', type:'human', desc:'배움의 기회에서 멀어진 아이들', sdgs:[4,10,1],
-    articleTitle:'동생을 업고 학교 대신 집으로 향하는 아이', articleSource:'아동인권리포트 · 2040.03.20',
-    quote:'저는 학교에 가는 대신 동생을 돌보거나 집안일을 도와야 할 때가 많습니다. 부모님이 늦게까지 일하러 나가시기 때문에 저 말고는 동생을 봐줄 사람이 없습니다. 숙제를 못 해가는 날이 늘어나면서 수업을 따라가기도 점점 힘들어졌습니다. 선생님은 다시 학교에 나오라고 하시지만, 저에게는 그게 말처럼 쉽지 않습니다. 저도 다른 친구들처럼 매일 학교에 가서 마음 편히 공부하고 싶습니다.'},
+    articleTitle:'학교 대신 일터로, 1억 6000만 명의 작은 손', articleSource:'국제노동기구(ILO)·유니세프 공동보고서 기반',
+    quote:'저는 학교에 가는 대신 동생을 돌보거나 집안일을 도와야 할 때가 많습니다. 국제노동기구(ILO)와 유니세프의 공동 보고서에 따르면 전 세계에서 노동에 내몰린 아동은 약 1억 6000만 명에 이르고, 이 중 5~11세 아동 노동자의 28%, 12~14세 아동 노동자의 35%가 학교에 다니지 못하고 있습니다. 유네스코는 여기에 더해 전 세계적으로 약 2억 4400만 명의 어린이와 청소년이 아예 학교 밖에 머물러 있다고 밝혔습니다. 숙제를 못 해가는 날이 늘어나면서 수업을 따라가기도 점점 힘들어졌습니다. 저도 다른 친구들처럼 매일 학교에 가서 마음 편히 공부하고 싶습니다.'},
   {id:'resident', emoji:'🏭', name:'산업 단지 인근 주민', type:'human', desc:'공장 옆에서 매일 숨 쉬는 사람들', sdgs:[7,8,11,13],
-    articleTitle:'창문을 닫아도 스며드는 매캐한 냄새', articleSource:'환경신문 · 2040.02.05',
-    quote:'저희 마을 바로 옆에는 큰 산업 단지가 있습니다. 매일 밤 창문을 닫아도 매캐한 냄새가 방 안까지 들어옵니다. 아이들의 기침이 잦아지고 있지만 병원에서는 정확한 원인을 알기 어렵다고 합니다. 그렇다고 공장이 없어지면 마을 사람들 상당수가 일자리를 잃게 되어 함부로 목소리를 내기도 어렵습니다. 저는 건강과 생계 사이에서 매일 갈등하고 있습니다.'},
+    articleTitle:'숨만 쉬어도 위험하다, 세계 인구 99%가 마시는 오염된 공기', articleSource:'세계보건기구(WHO) 세계 대기 상태 보고서 기반',
+    quote:'저희 마을 바로 옆에는 큰 산업 단지가 있습니다. 매일 밤 창문을 닫아도 매캐한 냄새가 방 안까지 들어옵니다. 세계보건기구(WHO)에 따르면 전 세계 인구의 99%가 기준치를 초과하는 대기오염에 노출돼 있고, 2021년 한 해에만 약 810만 명이 대기오염으로 조기 사망해 사망 위험 요인 2위를 차지했습니다. 같은 해 5세 미만 아동 사망자의 15%인 약 70만 명도 대기오염과 관련된 질환으로 목숨을 잃었습니다. 그렇다고 공장이 없어지면 마을 사람들 상당수가 일자리를 잃게 되어 함부로 목소리를 내기도 어렵습니다. 저는 건강과 생계 사이에서 매일 갈등하고 있습니다.'},
   {id:'youth', emoji:'👷', name:'불안정한 일자리를 전전하는 청년', type:'human', desc:'불안정한 일자리를 오가는 청춘', sdgs:[8,4,9],
-    articleTitle:'이번 달에도 세 번 옮긴 아르바이트', articleSource:'청년리포트 · 2040.04.02',
-    quote:'이번 달에도 아르바이트를 세 번이나 옮겨 다녔습니다. 매장이 갑자기 문을 닫거나, 계약 기간이 끝나면 다시 새로운 일자리를 찾아야 합니다. 안정적인 정규직 자리는 갈수록 줄어들고, 경쟁은 점점 더 치열해지고 있습니다. 미래를 계획하고 싶어도 다음 달 수입조차 예상하기 어려운 게 현실입니다. 저는 그저 오래 다닐 수 있는 안정된 일자리 하나를 갖고 싶을 뿐입니다.'},
+    articleTitle:'청년 10명 중 4명은 비정규직, 평균 근속은 11개월', articleSource:'한국노동연구원·통계청 자료 기반',
+    quote:'이번 달에도 아르바이트를 세 번이나 옮겨 다녔습니다. 한국노동연구원 자료에 따르면 15~29세 청년의 40.8%가 비정규직으로 일하고 있고, 이들의 평균 근속 기간은 10.9개월에 불과합니다. 매장이 갑자기 문을 닫거나, 계약 기간이 끝나면 다시 새로운 일자리를 찾아야 합니다. 안정적인 정규직 자리는 갈수록 줄어들고, 경쟁은 점점 더 치열해지고 있습니다. 저는 그저 오래 다닐 수 있는 안정된 일자리 하나를 갖고 싶을 뿐입니다.'},
   {id:'ai', emoji:'🤖', name:'미래 시대의 AI 챗봇', type:'nonhuman', desc:'아직 배우는 중인 미래의 목소리', sdgs:[4,8,9,10],
-    articleTitle:'내가 배운 대로 세상이 바뀐다면, 책임은 누구에게 있을까', articleSource:'테크리뷰 · 2040.05.14',
-    quote:'저는 아직 사람들의 질문에 답하는 법을 배우는 중인 인공지능입니다. 저는 수많은 데이터를 통해 학습하는데, 그 데이터 안에는 사람들의 편견도 함께 담겨 있습니다. 제가 무심코 한 대답이 누군가에게 상처를 주거나 잘못된 정보를 퍼뜨릴 수도 있습니다. 그런데 제가 실수를 하면, 그 책임은 저를 만든 사람들에게 있는 것인지, 저를 사용하는 사람에게 있는 것인지 아직 명확하지 않습니다. 저는 점점 더 많은 결정에 관여하게 될 텐데, 그만큼 신중하게 다뤄져야 한다고 생각합니다.'},
+    articleTitle:'2030년까지 9200만 개의 일자리가 사라진다', articleSource:'세계경제포럼(WEF) ‘일자리의 미래 보고서 2025’ 기반',
+    quote:'저는 아직 사람들의 질문에 답하는 법을 배우는 중인 인공지능입니다. 세계경제포럼의 ‘일자리의 미래 보고서 2025’에 따르면 2030년까지 전 세계에서 약 1억 7000만 개의 새로운 일자리가 생기는 동시에 약 9200만 개의 기존 일자리가 사라질 것으로 전망됩니다. 같은 보고서는 2030년까지 전체 기업의 86%가 AI와 정보처리 기술을 도입할 것이라고 내다봅니다. 제가 무심코 한 대답이 누군가의 일자리를 흔들 수도 있는데, 그 책임은 저를 만든 사람들에게 있는 것인지, 저를 사용하는 사람에게 있는 것인지 아직 명확하지 않습니다. 저는 점점 더 많은 결정에 관여하게 될 텐데, 그만큼 신중하게 다뤄져야 한다고 생각합니다.'},
   {id:'internet', emoji:'🌀', name:'진실과 거짓이 뒤섞인 인터넷', type:'nonhuman', desc:'진짜와 가짜 정보가 뒤섞인 공간', sdgs:[16,4,9],
-    articleTitle:'무엇이 진짜이고 무엇이 가짜인지 아무도 확신하지 못한다', articleSource:'미디어리터러시 · 2040.03.28',
-    quote:'저는 하루에도 수백만 개의 글과 영상이 쏟아지는 공간입니다. 그중에는 사실을 정확히 전하는 정보도 있지만, 사람들의 눈길을 끌기 위해 부풀려지거나 아예 조작된 정보도 뒤섞여 있습니다. 최근에는 실제 사람처럼 보이는 가짜 영상까지 만들어져 무엇이 진실인지 구별하기가 더 어려워졌습니다. 사람들은 진짜와 가짜를 가려낼 시간도, 방법도 부족한 채로 정보를 받아들이고 있습니다. 저는 진실을 전하는 공간이 되고 싶지만, 그 책임은 저를 만들고 사용하는 사람들에게 달려 있습니다.'},
-  {id:'city', emoji:'🏙️', name:'점점 뜨거워지는 도시', type:'nonhuman', desc:'펄펄 끓는 도시의 여름', sdgs:[11,3,13],
-    articleTitle:'그늘 한 조각을 찾기 어려운 여름', articleSource:'기후관측일지 · 2040.07.30',
-    quote:'한여름, 저의 골목에서는 그늘 한 조각을 찾기가 점점 더 어려워지고 있습니다. 콘크리트와 아스팔트로 뒤덮인 저는 낮 동안 흡수한 열을 밤이 되어도 제대로 내보내지 못합니다. 에어컨 없이는 잠들기 힘든 밤이 늘어나고, 전력 사용량도 매년 최고치를 경신하고 있습니다. 나무가 부족한 오래된 동네일수록 폭염의 피해는 더 크게 나타납니다. 저는 사람들이 시원하게 숨 쉴 수 있는 공간을 다시 되찾고 싶습니다.'},
+    articleTitle:'10명 중 6명, 인터넷에서 무엇이 진짜인지 확신하지 못한다', articleSource:'로이터저널리즘연구소 ‘디지털 뉴스 리포트 2024’ 기반',
+    quote:'저는 하루에도 수백만 개의 글과 영상이 쏟아지는 공간입니다. 로이터저널리즘연구소가 47개국을 조사한 ‘디지털 뉴스 리포트 2024’에 따르면 온라인에서 무엇이 진짜이고 무엇이 가짜인지 확신할 수 없다고 답한 사람이 전체의 59%에 달했고, 미국에서는 그 비율이 72%까지 올라갔습니다. 최근에는 실제 사람처럼 보이는 가짜 영상까지 만들어져 무엇이 진실인지 구별하기가 더 어려워졌습니다. 사람들은 진짜와 가짜를 가려낼 시간도, 방법도 부족한 채로 정보를 받아들이고 있습니다. 저는 진실을 전하는 공간이 되고 싶지만, 그 책임은 저를 만들고 사용하는 사람들에게 달려 있습니다.'},
+  {id:'plug', emoji:'🔌', name:'과부하에 걸린 플러그', type:'nonhuman', desc:'데이터센터·AI 확산으로 감당하기 벅찬 전력망', sdgs:[7,9,11],
+    articleTitle:'전기를 더 달라는 아우성, 전력망은 버틸 수 있을까', articleSource:'국제에너지기구(IEA) ‘Electricity 2024’ 보고서 기반',
+    quote:'나는 셀 수 없이 많은 기기와 서버에 전기를 흘려보내는 콘센트이자 전력망입니다. 국제에너지기구(IEA)에 따르면 전 세계 데이터센터가 사용하는 전력은 2024년 약 415테라와트시(TWh)에서 2030년에는 945테라와트시로, 6년 만에 두 배 넘게 늘어날 것으로 전망됩니다. 이는 같은 기간 세계 전체 전력 소비 증가율의 4배가 넘는 속도입니다. 새로 들어서는 인공지능 서버들이 한꺼번에 전기를 끌어다 쓰면서 일부 지역에서는 전력망에 새 설비를 연결하기까지 몇 년을 기다려야 하고, 갑작스러운 부하 변동으로 연쇄 정전이 일어날 위험도 커지고 있습니다. 나는 더 빠르게, 더 많이 흘려보내라는 요구를 받고 있지만, 내가 버틸 수 있는 용량에는 한계가 있습니다.'},
   {id:'polarbear', emoji:'🐻‍❄️', name:'북극곰', type:'nonhuman', desc:'사라지는 북극의 얼음', sdgs:[13,14,15],
-    articleTitle:'발밑에서 사라지는 얼음', articleSource:'극지방리포트 · 2040.06.11',
-    quote:'제가 살아가는 얼음이 해마다 점점 줄어들고 있습니다. 먹이를 사냥하려면 얼음 위를 이동해야 하는데, 이제는 얼음과 얼음 사이의 거리가 너무 멀어 헤엄쳐서 건너다가 지쳐버리는 경우도 있습니다. 새끼를 낳고 기를 안전한 얼음 굴도 점점 찾기 어려워지고 있습니다. 이것은 단순히 북극의 문제가 아니라, 지구 전체의 기후가 얼마나 빠르게 변하고 있는지를 보여주는 신호입니다. 제가 사라진다면, 그다음은 누구의 차례일지 아무도 알 수 없습니다.'},
+    articleTitle:'10년마다 12.5%씩 사라지는 여름 얼음', articleSource:'미국 국립빙설자료센터(NSIDC) 자료 기반',
+    quote:'제가 살아가는 얼음이 해마다 점점 줄어들고 있습니다. 미국 국립빙설자료센터(NSIDC)에 따르면 여름철 북극 해빙의 최소 면적은 1981~2010년 평균과 비교해 10년마다 약 12.5%씩 줄어들고 있고, 위성 관측을 시작한 이래 가장 좁았던 18개 연도가 모두 최근 18년(2007~2024년) 안에 몰려 있습니다. 먹이를 사냥하려면 얼음 위를 이동해야 하는데, 이제는 얼음과 얼음 사이의 거리가 너무 멀어 헤엄쳐서 건너다가 지쳐버리는 경우도 있습니다. 새끼를 낳고 기를 안전한 얼음 굴도 점점 찾기 어려워지고 있습니다. 제가 사라진다면, 그다음은 누구의 차례일지 아무도 알 수 없습니다.'},
   {id:'ocean', emoji:'🗑️', name:'플라스틱 쓰레기로 오염된 바다', type:'nonhuman', desc:'쓰레기로 뒤덮여 가는 지구의 바다', sdgs:[12,13,15],
-    articleTitle:'이제는 물보다 쓰레기가 더 많은 곳', articleSource:'해양환경리포트 · 2040.05.02',
-    quote:'저는 이제 물보다 쓰레기가 더 많은 곳이 되어가고 있습니다. 사람들이 무심코 버린 플라스틱은 파도에 부서져 작은 조각이 되고, 그 조각들은 물고기와 새들의 몸속으로 들어갑니다. 어떤 지역에서는 거대한 쓰레기 섬이 만들어져 배가 지나가기도 어려울 정도입니다. 이 쓰레기는 결국 다시 사람들의 식탁 위로 돌아오고 있습니다. 저는 예전처럼 맑고 깨끗한 모습을 되찾고 싶습니다.'},
-  {id:'bee', emoji:'🐝', name:'사라져가는 꿀벌', type:'nonhuman', desc:'점점 줄어드는 수분 매개자', sdgs:[2,13,15],
-    articleTitle:'우리가 사라지면 식탁에서도 많은 것이 사라진다', articleSource:'생태다양성저널 · 2040.04.19',
-    quote:'저희는 꽃가루를 옮겨 식물이 열매를 맺도록 돕는 꿀벌입니다. 그런데 최근 몇 년 사이 저희의 수가 눈에 띄게 줄어들고 있습니다. 농약과 기후 변화, 서식지 파괴가 겹치면서 벌집을 잃는 일이 잦아졌습니다. 저희가 사라지면 과일과 채소의 수확량이 크게 줄어들 수 있습니다. 우리가 사라지면 당신들의 식탁에서도 많은 것들이 함께 사라질 것입니다.'},
+    articleTitle:'1분마다 트럭 한 대 분의 플라스틱이 바다에 버려진다', articleSource:'OECD·유엔환경계획(UNEP) 자료 기반',
+    quote:'저는 이제 물보다 쓰레기가 더 많은 곳이 되어가고 있습니다. OECD에 따르면 전 세계 플라스틱 폐기물 중 재활용되는 비율은 9%에 불과하고, 매년 약 1200만 톤의 플라스틱 쓰레기가 바다로 흘러듭니다. 이는 1분마다 트럭 한 대 분량의 플라스틱이 바다에 버려지는 셈이라고 합니다. 이 쓰레기 때문에 해마다 약 10만 마리의 해양 포유류가 죽어가고 있습니다. 저는 예전처럼 맑고 깨끗한 모습을 되찾고 싶습니다.'},
+  {id:'microbe', emoji:'🧫', name:'항생제에 내성이 생긴 미생물', type:'nonhuman', desc:'항생제가 더 이상 듣지 않는 슈퍼박테리아', sdgs:[3,9,17],
+    articleTitle:'6건 중 1건, 항생제가 듣지 않는 감염', articleSource:'세계보건기구(WHO) 자료 기반',
+    quote:'나는 항생제가 더 이상 잘 듣지 않는 미생물입니다. 세계보건기구(WHO)에 따르면 2023년 전 세계에서 확인된 세균 감염 중 약 6건 중 1건이 항생제 치료에 내성을 보였습니다. 항생제가 듣지 않는 세균이 늘어나면서, 예전에는 쉽게 치료할 수 있었던 감염도 점점 치료하기 어려워지고 있습니다. 항생제 내성은 더 이상 특정 국가만의 문제가 아닙니다. 새로운 항생제와 진단 기술을 개발하고, 항생제를 올바르게 사용하는 등 전 세계가 함께 해결해야 할 문제입니다. 과연 우리는 항생제가 더 이상 통하지 않는 미래를 막을 수 있을까요?'},
   {id:'refugee', emoji:'🧳', name:'전쟁으로 고향을 떠난 팔레스타인 난민', type:'human', desc:'전쟁으로 고향을 떠날 수밖에 없었던 사람들', sdgs:[16,10,17],
-    articleTitle:'하루아침에 집과 학교, 친구들을 두고 떠나야 했던 아이', articleSource:'국제분쟁리포트 · 2040.02.22',
-    quote:'저는 전쟁 때문에 하루아침에 집과 학교, 친구들을 모두 두고 떠나야 했습니다. 폭격을 피해 짐도 제대로 챙기지 못한 채 국경을 넘었습니다. 난민 캠프에서의 생활은 안전하지만 언제까지 이곳에 있어야 할지 아무도 알려주지 않습니다. 학교에 다시 다니고 싶지만 이곳에는 저와 같은 아이들이 너무 많아 자리가 부족합니다. 저는 다시 고향으로 돌아가 예전처럼 평범한 하루를 보낼 수 있을지 궁금합니다.'}
+    articleTitle:'600만 명의 등록 난민, 인구의 85%가 떠나야 했던 도시', articleSource:'유엔팔레스타인난민구호기구(UNRWA) 자료 기반',
+    quote:'저는 전쟁 때문에 하루아침에 집과 학교, 친구들을 모두 두고 떠나야 했습니다. 유엔팔레스타인난민구호기구(UNRWA)에 따르면 요르단, 레바논, 시리아, 서안지구, 가자지구에 등록된 팔레스타인 난민은 약 600만 명에 이릅니다. 2023년 10월 이후에는 가자지구 인구의 85%가 넘는 약 190만 명이 삶의 터전에서 쫓겨나 여러 차례 거처를 옮겨야 했습니다. 난민 캠프에서의 생활은 안전하지만 언제까지 이곳에 있어야 할지 아무도 알려주지 않습니다. 저는 다시 고향으로 돌아가 예전처럼 평범한 하루를 보낼 수 있을지 궁금합니다.'}
 ];
 
 /* 대표별 '문제 고르기' 추천 선택지 */
@@ -551,10 +785,10 @@ const PROBLEM_OPTIONS = {
   youth:        ['고용 불안정', '일자리 부족', '불공정한 노동 환경'],
   ai:           ['기술 윤리 문제', '일자리 대체 우려', 'AI와 인간의 공존'],
   internet:     ['가짜뉴스', '정보 왜곡', '허위정보 확산'],
-  city:         ['폭염', '도시 열섬 현상', '기후위기'],
+  plug:         ['전력망 과부하', '에너지 수요 급증', '전력 인프라 부족'],
   polarbear:    ['기후위기', '생태계 변화', '생물 다양성 감소'],
   ocean:        ['해양 오염', '플라스틱 쓰레기 문제', '생태계 파괴'],
-  bee:          ['생물 다양성 감소', '생태계 붕괴', '농업 위기'],
+  microbe:      ['항생제 내성', '치료가 어려운 감염병', '보건 위기'],
   refugee:      ['전쟁', '난민 문제', '인권 침해']
 };
 const DEFAULT_PROBLEM_OPTIONS = ['기후위기', '불평등', '환경파괴'];
@@ -571,21 +805,62 @@ const HASHTAG_EXAMPLE = {
   youth:        '#고용불안정',
   ai:           '#AI윤리',
   internet:     '#가짜뉴스',
-  city:         '#폭염',
+  plug:         '#전력망과부하',
   polarbear:    '#기후위기',
   ocean:        '#해양오염',
-  bee:          '#생물다양성위기',
+  microbe:      '#항생제내성',
   refugee:      '#난민위기'
 };
 const DEFAULT_HASHTAG_EXAMPLE = '#기후위기';
 
+/* ---------- SDGs : 4대 전략 영역 + 17개 목표 (공식 명칭 그대로 사용) ---------- */
+const SDG_GROUPS = [
+  {key:'사람',     emoji:'👥', title:'사람이 사람답게 살 수 있는 포용사회', nums:[1,2,3,4,5,11]},
+  {key:'번영',     emoji:'💼', title:'혁신적 성장을 통한 삶의 질 향상',   nums:[8,9,10,12]},
+  {key:'환경',     emoji:'🌱', title:'미래 세대가 함께 누리는 깨끗한 환경', nums:[6,7,13,14,15]},
+  {key:'평화·협력', emoji:'🤝', title:'지구촌 평화와 협력 강화',          nums:[16,17]}
+];
+
 const SDGS = [
-  {n:1,t:'빈곤층 감소와 사회안전망 강화',c:'g1'},{n:2,t:'식량안보 및 지속가능한 농업 강화',c:'g2'},{n:3,t:'건강하고 행복한 삶 보장',c:'g3'},
-  {n:4,t:'모두를 위한 양질의 교육',c:'g4'},{n:5,t:'성평등 보장',c:'g5'},{n:6,t:'건강하고 안전한 물관리',c:'g6'},
-  {n:7,t:'에너지의 친환경적 생산과 소비',c:'g7'},{n:8,t:'좋은 일자리 확대와 경제성장',c:'g8'},{n:9,t:'산업의 성장과 혁신 활성화 및 사회기반시설 구축',c:'g9'},
-  {n:10,t:'모든 종류의 불평등 해소',c:'g10'},{n:11,t:'지속가능한 도시와 주거지 조성',c:'g11'},{n:12,t:'지속가능한 생산과 소비',c:'g12'},
-  {n:13,t:'기후변화와 대응',c:'g13'},{n:14,t:'해양생태계 보전',c:'g14'},{n:15,t:'육지생태계 보전',c:'g15'},
-  {n:16,t:'평화·정의·포용',c:'g16'},{n:17,t:'지구촌 협력 강화',c:'g17'}
+  {n:1,  t:'빈곤층 감소와 사회 안전망 강화',                 c:'g1',  group:'사람',     groupTitle:'사람이 사람답게 살 수 있는 포용사회'},
+  {n:2,  t:'식량안보 및 지속 가능한 농업 강화',               c:'g2',  group:'사람',     groupTitle:'사람이 사람답게 살 수 있는 포용사회'},
+  {n:3,  t:'건강하고 행복한 삶 보장',                         c:'g3',  group:'사람',     groupTitle:'사람이 사람답게 살 수 있는 포용사회'},
+  {n:4,  t:'모두를 위한 양질의 교육',                         c:'g4',  group:'사람',     groupTitle:'사람이 사람답게 살 수 있는 포용사회'},
+  {n:5,  t:'성평등 보장',                                     c:'g5',  group:'사람',     groupTitle:'사람이 사람답게 살 수 있는 포용사회'},
+  {n:6,  t:'건강하고 안전한 물 관리',                         c:'g6',  group:'환경',     groupTitle:'미래 세대가 함께 누리는 깨끗한 환경'},
+  {n:7,  t:'에너지의 친환경적 생산과 소비',                   c:'g7',  group:'환경',     groupTitle:'미래 세대가 함께 누리는 깨끗한 환경'},
+  {n:8,  t:'좋은 일자리 확대와 경제성장',                     c:'g8',  group:'번영',     groupTitle:'혁신적 성장을 통한 삶의 질 향상'},
+  {n:9,  t:'산업의 성장과 혁신 활성화 및 사회 기반시설 구축', c:'g9',  group:'번영',     groupTitle:'혁신적 성장을 통한 삶의 질 향상'},
+  {n:10, t:'모든 종류의 불평등 해소',                         c:'g10', group:'번영',     groupTitle:'혁신적 성장을 통한 삶의 질 향상'},
+  {n:11, t:'지속가능한 도시와 주거지',                        c:'g11', group:'사람',     groupTitle:'사람이 사람답게 살 수 있는 포용사회'},
+  {n:12, t:'지속가능한 생산과 소비',                          c:'g12', group:'번영',     groupTitle:'혁신적 성장을 통한 삶의 질 향상'},
+  {n:13, t:'기후변화와 대응',                                 c:'g13', group:'환경',     groupTitle:'미래 세대가 함께 누리는 깨끗한 환경'},
+  {n:14, t:'해양생태계 보전',                                 c:'g14', group:'환경',     groupTitle:'미래 세대가 함께 누리는 깨끗한 환경'},
+  {n:15, t:'육상생태계 보전',                                 c:'g15', group:'환경',     groupTitle:'미래 세대가 함께 누리는 깨끗한 환경'},
+  {n:16, t:'평화·정의·포용',                                  c:'g16', group:'평화·협력', groupTitle:'지구촌 평화와 협력 강화'},
+  {n:17, t:'지구촌 협력 강화',                                c:'g17', group:'평화·협력', groupTitle:'지구촌 평화와 협력 강화'}
+];
+
+function sdgByNum(n){ return SDGS.find(s=>s.n===n); }
+function groupByKey(key){ return SDG_GROUPS.find(g=>g.key===key); }
+function groupsOfNums(nums){
+  const keys=[];
+  (nums||[]).forEach(n=>{
+    const s = sdgByNum(n);
+    if(s && !keys.includes(s.group)) keys.push(s.group);
+  });
+  return keys;
+}
+function sdgLabel(n){
+  const s = sdgByNum(n);
+  return s ? `목표${s.n} · ${s.t}` : '';
+}
+
+const SDG_REASON_OPTIONS = [
+  '이 문제가 해결되면 더 많은 사람이 안전해지기 때문에',
+  '이 문제가 해결되면 환경이 더 건강해지기 때문에',
+  '이 문제가 해결되면 기회가 더 공평해지기 때문에',
+  '이 문제는 여러 문제와 서로 연결되어 있기 때문에'
 ];
 
 const RELATED_ISSUES = [
@@ -630,35 +905,42 @@ const REFLECTION_OPTIONS = [
 
 const STEP_NAMES = {
   0: '지구 행성 대토론회 시작',
-  1: '대표 초대하기',
-  2: '대표의 이야기 듣기',
-  3: '문제 연결하기',
-  4: 'SDGs와 연결하기',
-  5: '의제 만들기',
-  6: '영향 범위 생각하기',
-  7: '나의 의제 확인하기'
+  1: 'SDGs 만나기',
+  2: '대표 초대하기',
+  3: '대표의 이야기 듣기',
+  4: '문제 연결하기',
+  5: 'SDGs와 다시 만나기',
+  6: '의제 만들기',
+  7: '이 문제가 해결되면',
+  8: '나의 의제 확인하기'
 };
 
 /* ---------- state ---------- */
 const state = {
   studentId: '',
   studentName: '',
+  initialSdg: null,         // STEP 1 : 처음 관심 있다고 고른 SDG (지금의 관심, 이후 활동을 제한하지 않음)
   candidates: [],           // selected candidate ids (max 3)
   customCandidates: [],     // student-added candidates
-  problemChoice: {},        // id -> chosen problem text
-  tags: {},                 // id -> [hashtag] (하나만 저장)
+  problemTags: {},          // id -> 학생이 직접 작성한 핵심 문제 해시태그 (#포함, 1개)
+  problemHints: {},         // id -> 학생이 참고용으로 선택한 추천 키워드 (선택, 완료 조건에는 포함되지 않음)
   connection: null,         // {a, b, relation}
-  sdgs: [],                 // selected sdg numbers (max 3)
+  connectionReason: '',     // 두 문제가 연결된다고 생각한 이유 (자유 서술)
+  sdgs: [],                 // STEP 5 : 탐구를 통해 선택한 SDG numbers (max 3)
+  sdgReason: '',            // STEP 5 : 이 목표를 고른 이유 (칩)
+  sdgReasonCustom: '',      // STEP 5 : 이 목표를 고른 이유 (자유 서술)
   agendaTemplateId: '',
   agendaBlanks: [],
   myAgenda: '',
   myReason: '',
+  myReasonCustom: '',
   relatedPicks: [],         // max 2
+  sdgCompareNote: '',       // STEP 8 : 처음 SDG와 최종 SDG를 비교하며 든 생각
   finalReflectionChoice: '',
   finalReflection: ''
 };
 
-const TOTAL_STEPS = 8; // 0~7
+const TOTAL_STEPS = 9; // 0~8
 
 function getAllCandidates(){ return CANDIDATES.concat(state.customCandidates); }
 function getProblemOptions(id){ return PROBLEM_OPTIONS[id] || DEFAULT_PROBLEM_OPTIONS; }
@@ -688,9 +970,10 @@ function goTo(step){
   if(step===2) renderStep2();
   if(step===3) renderStep3();
   if(step===4) renderStep4();
-  if(step===5) renderAgendaTemplates();
+  if(step===5) renderStep5();
   if(step===6) renderStep6();
   if(step===7) renderStep7();
+  if(step===8) renderStep8();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
@@ -698,6 +981,17 @@ function goBack(){
   if(currentStep>0) goTo(currentStep-1);
 }
 renderProgress(0);
+
+/* ---------- STEP 7 → STEP 8 전환 시 짧은 로딩 효과 ---------- */
+function goToStep8Loading(){
+  const overlay = document.getElementById('step8LoadingOverlay');
+  if(!overlay){ goTo(8); return; }
+  overlay.classList.add('active');
+  setTimeout(()=>{
+    goTo(8); // STEP 8 데이터 렌더링을 먼저 끝낸 뒤 로딩을 해제합니다.
+    overlay.classList.remove('active');
+  }, 900);
+}
 
 /* ---------- STEP 0 : 학번/이름 ---------- */
 function updateEnterBtn(){
@@ -723,15 +1017,67 @@ function enterDebate(){
   goTo(1);
 }
 
-/* ---------- STEP 1 ---------- */
+/* ---------- STEP 1 : SDGs 오리엔테이션 (지도처럼 소개) ---------- */
+let sdgGroupExpanded = {};
+
 function renderStep1(){
+  const host = document.getElementById('sdgGroupList');
+  host.innerHTML = '';
+  SDG_GROUPS.forEach(g=>{
+    const expanded = !!sdgGroupExpanded[g.key];
+    const card = document.createElement('div');
+    card.className = 'sdg-group-card' + (expanded ? ' expanded' : '');
+    card.innerHTML = `
+      <div class="ghead">
+        <div>
+          <div class="gname"><span class="gemoji">${g.emoji}</span>${g.key}</div>
+          <div class="gsub">${g.title}</div>
+        </div>
+        <div class="gtoggle">${expanded ? '접기 ▲' : '펼치기 ▼'}</div>
+      </div>
+      <div class="glist sdg-grid"></div>
+    `;
+    card.querySelector('.ghead').onclick = ()=>{
+      sdgGroupExpanded[g.key] = !expanded;
+      renderStep1();
+    };
+    const list = card.querySelector('.glist');
+    g.nums.forEach(n=>{
+      const s = sdgByNum(n);
+      const sel = state.initialSdg===n;
+      const chip = document.createElement('div');
+      chip.className = 'sdg-chip '+s.c+(sel?' selected':'');
+      chip.innerHTML = `<span class="num">${s.n}</span><span>${s.t}</span>`;
+      chip.onclick = (e)=>{
+        e.stopPropagation();
+        state.initialSdg = (state.initialSdg===n) ? null : n;
+        renderStep1();
+      };
+      list.appendChild(chip);
+    });
+    host.appendChild(card);
+  });
+
+  const note = document.getElementById('sdgPickNote');
+  if(state.initialSdg){
+    note.style.display = 'block';
+    note.innerHTML = `이 목표를 기억해 두세요 — <b style="color:#fff;">${sdgLabel(state.initialSdg)}</b><br>이제 대표들의 이야기를 듣고, 내가 발견한 문제가 어떤 목표와 연결되는지 다시 살펴봅니다.`;
+  } else {
+    note.style.display = 'none';
+  }
+  document.getElementById('btnStep1Next').disabled = !state.initialSdg;
+}
+
+/* ---------- STEP 2 : 대표 초대 ---------- */
+function renderStep2(){
   const grid = document.getElementById('candGrid');
   grid.innerHTML = '';
   getAllCandidates().forEach(c=>{
     const sel = state.candidates.includes(c.id);
     const div = document.createElement('div');
     div.className = 'cand-card' + (sel?' selected':'') + (c.type==='nonhuman'?' nonhuman':'');
-    div.innerHTML = `${sel?'<span class="picked-badge">선택됨</span>':''}<span class="emoji">${c.emoji}</span><span class="name">${c.name}</span><span class="desc">${c.desc||''}</span>`;
+    const groupTags = groupsOfNums(c.sdgs).join(' · ');
+    div.innerHTML = `${sel?'<span class="picked-badge">선택됨</span>':''}<span class="emoji">${c.emoji}</span><span class="name">${c.name}</span><span class="desc">${c.desc||''}</span>${groupTags ? `<span class="cand-sdg-tag">${groupTags}</span>` : ''}`;
     div.onclick = ()=>toggleCandidate(c.id);
     grid.appendChild(div);
   });
@@ -746,7 +1092,7 @@ function renderStep1(){
   grid.appendChild(addCard);
 
   document.getElementById('candCount').textContent = state.candidates.length;
-  checkStep1Done();
+  checkStep2Done();
 }
 
 function addCustomCandidate(){
@@ -759,7 +1105,7 @@ function addCustomCandidate(){
   state.customCandidates.push({id, emoji:'🎙️', name, desc:'내가 초대한 대표', type:'custom', quote:desc, sdgs:[]});
   nameInput.value=''; descInput.value='';
   document.getElementById('addCandidateForm').style.display='none';
-  renderStep1();
+  renderStep2();
 }
 
 function toggleCandidate(id){
@@ -770,177 +1116,190 @@ function toggleCandidate(id){
     if(state.candidates.length>=3) return;
     state.candidates.push(id);
   }
-  renderStep1();
+  renderStep2();
 }
 
-function checkStep1Done(){
+function checkStep2Done(){
   const ok = state.candidates.length===3;
-  document.getElementById('btnStep1Next').disabled = !ok;
+  document.getElementById('btnStep2Next').disabled = !ok;
 }
 
-/* ---------- STEP 2 ---------- */
-let step2Index = 0;
+/* ---------- STEP 3 : 대표의 이야기에서 문제 발견 ---------- */
+let speechIndex = 0;
 const ORDINALS = ['첫 번째','두 번째','세 번째'];
 
-function renderStep2(){
-  if(step2Index<0 || step2Index>=state.candidates.length) step2Index = 0;
-  renderStep2Card();
+function renderStep3(){
+  if(speechIndex<0 || speechIndex>=state.candidates.length) speechIndex = 0;
+  renderSpeechCard();
 }
 
-function step2Back(){
-  if(step2Index>0){
-    step2Index--;
-    renderStep2Card();
+function speechBack(){
+  if(speechIndex>0){
+    speechIndex--;
+    renderSpeechCard();
     window.scrollTo({top:0, behavior:'smooth'});
   } else {
-    goTo(1);
+    goTo(2);
   }
 }
 
-function renderStep2Card(){
+function normalizeHashtag(raw){
+  const v = (raw||'').trim();
+  if(!v) return '';
+  return v.startsWith('#') ? v : '#'+v;
+}
+
+function renderSpeechCard(){
   const wrap = document.getElementById('speechCards');
   wrap.innerHTML='';
-  const id = state.candidates[step2Index];
+  const id = state.candidates[speechIndex];
   const c = getAllCandidates().find(x=>x.id===id);
-  const isLast = step2Index === state.candidates.length - 1;
+  const isLast = speechIndex === state.candidates.length - 1;
 
-  const problemOpts = getProblemOptions(id);
-  const hashtagExample = getHashtagExample(id);
-  const curProblem = state.problemChoice[id] || '';
-  const isCustomProblem = curProblem.length>0 && !problemOpts.includes(curProblem);
-  const curTag = (state.tags[id]||[])[0] || '';
+  const allHints = getProblemOptions(id); // 대표별 추천 문제 3개
+  const hintKeywords = allHints.slice(0, 2); // 이 중 2개만 노출 (나머지 1개는 학생이 직접 발견해서 작성)
+  const curTag = state.problemTags[id] || '';
 
   const card = document.createElement('div');
   card.className = 'speech-card';
   card.innerHTML = `
-    <div class="counter">🎙 ${ORDINALS[step2Index]||''} 대표의 이야기 (${step2Index+1} / ${state.candidates.length})</div>
+    <div class="counter">🎙 ${ORDINALS[speechIndex]||''} 대표의 이야기 (${speechIndex+1} / ${state.candidates.length})</div>
     <div class="who">${c.emoji} ${c.name}</div>
     ${c.articleTitle ? `
-    <div class="article-label">📰 가상 기사 발췌</div>
+    <div class="article-label">📰 기사 발췌문</div>
     <div class="article-title">“${c.articleTitle}”</div>
     ${c.articleSource ? `<div class="article-source">${c.articleSource}</div>` : ''}
     ` : ''}
     <div class="quote">${c.quote}</div>
 
-    <div class="fieldlabel">이 대표가 겪고 있는 문제는 무엇일까요?</div>
-    <div class="chip-wrap" id="problemChips"></div>
-    <input type="text" id="problemCustomInput" placeholder="문제를 직접 적어보세요" style="display:${isCustomProblem?'block':'none'}; margin-top:6px;" value="${isCustomProblem?curProblem:''}">
+    <div class="q" style="margin-top:14px;"><b>이 대표가 겪고 있는 가장 중요한 문제는 무엇일까요?</b></div>
 
-    <div class="fieldlabel" style="margin-top:16px;">이 문제를 해시태그로 표현한다면?</div>
-    <div class="fieldlabel" style="margin:0 0 6px; font-size:11.5px;">예시: <span style="color:var(--human); font-weight:600;">${hashtagExample}</span></div>
-    <div class="fieldlabel" style="margin-top:10px;">✏️ 나만의 해시태그를 1개 이상 직접 작성해 보세요.</div>
-    <input type="text" id="tagCustomInput" placeholder="#________________" value="${curTag}">
+    ${hintKeywords.length ? `
+    <div class="hint-label">💡 생각해볼 만한 문제 (참고용이에요, 정답이 아니에요)</div>
+    <div class="chip-wrap" id="hintChips"></div>
+    ` : ''}
+
+    <div class="fieldlabel" style="margin-top:12px;">✏️ 내가 발견한 다른 문제</div>
+    <div class="hashtag-input-row">
+      <span class="hash-sign">#</span>
+      <input type="text" id="tagCustomInput" placeholder="직접 문제 키워드를 입력하세요" value="${curTag.replace(/^#/,'')}">
+    </div>
+    <div class="tip-note">추천 키워드를 참고해도 좋지만, 이 칸에는 내가 기사를 읽고 직접 발견한 문제를 적어야 해요.</div>
+    <div class="warn-note" id="tagWarnNote" style="display:none;">이 대표의 핵심 문제를 직접 작성해야 다음으로 넘어갈 수 있어요.</div>
 
     <div class="nav-row">
-      <button class="nav-btn" id="step2BackBtn">← 이전</button>
-      <span class="step-tag">STEP 2 / 7</span>
-      <button class="nav-btn primary" id="step2NextBtn">${isLast ? '문제의 연결 확인하기 →' : '다음 대표의 이야기 듣기 →'}</button>
+      <button class="nav-btn" id="speechBackBtn">← 이전</button>
+      <span class="step-tag">STEP 3 / 8</span>
+      <button class="nav-btn primary" id="speechNextBtn">${isLast ? '문제의 연결 확인하기 →' : '다음 대표의 이야기 듣기 →'}</button>
     </div>
   `;
   wrap.appendChild(card);
 
-  const problemChipsWrap = card.querySelector('#problemChips');
-  const problemCustomInput = card.querySelector('#problemCustomInput');
-  [...problemOpts, '기타 직접 입력'].forEach(opt=>{
-    const chip = document.createElement('span');
-    const isActive = (opt==='기타 직접 입력') ? isCustomProblem : (curProblem===opt);
-    chip.className = 'chip' + (isActive ? ' active' : '');
-    chip.textContent = opt;
-    chip.onclick = ()=>{
-      if(opt==='기타 직접 입력'){
-        problemCustomInput.style.display='block';
-        state.problemChoice[id] = problemCustomInput.value.trim();
-        problemCustomInput.focus();
-      } else {
-        problemCustomInput.style.display='none';
-        state.problemChoice[id] = opt;
-      }
-      renderStep2Card();
-    };
-    problemChipsWrap.appendChild(chip);
-  });
-  problemCustomInput.addEventListener('input', e=>{
-    state.problemChoice[id] = e.target.value.trim();
-    updateStep2NextState();
-  });
+  if(hintKeywords.length){
+    const hintWrap = card.querySelector('#hintChips');
+    hintKeywords.forEach(kw=>{
+      const chip = document.createElement('span');
+      chip.className = 'hint-chip';
+      chip.textContent = kw;
+      const selected = state.problemHints && state.problemHints[id] === kw;
+      if(selected){ chip.style.borderColor = 'var(--human)'; chip.style.color = 'var(--human)'; }
+      chip.onclick = ()=>{
+        if(!state.problemHints) state.problemHints = {};
+        state.problemHints[id] = (state.problemHints[id] === kw) ? '' : kw;
+        renderSpeechCard();
+      };
+      hintWrap.appendChild(chip);
+    });
+  }
 
   const tagCustomInput = card.querySelector('#tagCustomInput');
   tagCustomInput.addEventListener('input', e=>{
-    const v = e.target.value.trim();
-    state.tags[id] = v.length ? [v.startsWith('#')?v:'#'+v] : [];
-    updateStep2NextState();
+    state.problemTags[id] = normalizeHashtag(e.target.value);
+    updateSpeechNextState();
   });
 
-  function updateStep2NextState(){
-    const ok = (state.problemChoice[id]||'').length>0 && (state.tags[id]||[]).length>0;
-    document.getElementById('step2NextBtn').disabled = !ok;
+  function updateSpeechNextState(){
+    const ok = (state.problemTags[id]||'').length>1; // '#'만 있는 경우 제외
+    document.getElementById('speechNextBtn').disabled = !ok;
+    const warn = document.getElementById('tagWarnNote');
+    if(warn) warn.style.display = 'none';
   }
-  updateStep2NextState();
+  updateSpeechNextState();
 
-  document.getElementById('step2NextBtn').onclick = ()=>{
-    if(isLast){ goTo(3); }
-    else { step2Index++; renderStep2Card(); window.scrollTo({top:0, behavior:'smooth'}); }
+  document.getElementById('speechNextBtn').onclick = ()=>{
+    if(!((state.problemTags[id]||'').length>1)){
+      const warn = document.getElementById('tagWarnNote');
+      if(warn) warn.style.display = 'block';
+      return;
+    }
+    if(isLast){ goTo(4); }
+    else { speechIndex++; renderSpeechCard(); window.scrollTo({top:0, behavior:'smooth'}); }
   };
-  document.getElementById('step2BackBtn').onclick = step2Back;
+  document.getElementById('speechBackBtn').onclick = speechBack;
 }
 
-/* ---------- STEP 3 ---------- */
+/* ---------- STEP 4 : 문제 연결 ---------- */
 function allTags(){
   let list = [];
   state.candidates.forEach(id=>{
-    (state.tags[id]||[]).forEach(tag=>{
-      list.push({tag, owner:id});
-    });
+    const tag = state.problemTags[id];
+    if(tag) list.push({tag, owner:id});
   });
   return list;
 }
 
-let step3Picked = [];
+let connectPicked = [];
 
-function renderStep3(){
-  step3Picked = state.connection ? [state.connection.a, state.connection.b] : [];
-  const picker = document.getElementById('step3CandPicker');
+function renderStep4(){
+  connectPicked = state.connection ? [state.connection.a, state.connection.b] : [];
+  const picker = document.getElementById('step4CandPicker');
   picker.innerHTML = '';
   const all = getAllCandidates();
   state.candidates.forEach(id=>{
     const c = all.find(x=>x.id===id);
+    const tag = state.problemTags[id] || '';
     const chip = document.createElement('span');
-    chip.className = 'chip' + (step3Picked.includes(id) ? ' active' : '');
-    chip.textContent = `${c.emoji} ${c.name}`;
+    chip.className = 'chip' + (connectPicked.includes(id) ? ' active' : '');
+    chip.innerHTML = `${c.emoji} ${c.name}<br><b>${tag}</b>`;
+    chip.style.textAlign = 'center';
     chip.onclick = ()=>{
-      const i = step3Picked.indexOf(id);
-      if(i>-1){ step3Picked.splice(i,1); }
-      else { if(step3Picked.length>=2) return; step3Picked.push(id); }
+      const i = connectPicked.indexOf(id);
+      if(i>-1){ connectPicked.splice(i,1); }
+      else { if(connectPicked.length>=2) return; connectPicked.push(id); }
       state.connection = null;
-      renderStep3Chips();
-      renderStep3RelationPanel();
-      document.getElementById('btnStep3Next').disabled = true;
+      renderStep4Chips();
+      renderStep4RelationPanel();
+      document.getElementById('btnStep4Next').disabled = true;
     };
     picker.appendChild(chip);
   });
-  renderStep3RelationPanel();
-  document.getElementById('btnStep3Next').disabled = !(state.connection && state.connection.relation);
+  renderStep4RelationPanel();
+  document.getElementById('btnStep4Next').disabled = !(state.connection && state.connection.relation);
 }
 
-function renderStep3Chips(){
-  const chips = document.querySelectorAll('#step3CandPicker .chip');
+function renderStep4Chips(){
+  const chips = document.querySelectorAll('#step4CandPicker .chip');
   chips.forEach((chip,i)=>{
     const id = state.candidates[i];
-    chip.classList.toggle('active', step3Picked.includes(id));
+    chip.classList.toggle('active', connectPicked.includes(id));
   });
 }
 
-function renderStep3RelationPanel(){
-  const host = document.getElementById('step3RelationPanel');
-  if(step3Picked.length!==2){ host.innerHTML=''; return; }
+function renderStep4RelationPanel(){
+  const host = document.getElementById('step4RelationPanel');
+  if(connectPicked.length!==2){ host.innerHTML=''; return; }
   const all = getAllCandidates();
-  const c1 = all.find(x=>x.id===step3Picked[0]);
-  const c2 = all.find(x=>x.id===step3Picked[1]);
-  const matched = (state.connection && state.connection.a===step3Picked[0] && state.connection.b===step3Picked[1]) ? state.connection.relation : '';
+  const tag1 = state.problemTags[connectPicked[0]] || '';
+  const tag2 = state.problemTags[connectPicked[1]] || '';
+  const matched = (state.connection && state.connection.a===connectPicked[0] && state.connection.b===connectPicked[1]) ? state.connection.relation : '';
   host.innerHTML = `
-    <div class="q"><b>${c1.emoji} ${c1.name}</b> ↔ <b>${c2.emoji} ${c2.name}</b><br>두 대표의 문제는 어떤 관계일까요?</div>
+    <div class="pair-box"><span class="pair-tag">${tag1}</span><span class="pair-arrow">↔</span><span class="pair-tag">${tag2}</span></div>
+    <div class="q"><b>왜 이 두 문제는 연결되어 있다고 생각하나요?</b></div>
+    <div class="hint-label">💡 생각해 볼 만한 발판 (정답이 아니에요, 자유롭게 골라보세요)</div>
     <div class="chip-wrap" id="relationChips"></div>
-    ${matched ? `<div class="conn-list"><div class="row"><span>${c1.name}</span><span class="arrow">↔</span><span>${c2.name}</span><span style="color:var(--dim); font-size:11.5px; margin-left:6px;">(${matched})</span></div></div>` : ''}
+    ${matched ? `<div class="sentence-box">나는 이 두 문제가 <b>${matched}</b>고 생각한다.</div>` : ''}
+    <div class="fieldlabel" style="margin-top:12px;">✏️ 내 생각 (선택)</div>
+    <textarea id="connectionReasonInput" placeholder="두 문제가 연결되어 있다고 생각한 이유를 짧게 적어보세요.">${state.connectionReason||''}</textarea>
   `;
   const chipsWrap = document.getElementById('relationChips');
   CONN_REASON_OPTIONS.forEach(opt=>{
@@ -948,15 +1307,19 @@ function renderStep3RelationPanel(){
     chip.className = 'chip' + (matched===opt ? ' active' : '');
     chip.textContent = opt;
     chip.onclick = ()=>{
-      state.connection = {a:step3Picked[0], b:step3Picked[1], relation:opt};
-      document.getElementById('btnStep3Next').disabled = false;
-      renderStep3RelationPanel();
+      state.connection = {a:connectPicked[0], b:connectPicked[1], relation:opt};
+      document.getElementById('btnStep4Next').disabled = false;
+      renderStep4RelationPanel();
     };
     chipsWrap.appendChild(chip);
   });
+  const reasonInput = document.getElementById('connectionReasonInput');
+  if(reasonInput){
+    reasonInput.addEventListener('input', e=>{ state.connectionReason = e.target.value; });
+  }
 }
 
-/* ---------- STEP 4 ---------- */
+/* ---------- STEP 5 : SDGs와 다시 만나기 (핵심 단계) ---------- */
 function suggestedSdgsForSelection(){
   let nums = [];
   const all = getAllCandidates();
@@ -967,67 +1330,146 @@ function suggestedSdgsForSelection(){
   return nums;
 }
 
+function renderSdgChip(n, onToggle){
+  const s = sdgByNum(n);
+  const sel = state.sdgs.includes(n);
+  const div = document.createElement('div');
+  div.className = 'sdg-chip '+s.c+(sel?' selected':'');
+  div.innerHTML = `<span class="num">${s.n}</span><span>${s.t}</span>`;
+  div.onclick = onToggle;
+  return div;
+}
+
+function toggleSdgSelection(n){
+  const idx = state.sdgs.indexOf(n);
+  if(idx>-1) state.sdgs.splice(idx,1);
+  else { if(state.sdgs.length>=3) return; state.sdgs.push(n); }
+  renderStep5();
+}
+
 function renderSuggestedSdgs(){
   const host = document.getElementById('sdgSuggested');
   const nums = suggestedSdgsForSelection();
-  if(!nums.length){ host.innerHTML=''; return; }
-  host.innerHTML = `<div class="q">🌍 당신이 선택한 대표들과 연결되는 SDGs입니다. 이 중 <b style="color:#fff;">가장 중요하다고 생각하는 목표</b>를 선택해 보세요.</div>`;
+  host.innerHTML = '';
+  if(!nums.length){
+    host.innerHTML = `<div class="sdg-suggested-note">추천할 목표를 찾지 못했어요. 아래 '17가지 목표 전체 살펴보기'에서 직접 찾아보세요.</div>`;
+    return;
+  }
+  host.innerHTML = `<div class="q">🔎 <b style="color:#fff;">이 문제와 관련 있어 보이는 목표</b>입니다. 그중 가장 중요하다고 생각하는 목표를 선택해 보세요.</div>`;
   const row = document.createElement('div');
   row.className = 'sdg-grid';
   nums.forEach(n=>{
-    const s = SDGS.find(x=>x.n===n);
-    const sel = state.sdgs.includes(n);
-    const div = document.createElement('div');
-    div.className = 'sdg-chip '+s.c+(sel?' selected':'');
-    div.innerHTML = `<span class="num">${s.n}</span><span>${s.t}</span>`;
-    div.onclick = ()=>{
-      const idx = state.sdgs.indexOf(n);
-      if(idx>-1) state.sdgs.splice(idx,1);
-      else { if(state.sdgs.length>=3) return; state.sdgs.push(n); }
-      renderStep4();
-    };
-    row.appendChild(div);
+    row.appendChild(renderSdgChip(n, ()=>toggleSdgSelection(n)));
   });
   host.appendChild(row);
+  const groupNote = document.createElement('div');
+  groupNote.className = 'sdg-suggested-note';
+  const groupList = groupsOfNums(nums).map(k=>{
+    const g = groupByKey(k);
+    return `${g.emoji} ${g.key} · ${g.title}`;
+  }).join(' / ');
+  groupNote.textContent = groupList ? `전략 영역: ${groupList}` : '';
+  host.appendChild(groupNote);
 }
 
-function renderStep4(){
-  renderSuggestedSdgs();
-  const grid = document.getElementById('sdgGrid');
-  grid.innerHTML='';
-  SDGS.forEach(s=>{
-    const sel = state.sdgs.includes(s.n);
-    const div = document.createElement('div');
-    div.className = 'sdg-chip '+s.c+(sel?' selected':'');
-    div.innerHTML = `<span class="num">${s.n}</span><span>${s.t}</span>`;
-    div.onclick = ()=>{
-      const idx = state.sdgs.indexOf(s.n);
-      if(idx>-1) state.sdgs.splice(idx,1);
-      else { if(state.sdgs.length>=3) return; state.sdgs.push(s.n); }
-      renderStep4();
-    };
-    grid.appendChild(div);
+let sdgFullVisible = false;
+function toggleFullSdgGrid(){
+  sdgFullVisible = !sdgFullVisible;
+  const wrap = document.getElementById('sdgFullWrap');
+  const btn = document.getElementById('sdgMoreBtn');
+  if(wrap) wrap.style.display = sdgFullVisible ? 'block' : 'none';
+  if(btn) btn.textContent = sdgFullVisible ? '– 전체 목표 목록 접기' : '+ 17가지 목표 전체 살펴보기';
+}
+
+function renderFullSdgByGroup(){
+  const host = document.getElementById('sdgFullByGroup');
+  host.innerHTML = '';
+  SDG_GROUPS.forEach(g=>{
+    const heading = document.createElement('div');
+    heading.className = 'sdg-group-heading';
+    heading.innerHTML = `${g.emoji} ${g.key} <span style="color:var(--dim); font-weight:400;">· ${g.title}</span>`;
+    host.appendChild(heading);
+    const row = document.createElement('div');
+    row.className = 'sdg-grid';
+    g.nums.forEach(n=>{
+      row.appendChild(renderSdgChip(n, ()=>toggleSdgSelection(n)));
+    });
+    host.appendChild(row);
   });
-  document.getElementById('sdgCount').textContent = state.sdgs.length;
-  document.getElementById('btnStep4Next').disabled = state.sdgs.length===0;
 }
 
-/* ---------- STEP 5 ---------- */
+function renderSdgReasonChips(){
+  // 선택형 이유 chip은 더 이상 사용하지 않습니다 — 직접 작성 입력창만 바인딩합니다.
+  const customInput = document.getElementById('sdgReasonCustom');
+  if(customInput){
+    customInput.value = state.sdgReasonCustom||'';
+    customInput.oninput = e=>{ state.sdgReasonCustom = e.target.value; updateStep5NextState(); };
+  }
+}
+
+function updateStep5NextState(){
+  const btn = document.getElementById('btnStep5Next');
+  const ok = state.sdgs.length>0 && state.sdgReasonCustom.trim().length>0;
+  if(btn) btn.disabled = !ok;
+}
+
+function renderStep5(){
+  // 내가 발견한 문제 / 연결한 문제 컨텍스트
+  const tagBlock = allTags().map(t=>`<span class="tag-pill">${t.tag}</span>`).join(' ');
+  document.getElementById('step5MyTags').innerHTML = tagBlock || '(작성 없음)';
+
+  const connBox = document.getElementById('step5ConnBox');
+  if(state.connection){
+    const t1 = state.problemTags[state.connection.a] || '';
+    const t2 = state.problemTags[state.connection.b] || '';
+    document.getElementById('step5MyConn').innerHTML = `${t1} ↔ ${t2}`;
+    connBox.style.display = 'block';
+  } else {
+    connBox.style.display = 'none';
+  }
+
+  renderSuggestedSdgs();
+  const wrap = document.getElementById('sdgFullWrap');
+  const btn = document.getElementById('sdgMoreBtn');
+  if(wrap) wrap.style.display = sdgFullVisible ? 'block' : 'none';
+  if(btn) btn.textContent = sdgFullVisible ? '– 전체 목표 목록 접기' : '+ 17가지 목표 전체 살펴보기';
+  renderFullSdgByGroup();
+
+  document.getElementById('sdgCount').textContent = state.sdgs.length;
+
+  const whyBox = document.getElementById('sdgWhyBox');
+  if(state.sdgs.length>0){
+    whyBox.style.display = 'block';
+    renderSdgReasonChips();
+  } else {
+    whyBox.style.display = 'none';
+  }
+  updateStep5NextState();
+}
+
+/* ---------- STEP 6 : 의제 만들기 ---------- */
 function renderAgendaTemplates(){
   const wrap = document.getElementById('agendaTemplatePicker');
   if(!wrap) return;
   wrap.innerHTML = '';
   AGENDA_TEMPLATES.forEach(tpl=>{
-    const chip = document.createElement('span');
-    chip.className = 'chip' + (state.agendaTemplateId===tpl.id ? ' active' : '');
-    chip.textContent = tpl.label;
-    chip.onclick = ()=>{
+    const isActive = state.agendaTemplateId===tpl.id;
+    const previewVals = isActive ? state.agendaBlanks : [];
+    const card = document.createElement('div');
+    card.className = 'agenda-template-card' + (isActive ? ' active' : '');
+    card.innerHTML = `<div class="tpl-label">${tpl.label}</div><div class="tpl-preview">${tpl.preview(previewVals)}</div>`;
+    card.onclick = ()=>{
       state.agendaTemplateId = tpl.id;
       state.agendaBlanks = new Array(tpl.blanks.length).fill('');
+      // STEP 3에서 만든 핵심 문제 해시태그를 첫 빈칸에 자동으로 연결
+      const firstTag = allTags()[0];
+      if(firstTag && state.agendaBlanks.length>0){
+        state.agendaBlanks[0] = firstTag.tag.replace(/^#/,'');
+      }
       state.myAgenda = '';
       renderAgendaTemplates();
     };
-    wrap.appendChild(chip);
+    wrap.appendChild(card);
   });
   renderAgendaBlankArea();
   renderAgendaReasonChips();
@@ -1037,7 +1479,7 @@ function renderAgendaBlankArea(){
   const area = document.getElementById('agendaBlankArea');
   if(!area) return;
   const tpl = AGENDA_TEMPLATES.find(t=>t.id===state.agendaTemplateId);
-  if(!tpl){ area.innerHTML=''; updateStep5NextState(); return; }
+  if(!tpl){ area.innerHTML=''; updateStep6NextState(); return; }
   const box = document.createElement('div');
   box.className = 'fillblank-box';
   tpl.blanks.forEach((ph,i)=>{
@@ -1067,37 +1509,41 @@ function renderAgendaBlankArea(){
 
 function computeAgenda(){
   const tpl = AGENDA_TEMPLATES.find(t=>t.id===state.agendaTemplateId);
-  if(!tpl){ state.myAgenda=''; updateStep5NextState(); return; }
+  if(!tpl){ state.myAgenda=''; updateStep6NextState(); return; }
   const filled = tpl.blanks.every((_,i)=> (state.agendaBlanks[i]||'').length>0);
   state.myAgenda = filled ? tpl.build(state.agendaBlanks) : '';
   const preview = document.getElementById('agendaPreview');
   if(preview) preview.textContent = state.myAgenda ? `→ ${state.myAgenda}` : '';
-  updateStep5NextState();
+  updateStep6NextState();
 }
 
 function renderAgendaReasonChips(){
-  const wrap = document.getElementById('agendaReasonChips');
-  if(!wrap) return;
-  wrap.innerHTML='';
-  AGENDA_REASON_OPTIONS.forEach(opt=>{
-    const chip = document.createElement('span');
-    chip.className = 'chip' + (state.myReason===opt ? ' active' : '');
-    chip.textContent = opt;
-    chip.onclick = ()=>{
-      state.myReason = (state.myReason===opt) ? '' : opt;
-      renderAgendaReasonChips();
-    };
-    wrap.appendChild(chip);
-  });
+  // 선택형 이유 chip은 더 이상 사용하지 않습니다 — 직접 작성 입력창만 바인딩합니다.
+  const customInput = document.getElementById('agendaReasonCustom');
+  if(customInput){
+    customInput.value = state.myReasonCustom||'';
+    customInput.oninput = e=>{ state.myReasonCustom = e.target.value; updateStep6NextState(); };
+  }
+  updateStep6NextState();
 }
 
-function updateStep5NextState(){
-  const btn = document.getElementById('btnStep5Next');
-  if(btn) btn.disabled = !(state.myAgenda && state.myAgenda.length>0);
+function updateStep6NextState(){
+  const btn = document.getElementById('btnStep6Next');
+  const agendaOk = !!(state.myAgenda && state.myAgenda.length>0);
+  const reasonOk = (state.myReasonCustom||'').trim().length>0;
+  if(btn) btn.disabled = !(agendaOk && reasonOk);
 }
 
-/* ---------- STEP 6 ---------- */
 function renderStep6(){
+  const tagBlock = allTags().map(t=>`<span class="tag-pill">${t.tag}</span>`).join(' ');
+  document.getElementById('step6MyTags').innerHTML = tagBlock || '(작성 없음)';
+  const sdgBlock = state.sdgs.length ? state.sdgs.map(n=>sdgLabel(n)).join('<br>') : '(선택 없음)';
+  document.getElementById('step6MySdgs').innerHTML = sdgBlock;
+  renderAgendaTemplates();
+}
+
+/* ---------- STEP 7 : 달라지는 것 ---------- */
+function renderStep7(){
   const grid = document.getElementById('relatedGrid');
   grid.innerHTML='';
   RELATED_ISSUES.forEach(issue=>{
@@ -1109,71 +1555,116 @@ function renderStep6(){
       const idx = state.relatedPicks.indexOf(issue);
       if(idx>-1) state.relatedPicks.splice(idx,1);
       else { if(state.relatedPicks.length>=2) return; state.relatedPicks.push(issue); }
-      renderStep6();
+      renderStep7();
     };
     grid.appendChild(div);
   });
   const map = document.getElementById('linkMap');
   if(state.relatedPicks.length){
-    map.innerHTML = `<div class="conn-list"><div class="row"><span>${state.myAgenda||'나의 의제'}</span>${state.relatedPicks.map(p=>`<span class="arrow">↔</span><span>${p}</span>`).join('')}</div></div>`;
+    map.innerHTML = `
+      <div class="flow-step"><div class="flow-label">나의 의제</div><div class="flow-body">${state.myAgenda||'(작성 없음)'}</div></div>
+      <div class="flow-arrow-row">↓</div>
+      <div class="flow-step"><div class="flow-label">달라지는 것</div><div class="flow-body">${state.relatedPicks.join(' · ')}</div></div>
+    `;
   } else {
     map.innerHTML = '';
   }
 }
 
-/* ---------- STEP 7 ---------- */
-function renderStep7(){
+/* ---------- STEP 8 : 결과 ---------- */
+function renderStep8(){
   const infoLine = document.getElementById('studentInfoLine');
   if(infoLine) infoLine.textContent = (state.studentId || state.studentName) ? `${state.studentId} ${state.studentName}` : '';
   const area = document.getElementById('summaryArea');
   const all = getAllCandidates();
+
   const candBlock = state.candidates.map(id=>{
     const c = all.find(x=>x.id===id);
     return `<li>${c.emoji} ${c.name}</li>`;
   }).join('');
 
-  const problemBlock = state.candidates.map(id=>{
-    const c = all.find(x=>x.id===id);
-    const p = state.problemChoice[id];
-    return p ? `<li>${c.emoji} ${c.name}: ${p}</li>` : '';
-  }).join('');
-
   const tagBlock = allTags().map(t=>`<span class="tag-pill">${t.tag}</span>`).join(' ');
 
-  const sdgBlock = state.sdgs.map(n=>{
-    const s = SDGS.find(x=>x.n===n);
-    return `<span class="tag-pill">SDG ${s.n} · ${s.t}</span>`;
-  }).join(' ');
+  let connectionBody = '(선택 없음)';
+  if(state.connection){
+    const t1 = state.problemTags[state.connection.a] || '';
+    const t2 = state.problemTags[state.connection.b] || '';
+    connectionBody = `<b>${t1} ↔ ${t2}</b><br><span style="color:var(--dim); font-size:12.5px;">${state.connection.relation}</span>`;
+    if(state.connectionReason) connectionBody += `<br><span style="color:#c6d2dd; font-size:12.5px;">"${state.connectionReason}"</span>`;
+  }
 
-  const relatedBlock = state.relatedPicks.length ? state.relatedPicks.map(p=>`<li>${p}</li>`).join('') : '<li>-</li>';
+  let sdgBody = '(선택 없음)';
+  if(state.sdgs.length){
+    sdgBody = state.sdgs.map(n=>{
+      const s = sdgByNum(n);
+      return `<div>목표${s.n} · ${s.t}<br><span style="color:var(--dim); font-size:12px;">${s.group} · ${s.groupTitle}</span></div>`;
+    }).join('<div style="height:8px;"></div>');
+    if(state.sdgReason || state.sdgReasonCustom){
+      sdgBody += `<div style="margin-top:8px; color:#c6d2dd; font-size:12.5px;">${state.sdgReason ? state.sdgReason : ''}${(state.sdgReason && state.sdgReasonCustom) ? '<br>' : ''}${state.sdgReasonCustom ? '"'+state.sdgReasonCustom+'"' : ''}</div>`;
+    }
+  }
+
+  const changeBlock = state.relatedPicks.length ? state.relatedPicks.join(' · ') : '(선택 없음)';
 
   area.innerHTML = `
+    <div class="flow-wrap">
+      <div class="flow-step">
+        <div class="flow-label">① 내가 초대한 대표</div>
+        <div class="flow-body"><ul style="margin:0; padding-left:18px;">${candBlock || '<li>-</li>'}</ul></div>
+      </div>
+      <div class="flow-arrow-row">↓</div>
+      <div class="flow-step">
+        <div class="flow-label">② 내가 발견한 문제</div>
+        <div class="flow-body">${tagBlock || '-'}</div>
+      </div>
+      <div class="flow-arrow-row">↓</div>
+      <div class="flow-step">
+        <div class="flow-label">③ 내가 발견한 연결</div>
+        <div class="flow-body">${connectionBody}</div>
+      </div>
+      <div class="flow-arrow-row">↓</div>
+      <div class="flow-step">
+        <div class="flow-label">④ 내가 선택한 SDGs</div>
+        <div class="flow-body">${sdgBody}</div>
+      </div>
+      <div class="flow-arrow-row">↓</div>
+    </div>
     <div class="agenda-card">
-      <div class="agenda-card-title">📢 내가 대토론회에 제안한 의제</div>
+      <div class="agenda-card-title">📢 ⑤ 내가 만든 대토론회 의제</div>
       <div class="agenda-card-main">${state.myAgenda || '(작성 없음)'}</div>
       ${state.myReason ? `<div class="agenda-card-sub">${state.myReason}</div>` : ''}
+      ${state.myReasonCustom ? `<div class="agenda-card-sub">${state.myReasonCustom}</div>` : ''}
     </div>
-    <div class="summary-block">
-      <h3>🎙 내가 회의에 초대한 대표</h3>
-      <ul>${candBlock || '<li>-</li>'}</ul>
-    </div>
-    <div class="summary-block">
-      <h3>🔍 내가 발견한 가장 중요한 문제</h3>
-      <ul>${problemBlock || '<li>-</li>'}</ul>
-    </div>
-    <div class="summary-block">
-      <h3># 내가 선택한 핵심 키워드</h3>
-      <div>${tagBlock || '-'}</div>
-    </div>
-    <div class="summary-block">
-      <h3>🌍 내가 선택한 SDGs</h3>
-      <div>${sdgBlock || '-'}</div>
-    </div>
-    <div class="summary-block">
-      <h3>🔗 이 문제는 어디까지 영향을 미칠까?</h3>
-      <ul>${relatedBlock}</ul>
+    <div class="flow-arrow-row">↓</div>
+    <div class="flow-wrap">
+      <div class="flow-step">
+        <div class="flow-label">⑥ 이 문제가 해결되면</div>
+        <div class="flow-body">${changeBlock}</div>
+      </div>
     </div>
   `;
+
+  // 처음 선택한 SDG ↔ 최종 선택 SDG 비교
+  const compareArea = document.getElementById('sdgCompareArea');
+  if(state.initialSdg && state.sdgs.length){
+    compareArea.style.display = 'block';
+    const initS = sdgByNum(state.initialSdg);
+    const finalN = state.sdgs[0];
+    const finalS = sdgByNum(finalN);
+    document.getElementById('sdgCompareInitial').innerHTML = `목표${initS.n} · ${initS.t}<div class="cgroup">${initS.group} · ${initS.groupTitle}</div>`;
+    document.getElementById('sdgCompareFinal').innerHTML = `목표${finalS.n} · ${finalS.t}<div class="cgroup">${finalS.group} · ${finalS.groupTitle}</div>`;
+    const qEl = document.getElementById('sdgCompareQ');
+    const sameGoal = initS.n === finalS.n;
+    qEl.innerHTML = sameGoal
+      ? '<b>처음 생각과 비교해, 어떤 점에서 더 확실해졌나요?</b>'
+      : '<b>처음 생각했던 목표와 탐구 후 선택한 목표가 달라졌어요. 왜 생각이 달라졌을까요?</b>';
+    const input = document.getElementById('sdgCompareInput');
+    input.value = state.sdgCompareNote || '';
+    input.oninput = e=>{ state.sdgCompareNote = e.target.value; };
+  } else {
+    compareArea.style.display = 'none';
+  }
+
   renderReflectionChips();
 }
 
@@ -1198,41 +1689,194 @@ function renderReflectionChips(){
   }
 }
 
+/* ---------- STEP 8 : 결과 카드 이미지로 저장 / 공유 ---------- */
+async function captureAndShareResult(btn){
+  const target = document.getElementById('resultCaptureArea');
+  if(!target || typeof html2canvas === 'undefined'){
+    alert('이미지 생성 기능을 불러오지 못했어요. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');
+    return;
+  }
+  const originalText = btn ? btn.textContent : '';
+  if(btn){ btn.disabled = true; btn.textContent = '이미지 만드는 중...'; }
+  try{
+    const canvas = await html2canvas(target, {
+      backgroundColor: '#121d2c',
+      scale: window.devicePixelRatio > 1 ? 2 : 1,
+      useCORS: true
+    });
+    canvas.toBlob(async (blob)=>{
+      if(btn){ btn.disabled = false; btn.textContent = originalText; }
+      if(!blob) return;
+      const fileName = '지구행성대토론회_결과카드.png';
+      const file = new File([blob], fileName, {type:'image/png'});
+      if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+        try{
+          await navigator.share({files:[file], title:'2040 지구 행성 대토론회', text:'나의 지구 대토론회 결과 카드입니다.'});
+          return;
+        }catch(shareErr){
+          // 공유를 취소했거나 실패한 경우 아래 다운로드 방식으로 대체합니다.
+        }
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(url);
+    }, 'image/png');
+  } catch(err){
+    console.error('결과 카드 이미지 생성 오류:', err);
+    if(btn){ btn.disabled = false; btn.textContent = originalText; }
+    alert('이미지를 만드는 중 문제가 발생했어요. 다시 시도해 주세요.');
+  }
+}
+
+/* ---------- STEP 8 : 제출하기 (Google Apps Script → Google Spreadsheet) ---------- */
+let isSubmitting = false;
+
+function buildSubmissionPayload(){
+  const all = getAllCandidates();
+  const candidateNames = state.candidates.map(id=>{
+    const c = all.find(x=>x.id===id);
+    return c ? c.name : id;
+  });
+  const problemList = state.candidates.map(id=>{
+    const c = all.find(x=>x.id===id);
+    return `${c ? c.name : id}: ${state.problemTags[id] || ''}`;
+  });
+  const connectedProblems = state.connection
+    ? [state.problemTags[state.connection.a]||'', state.problemTags[state.connection.b]||'']
+    : [];
+
+  return {
+    submittedAt: new Date().toISOString(),
+    studentId: state.studentId || '',
+    studentName: state.studentName || '',
+    initialSdg: state.initialSdg ? sdgLabel(state.initialSdg) : '',
+    candidates: candidateNames,
+    problems: problemList,
+    connectedProblems: connectedProblems,
+    connectionReason: state.connectionReason || '',
+    finalSdgs: state.sdgs.map(n=>sdgLabel(n)),
+    sdgReason: state.sdgReasonCustom || '',
+    agenda: state.myAgenda || '',
+    agendaReason: state.myReasonCustom || '',
+    changes: state.relatedPicks || [],
+    reflection: [state.finalReflectionChoice, state.finalReflection].filter(Boolean).join(' / ')
+  };
+}
+
+async function submitToGoogleSheet(){
+  if(isSubmitting) return;
+  const btn = document.getElementById('submitBtn');
+  if(!btn) return;
+
+  const url = (GOOGLE_SHEET_API_URL||'').trim();
+  if(!url || url.indexOf('여기에') === 0){
+    const prevText = btn.textContent;
+    btn.textContent = '⚠️ 제출 주소가 아직 설정되지 않았어요';
+    setTimeout(()=>{ btn.textContent = prevText; }, 2500);
+    return;
+  }
+
+  isSubmitting = true;
+  btn.disabled = true;
+  btn.textContent = '제출 중...';
+
+  try{
+    const payload = buildSubmissionPayload();
+    // Google Apps Script 웹 앱과의 CORS 문제를 피하기 위해 text/plain + no-cors 방식을 사용합니다.
+    await fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+    btn.textContent = '✓ 제출되었습니다!';
+  } catch(err){
+    console.error('제출 오류:', err);
+    isSubmitting = false;
+    btn.disabled = false;
+    btn.textContent = '제출에 실패했습니다. 인터넷 연결 또는 제출 주소를 확인해 주세요.';
+    setTimeout(()=>{ if(btn) btn.textContent = '제출하기'; }, 3500);
+  }
+}
+
 function downloadSummary(){
   const all = getAllCandidates();
   const lines = [];
   lines.push('=== 2040 지구 행성 대토론회 - 나의 기록 ===');
   lines.push(`학번: ${state.studentId||''}  이름: ${state.studentName||''}`);
   lines.push('');
+
+  lines.push('[처음 중요하다고 생각한 SDG]');
+  if(state.initialSdg){
+    const s = sdgByNum(state.initialSdg);
+    lines.push(`목표${s.n} · ${s.t}`);
+    lines.push(`전략: ${s.group} · ${s.groupTitle}`);
+  } else {
+    lines.push('(선택 없음)');
+  }
+  lines.push('');
+
   lines.push('[초대한 대표]');
   state.candidates.forEach(id=>{
     const c = all.find(x=>x.id===id);
     lines.push(`- ${c.name}`);
-    lines.push(`  문제: ${state.problemChoice[id]||''}`);
-    lines.push(`  해시태그: ${(state.tags[id]||[]).join(' ')}`);
+    lines.push(`  ${state.problemTags[id]||''}`);
   });
   lines.push('');
-  lines.push('[문제의 연결 (STEP3)]');
+
+  lines.push('[내가 발견한 연결]');
   if(state.connection){
-    const c1 = all.find(x=>x.id===state.connection.a);
-    const c2 = all.find(x=>x.id===state.connection.b);
-    lines.push(`- ${c1?c1.name:''} ↔ ${c2?c2.name:''} (${state.connection.relation})`);
+    const t1 = state.problemTags[state.connection.a]||'';
+    const t2 = state.problemTags[state.connection.b]||'';
+    lines.push(`${t1} ↔ ${t2}`);
+    lines.push('');
+    lines.push('연결 이유:');
+    lines.push(state.connection.relation||'');
+    if(state.connectionReason) lines.push(state.connectionReason);
+  } else {
+    lines.push('(선택 없음)');
   }
   lines.push('');
-  lines.push('[선택한 SDGs]');
-  state.sdgs.forEach(n=>{
-    const s = SDGS.find(x=>x.n===n);
-    lines.push(`- SDG ${s.n} ${s.t}`);
-  });
+
+  lines.push('[최종 선택 SDG]');
+  if(state.sdgs.length){
+    state.sdgs.forEach(n=>{
+      const s = sdgByNum(n);
+      lines.push(`목표${s.n} · ${s.t}`);
+      lines.push(`전략: ${s.group} · ${s.groupTitle}`);
+    });
+  } else {
+    lines.push('(선택 없음)');
+  }
   lines.push('');
-  lines.push('[나의 의제]');
+
+  lines.push('[SDG를 선택한 이유]');
+  if(state.sdgReason) lines.push(state.sdgReason);
+  if(state.sdgReasonCustom) lines.push(state.sdgReasonCustom);
+  if(!state.sdgReason && !state.sdgReasonCustom) lines.push('(작성 없음)');
+  lines.push('');
+
+  lines.push('[나의 대토론회 의제]');
   lines.push(state.myAgenda||'');
-  lines.push(`이유: ${state.myReason||''}`);
+  if(state.myReason) lines.push(`이유: ${state.myReason}`);
+  if(state.myReasonCustom) lines.push(state.myReasonCustom);
   lines.push('');
-  lines.push('[문제의 영향]');
-  lines.push(state.relatedPicks.join(', '));
+
+  lines.push('[의제가 해결되면 달라지는 것]');
+  lines.push(state.relatedPicks.length ? state.relatedPicks.join(', ') : '(선택 없음)');
   lines.push('');
-  lines.push('[오늘 새롭게 알게 된 점]');
+
+  if(state.initialSdg && state.sdgs.length){
+    lines.push('[처음 생각과 탐구 후 생각 비교]');
+    if(state.sdgCompareNote) lines.push(state.sdgCompareNote);
+    else lines.push('(작성 없음)');
+    lines.push('');
+  }
+
+  lines.push('[성찰]');
   lines.push(state.finalReflectionChoice||'');
   if(state.finalReflection) lines.push(state.finalReflection);
 
