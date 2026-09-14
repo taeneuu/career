@@ -150,6 +150,21 @@
   }
   .reason-item{margin-bottom:12px;}
   .reason-item .who{font-size:13px; color:var(--dim); margin-bottom:5px;}
+  .class-num-row{display:flex; gap:8px;}
+  .class-num-row select,
+  .class-num-row input[type=number]{
+    background:#0e1927;
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--ink);
+    font-family:inherit;
+    font-size:13.5px;
+    padding:9px 12px;
+  }
+  .class-num-row select:focus,
+  .class-num-row input[type=number]:focus{outline:none; border-color:var(--human);}
+  .class-num-row select{flex:1.3;}
+  .class-num-row input[type=number]{flex:1;}
   textarea, input[type=text]{
     width:100%;
     background:#0e1927;
@@ -499,8 +514,23 @@
     </p>
     <div class="reason-block" style="text-align:left; max-width:320px; margin:22px auto 0;">
       <div class="reason-item">
-        <div class="who">학번</div>
-        <input type="text" id="studentId" placeholder="예) 10203" inputmode="numeric">
+        <div class="who">반 / 번호</div>
+        <div class="class-num-row">
+          <select id="classNumber">
+            <option value="" selected disabled>반을 선택하세요</option>
+            <option value="1">1반</option>
+            <option value="2">2반</option>
+            <option value="3">3반</option>
+            <option value="4">4반</option>
+            <option value="5">5반</option>
+            <option value="6">6반</option>
+            <option value="7">7반</option>
+            <option value="8">8반</option>
+            <option value="9">9반</option>
+            <option value="10">10반</option>
+          </select>
+          <input type="number" id="studentNumber" placeholder="번호" inputmode="numeric" min="1" max="99">
+        </div>
       </div>
       <div class="reason-item">
         <div class="who">이름</div>
@@ -508,7 +538,7 @@
       </div>
     </div>
     <button class="enter-btn" id="enterBtn" onclick="enterDebate()">지구가 함께 풀어야 할 과제 만나기 →</button>
-    <div id="studentInfoWarning" style="display:none; color:var(--agenda); font-size:12.5px; font-weight:600; margin-top:12px;">⚠️ 학번과 이름을 입력한 후 입장할 수 있어요.</div>
+    <div id="studentInfoWarning" style="display:none; color:var(--agenda); font-size:12.5px; font-weight:600; margin-top:12px;">⚠️ 반, 번호, 이름을 모두 입력한 후 입장할 수 있어요.</div>
   </div>
 
   <!-- STEP 1 : SDGs 오리엔테이션 (지도처럼 소개) -->
@@ -687,9 +717,9 @@
       </div>
 
       <div class="fieldlabel" style="margin-top:16px;">오늘 활동을 통해 새롭게 알게 된 점은?</div>
-      <div class="chip-wrap" id="reflectionChips"></div>
-      <div class="fieldlabel" style="margin-top:10px;">✏️ 이번 활동을 통해 새롭게 생각하게 된 점을 한 문장으로 적어보세요. (선택)</div>
+      <div class="fieldlabel" style="margin-top:10px;">✏️ 이번 활동을 통해 새롭게 생각하게 된 점을 한 문장으로 적어보세요.</div>
       <input type="text" id="finalReflectionShort" placeholder="짧게 적어보세요.">
+      <div id="reflectionWarning" style="display:none; color:var(--agenda); font-size:12.5px; font-weight:600; margin-top:8px;">⚠️ 새롭게 생각하게 된 점을 한 문장으로 작성해 주세요.</div>
     </div>
 
     <div class="nav-row">
@@ -917,7 +947,9 @@ const STEP_NAMES = {
 
 /* ---------- state ---------- */
 const state = {
-  studentId: '',
+  studentId: '',        // 제출 호환용으로 classNumber+studentNumber 조합해 자동 생성됨
+  classNumber: '',       // STEP 0 : 학생이 선택한 반 (1~10)
+  studentNumber: '',     // STEP 0 : 학생이 입력한 번호
   studentName: '',
   initialSdg: null,         // STEP 1 : 처음 관심 있다고 고른 SDG (지금의 관심, 이후 활동을 제한하지 않음)
   candidates: [],           // selected candidate ids (max 3)
@@ -993,23 +1025,37 @@ function goToStep8Loading(){
   }, 900);
 }
 
-/* ---------- STEP 0 : 학번/이름 ---------- */
+/* ---------- STEP 0 : 반/번호/이름 ---------- */
+/* 기존 Google Sheets 연동이 요구하는 5자리 학번(예: 10301 = 1학년 3반 1번) 형식과의
+   호환을 위해, 반/번호 선택값으로 studentId를 자동 조합합니다. (학년은 1학년으로 고정) */
+function buildStudentId(classNumber, studentNumber){
+  if(!classNumber || !studentNumber) return '';
+  const cc = String(classNumber).padStart(2,'0');
+  const nn = String(studentNumber).padStart(2,'0');
+  return `1${cc}${nn}`;
+}
+
 function updateEnterBtn(){
-  state.studentId = document.getElementById('studentId').value.trim();
+  state.classNumber = document.getElementById('classNumber').value.trim();
+  state.studentNumber = document.getElementById('studentNumber').value.trim();
   state.studentName = document.getElementById('studentName').value.trim();
-  if(state.studentId && state.studentName){
+  state.studentId = buildStudentId(state.classNumber, state.studentNumber);
+  if(state.classNumber && state.studentNumber && state.studentName){
     const warn = document.getElementById('studentInfoWarning');
     if(warn) warn.style.display = 'none';
   }
 }
-document.getElementById('studentId').addEventListener('input', updateEnterBtn);
+document.getElementById('classNumber').addEventListener('change', updateEnterBtn);
+document.getElementById('studentNumber').addEventListener('input', updateEnterBtn);
 document.getElementById('studentName').addEventListener('input', updateEnterBtn);
 
 function enterDebate(){
-  state.studentId = document.getElementById('studentId').value.trim();
+  state.classNumber = document.getElementById('classNumber').value.trim();
+  state.studentNumber = document.getElementById('studentNumber').value.trim();
   state.studentName = document.getElementById('studentName').value.trim();
+  state.studentId = buildStudentId(state.classNumber, state.studentNumber);
   const warn = document.getElementById('studentInfoWarning');
-  if(!state.studentId || !state.studentName){
+  if(!state.classNumber || !state.studentNumber || !state.studentName){
     if(warn) warn.style.display = 'block';
     return;
   }
@@ -1574,7 +1620,7 @@ function renderStep7(){
 /* ---------- STEP 8 : 결과 ---------- */
 function renderStep8(){
   const infoLine = document.getElementById('studentInfoLine');
-  if(infoLine) infoLine.textContent = (state.studentId || state.studentName) ? `${state.studentId} ${state.studentName}` : '';
+  if(infoLine) infoLine.textContent = (state.classNumber || state.studentNumber || state.studentName) ? `${state.classNumber ? state.classNumber+'반 ' : ''}${state.studentNumber ? String(state.studentNumber).padStart(2,'0')+'번 ' : ''}${state.studentName}` : '';
   const area = document.getElementById('summaryArea');
   const all = getAllCandidates();
 
@@ -1669,28 +1715,35 @@ function renderStep8(){
 }
 
 function renderReflectionChips(){
-  const wrap = document.getElementById('reflectionChips');
-  if(!wrap) return;
-  wrap.innerHTML = '';
-  REFLECTION_OPTIONS.forEach(opt=>{
-    const chip = document.createElement('span');
-    chip.className = 'chip' + (state.finalReflectionChoice===opt ? ' active' : '');
-    chip.textContent = opt;
-    chip.onclick = ()=>{
-      state.finalReflectionChoice = (state.finalReflectionChoice===opt) ? '' : opt;
-      renderReflectionChips();
-    };
-    wrap.appendChild(chip);
-  });
+  // 선택형 칩 UI는 제거되었고, 직접 작성 입력만 남아 있습니다.
   const shortInput = document.getElementById('finalReflectionShort');
   if(shortInput){
     shortInput.value = state.finalReflection||'';
-    shortInput.oninput = e=>{ state.finalReflection = e.target.value; };
+    shortInput.oninput = e=>{
+      state.finalReflection = e.target.value;
+      if(state.finalReflection.trim().length>0){
+        const warn = document.getElementById('reflectionWarning');
+        if(warn) warn.style.display = 'none';
+      }
+    };
   }
+}
+
+/* 직접 작성 문항(성찰)이 필수로 작성되었는지 확인합니다. */
+function validateReflection(){
+  const ok = (state.finalReflection || '').trim().length > 0;
+  const warn = document.getElementById('reflectionWarning');
+  if(!ok){
+    if(warn) warn.style.display = 'block';
+  } else if(warn){
+    warn.style.display = 'none';
+  }
+  return ok;
 }
 
 /* ---------- STEP 8 : 결과 카드 이미지로 저장 / 공유 ---------- */
 async function captureAndShareResult(btn){
+  if(!validateReflection()) return;
   const target = document.getElementById('resultCaptureArea');
   if(!target || typeof html2canvas === 'undefined'){
     alert('이미지 생성 기능을 불러오지 못했어요. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');
@@ -1751,6 +1804,8 @@ function buildSubmissionPayload(){
   return {
     submittedAt: new Date().toISOString(),
     studentId: state.studentId || '',
+    classNumber: state.classNumber || '',
+    studentNumber: state.studentNumber || '',
     studentName: state.studentName || '',
     initialSdg: state.initialSdg ? sdgLabel(state.initialSdg) : '',
     candidates: candidateNames,
@@ -1768,6 +1823,7 @@ function buildSubmissionPayload(){
 
 async function submitToGoogleSheet(){
   if(isSubmitting) return;
+  if(!validateReflection()) return;
   const btn = document.getElementById('submitBtn');
   if(!btn) return;
 
