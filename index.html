@@ -536,9 +536,13 @@
         <div class="who">이름</div>
         <input type="text" id="studentName" placeholder="이름을 입력하세요">
       </div>
+      <div class="reason-item">
+        <div class="who">진로</div>
+        <input type="text" id="studentCareer" placeholder="희망하거나 관심 있는 진로를 입력하세요">
+      </div>
     </div>
     <button class="enter-btn" id="enterBtn" onclick="enterDebate()">지구가 함께 풀어야 할 과제 만나기 →</button>
-    <div id="studentInfoWarning" style="display:none; color:var(--agenda); font-size:12.5px; font-weight:600; margin-top:12px;">⚠️ 반, 번호, 이름을 모두 입력한 후 입장할 수 있어요.</div>
+    <div id="studentInfoWarning" style="display:none; color:var(--agenda); font-size:12.5px; font-weight:600; margin-top:12px;">⚠️ 반, 번호, 이름, 진로를 모두 입력한 후 입장할 수 있어요.</div>
   </div>
 
   <!-- STEP 1 : SDGs 오리엔테이션 (지도처럼 소개) -->
@@ -683,10 +687,11 @@
     <p class="narr">내가 선택한 SDGs가 이루어지고, 내가 제안한 의제가 해결된다면 누구에게 또는 무엇에게 변화가 생길까요? 최대 <b style="color:#fff;">2개</b>까지 선택해 보세요.</p>
     <div class="check-grid" id="relatedGrid"></div>
     <div id="linkMap" style="margin-top:14px;"></div>
+    <div id="relatedPicksWarning" style="display:none; color:var(--agenda); font-size:12.5px; font-weight:600; margin-top:8px;">⚠️ 변화가 생길 대상이나 영역을 1개 이상 선택해 주세요.</div>
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
       <span class="step-tag">STEP 7 / 8</span>
-      <button class="nav-btn primary" onclick="goToStep8Loading()">나의 의제 확인하기 →</button>
+      <button class="nav-btn primary" id="btnStep7Next" onclick="goToStep8Loading()" disabled>나의 의제 확인하기 →</button>
     </div>
   </div>
 
@@ -716,9 +721,8 @@
         <input type="text" id="sdgCompareInput" placeholder="짧게 적어보세요. (선택)">
       </div>
 
-      <div class="fieldlabel" style="margin-top:16px;">오늘 활동을 통해 새롭게 알게 된 점은?</div>
-      <div class="fieldlabel" style="margin-top:10px;">✏️ 이번 활동을 통해 새롭게 생각하게 된 점을 한 문장으로 적어보세요.</div>
-      <input type="text" id="finalReflectionShort" placeholder="짧게 적어보세요.">
+      <div class="fieldlabel" style="margin-top:16px;">💡 이번 활동을 통해 새롭게 생각하게 된 점은 무엇인가요?</div>
+      <input type="text" id="finalReflectionShort" placeholder="이번 활동을 통해 새롭게 생각하게 된 점을 한 문장으로 적어보세요.">
       <div id="reflectionWarning" style="display:none; color:var(--agenda); font-size:12.5px; font-weight:600; margin-top:8px;">⚠️ 새롭게 생각하게 된 점을 한 문장으로 작성해 주세요.</div>
     </div>
 
@@ -732,6 +736,7 @@
       오늘 우리는 지구가 겪고 있는 다양한 문제를 발견했습니다.<br><br>
       하지만 아직 한 가지 질문이 남아 있습니다.<br><br>
       <b>"미래의 나는 이 문제 해결에 어떤 역할을 할 수 있을까?"</b><br><br>
+      <span id="teaserCareerLine" style="display:block; margin-bottom:8px; font-weight:700; color:#fff;"></span>
       다음 활동에서는 나의 진로와 오늘 발견한 지구의 문제를 연결해 봅니다.
     </div>
     <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;">
@@ -752,7 +757,7 @@
 <script>
 /* ---------- 결과 카드 이미지 저장 / Google Spreadsheet 제출 설정 ---------- */
 /* 아래 URL에 배포한 Google Apps Script 웹 앱 URL을 붙여넣으면 '제출하기' 기능이 작동합니다. */
-const GOOGLE_SHEET_API_URL = '여기에_구글_앱스_스크립트_URL_입력';
+const GOOGLE_SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbxAjoFm-jVYlEo8dxGx6UQOO9XCbnkkBBkfz3--wS5qZM_T42ehZI2dEBn9KJf0v17lyg/exec';
 
 /* ---------- data : 대표 / 기사 (기존 그대로 유지) ---------- */
 const CANDIDATES = [
@@ -951,6 +956,7 @@ const state = {
   classNumber: '',       // STEP 0 : 학생이 선택한 반 (1~10)
   studentNumber: '',     // STEP 0 : 학생이 입력한 번호
   studentName: '',
+  career: '',            // STEP 0 : 학생이 입력한 희망/관심 진로
   initialSdg: null,         // STEP 1 : 처음 관심 있다고 고른 SDG (지금의 관심, 이후 활동을 제한하지 않음)
   candidates: [],           // selected candidate ids (max 3)
   customCandidates: [],     // student-added candidates
@@ -1039,8 +1045,9 @@ function updateEnterBtn(){
   state.classNumber = document.getElementById('classNumber').value.trim();
   state.studentNumber = document.getElementById('studentNumber').value.trim();
   state.studentName = document.getElementById('studentName').value.trim();
+  state.career = document.getElementById('studentCareer').value.trim();
   state.studentId = buildStudentId(state.classNumber, state.studentNumber);
-  if(state.classNumber && state.studentNumber && state.studentName){
+  if(state.classNumber && state.studentNumber && state.studentName && state.career){
     const warn = document.getElementById('studentInfoWarning');
     if(warn) warn.style.display = 'none';
   }
@@ -1048,14 +1055,16 @@ function updateEnterBtn(){
 document.getElementById('classNumber').addEventListener('change', updateEnterBtn);
 document.getElementById('studentNumber').addEventListener('input', updateEnterBtn);
 document.getElementById('studentName').addEventListener('input', updateEnterBtn);
+document.getElementById('studentCareer').addEventListener('input', updateEnterBtn);
 
 function enterDebate(){
   state.classNumber = document.getElementById('classNumber').value.trim();
   state.studentNumber = document.getElementById('studentNumber').value.trim();
   state.studentName = document.getElementById('studentName').value.trim();
+  state.career = document.getElementById('studentCareer').value.trim();
   state.studentId = buildStudentId(state.classNumber, state.studentNumber);
   const warn = document.getElementById('studentInfoWarning');
-  if(!state.classNumber || !state.studentNumber || !state.studentName){
+  if(!state.classNumber || !state.studentNumber || !state.studentName || !state.career){
     if(warn) warn.style.display = 'block';
     return;
   }
@@ -1221,7 +1230,7 @@ function renderSpeechCard(){
     <div class="q" style="margin-top:14px;"><b>이 대표가 겪고 있는 가장 중요한 문제는 무엇일까요?</b></div>
 
     ${hintKeywords.length ? `
-    <div class="hint-label">💡 생각해볼 만한 문제 (참고용이에요, 정답이 아니에요)</div>
+    <div class="hint-label">💡 문제를 찾기 어려울 때 참고해 보세요</div>
     <div class="chip-wrap" id="hintChips"></div>
     ` : ''}
 
@@ -1320,7 +1329,13 @@ function renderStep4(){
     picker.appendChild(chip);
   });
   renderStep4RelationPanel();
-  document.getElementById('btnStep4Next').disabled = !(state.connection && state.connection.relation);
+  updateStep4NextBtn();
+}
+
+function updateStep4NextBtn(){
+  const ok = !!(state.connection && state.connection.relation && (state.connectionReason||'').trim().length>0);
+  const btn = document.getElementById('btnStep4Next');
+  if(btn) btn.disabled = !ok;
 }
 
 function renderStep4Chips(){
@@ -1344,8 +1359,9 @@ function renderStep4RelationPanel(){
     <div class="hint-label">💡 생각해 볼 만한 발판 (정답이 아니에요, 자유롭게 골라보세요)</div>
     <div class="chip-wrap" id="relationChips"></div>
     ${matched ? `<div class="sentence-box">나는 이 두 문제가 <b>${matched}</b>고 생각한다.</div>` : ''}
-    <div class="fieldlabel" style="margin-top:12px;">✏️ 내 생각 (선택)</div>
-    <textarea id="connectionReasonInput" placeholder="두 문제가 연결되어 있다고 생각한 이유를 짧게 적어보세요.">${state.connectionReason||''}</textarea>
+    <div class="fieldlabel" style="margin-top:12px;">✏️ 두 문제가 연결되어 있다고 생각한 이유</div>
+    <textarea id="connectionReasonInput" placeholder="두 문제가 연결되어 있다고 생각한 이유를 한 문장으로 적어보세요.">${state.connectionReason||''}</textarea>
+    <div class="tip-note">짧게 작성해도 괜찮아요. 내가 생각한 연결 이유를 직접 적어보세요.</div>
   `;
   const chipsWrap = document.getElementById('relationChips');
   CONN_REASON_OPTIONS.forEach(opt=>{
@@ -1354,14 +1370,14 @@ function renderStep4RelationPanel(){
     chip.textContent = opt;
     chip.onclick = ()=>{
       state.connection = {a:connectPicked[0], b:connectPicked[1], relation:opt};
-      document.getElementById('btnStep4Next').disabled = false;
       renderStep4RelationPanel();
+      updateStep4NextBtn();
     };
     chipsWrap.appendChild(chip);
   });
   const reasonInput = document.getElementById('connectionReasonInput');
   if(reasonInput){
-    reasonInput.addEventListener('input', e=>{ state.connectionReason = e.target.value; });
+    reasonInput.addEventListener('input', e=>{ state.connectionReason = e.target.value; updateStep4NextBtn(); });
   }
 }
 
@@ -1615,12 +1631,22 @@ function renderStep7(){
   } else {
     map.innerHTML = '';
   }
+  const nextBtn = document.getElementById('btnStep7Next');
+  if(nextBtn) nextBtn.disabled = state.relatedPicks.length < 1;
+  const relWarn = document.getElementById('relatedPicksWarning');
+  if(relWarn) relWarn.style.display = state.relatedPicks.length < 1 ? 'block' : 'none';
 }
 
 /* ---------- STEP 8 : 결과 ---------- */
 function renderStep8(){
   const infoLine = document.getElementById('studentInfoLine');
-  if(infoLine) infoLine.textContent = (state.classNumber || state.studentNumber || state.studentName) ? `${state.classNumber ? state.classNumber+'반 ' : ''}${state.studentNumber ? String(state.studentNumber).padStart(2,'0')+'번 ' : ''}${state.studentName}` : '';
+  if(infoLine){
+    const nameLine = (state.classNumber || state.studentNumber || state.studentName) ? `${state.classNumber ? state.classNumber+'반 ' : ''}${state.studentNumber ? String(state.studentNumber).padStart(2,'0')+'번 ' : ''}${state.studentName}` : '';
+    const careerLine = state.career ? `희망 진로 · ${state.career}` : '';
+    infoLine.innerHTML = nameLine ? `${nameLine}${careerLine ? `<div style="margin-top:2px;">${careerLine}</div>` : ''}` : '';
+  }
+  const teaserCareer = document.getElementById('teaserCareerLine');
+  if(teaserCareer) teaserCareer.textContent = state.career ? `나의 진로: ${state.career}` : '';
   const area = document.getElementById('summaryArea');
   const all = getAllCandidates();
 
@@ -1807,6 +1833,7 @@ function buildSubmissionPayload(){
     classNumber: state.classNumber || '',
     studentNumber: state.studentNumber || '',
     studentName: state.studentName || '',
+    career: state.career || '',
     initialSdg: state.initialSdg ? sdgLabel(state.initialSdg) : '',
     candidates: candidateNames,
     problems: problemList,
@@ -1817,6 +1844,7 @@ function buildSubmissionPayload(){
     agenda: state.myAgenda || '',
     agendaReason: state.myReasonCustom || '',
     changes: state.relatedPicks || [],
+    sdgCompareNote: state.sdgCompareNote || '',
     reflection: [state.finalReflectionChoice, state.finalReflection].filter(Boolean).join(' / ')
   };
 }
