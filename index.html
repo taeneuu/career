@@ -64,6 +64,7 @@
     padding:34px 30px;
     position:relative;
     min-height:420px;
+    flex-shrink:0; /* 내용이 길어도 패널 배경이 중간에 끊기지 않게 */
   }
   .screen{display:none; animation:fade .35s ease;}
   .screen.active{display:block;}
@@ -78,7 +79,26 @@
   }
   h1.title{font-size:26px; line-height:1.4; margin:0 0 18px;}
   h2.title{font-size:21px; line-height:1.4; margin:0 0 14px;}
-  p.narr{font-size:14.5px; line-height:1.9; color:#c6d2dd; margin:0 0 12px;}
+  p.narr{font-size:14.5px; line-height:1.85; color:#d3dde6; margin:0 0 12px; word-break:keep-all;}
+  .q{word-break:keep-all;}
+
+  /* 시작 화면 */
+  .intro-text{max-width:540px; margin:0 auto; text-align:left;}
+  .intro-text p{font-size:14.5px; line-height:1.85; color:#d3dde6; margin:0 0 12px; word-break:keep-all;}
+  .route{
+    max-width:540px; margin:16px auto 0; text-align:left;
+    background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:12px 16px;
+  }
+  .route .rhead{font-size:12.5px; color:var(--human); font-weight:700; margin-bottom:8px;}
+  .route ol{margin:0; padding-left:20px; font-size:13px; color:#dfe9f0; line-height:1.85;}
+  .route ol li span{color:var(--dim);}
+
+  /* 각 단계의 '할 일' 안내 */
+  .todo{
+    background:#0e1927; border:1px solid var(--line); border-radius:10px;
+    padding:10px 14px; margin:0 0 14px; font-size:13px; color:#dfe9f0; line-height:1.7;
+  }
+  .todo b{color:var(--human);}
   .q{
     font-size:14px;
     background:var(--panel-2);
@@ -127,8 +147,8 @@
   .cand-card.selected{border-color:var(--human); background:#153731; box-shadow:0 0 0 1px var(--human) inset;}
   .cand-card.selected.nonhuman{border-color:var(--nonhuman); background:#3a2c14; box-shadow:0 0 0 1px var(--nonhuman) inset;}
   .cand-card .emoji{font-size:30px; display:block; margin-bottom:6px;}
-  .cand-card .name{font-size:12.5px; line-height:1.35; color:#dfe9f0;}
-  .cand-card .desc{font-size:11px; line-height:1.3; color:var(--dim); margin-top:3px;}
+  .cand-card .name{display:block; font-size:13px; font-weight:700; line-height:1.4; color:#fff; word-break:keep-all;}
+  .cand-card .desc{display:block; font-size:11.5px; line-height:1.45; color:#a9b8c6; margin-top:5px; word-break:keep-all;}
   .progress-label{
     width:100%; max-width:760px;
     font-size:12.5px; font-weight:600; color:var(--dim);
@@ -142,6 +162,11 @@
   }
   .cand-card.nonhuman .picked-badge{background:var(--nonhuman);}
   .counter{font-size:13px; color:var(--dim); margin:8px 0 4px;}
+  .counter.sticky{
+    position:sticky; top:0; z-index:5; background:var(--panel);
+    padding:8px 0; margin:4px 0; font-weight:700; color:#fff;
+    border-bottom:1px solid var(--line);
+  }
 
   .reason-block{
     margin-top:16px;
@@ -206,14 +231,16 @@
     margin-bottom:10px;
   }
   .speech-card .quote{
-    font-size:13.5px;
-    line-height:1.85;
-    color:#c6d2dd;
-    font-style:italic;
-    border-left:2px solid var(--dim);
-    padding-left:10px;
+    font-size:14.5px;
+    line-height:1.9;
+    color:#e3ebf1;
+    border-left:3px solid var(--dim);
+    padding-left:12px;
     margin-bottom:12px;
+    word-break:keep-all;
   }
+  .speech-card .quote b.num-hl{color:#ffd479; font-weight:700;}
+  .read-tip{font-size:12px; color:var(--dim); margin:-4px 0 10px;}
   .fieldlabel{font-size:12.5px; color:var(--dim); margin:8px 0 4px;}
 
   /* chips */
@@ -249,6 +276,10 @@
   }
   .sdg-chip.selected{border-color:#fff;}
   .sdg-chip .num{font-weight:900; font-size:16px;}
+  .sdg-chip{font-size:12px !important;}
+  .sdg-chip.g2, .sdg-chip.g7, .sdg-chip.g11{color:#1d1d1d;}
+  .sdg-chip.g2.selected, .sdg-chip.g7.selected, .sdg-chip.g11.selected{border-color:#1d1d1d;}
+  .sdg-chip.selected{box-shadow:0 0 0 2px var(--bg), 0 0 0 4px #fff;}
   .g1{background:#e5233d;} .g2{background:#dda73a;} .g3{background:#4ca146;}
   .g4{background:#c5192d;} .g5{background:#ef402c;} .g6{background:#26bde2;}
   .g7{background:#fcc30b;} .g8{background:#a21942;} .g9{background:#fd6925;}
@@ -419,10 +450,12 @@
     font-family:inherit;
     font-size:13.5px;
     font-weight:600;
-    padding:10px 20px;
+    padding:11px 20px;
     border-radius:24px;
     cursor:pointer;
+    white-space:nowrap;
   }
+  .nav-row{gap:10px;}
   .nav-btn.primary{
     background:linear-gradient(135deg, var(--human), #2fa89b);
     color:#04231f;
@@ -514,6 +547,10 @@
     .compare-box{flex-direction:column;}
     .compare-arrow{transform:rotate(90deg);}
     .agenda-template-grid{grid-template-columns:1fr;}
+    .step-tag{display:none;} /* 위쪽 진행 막대로 충분하므로 좁은 화면에서는 숨김 */
+    .speech-card{padding:14px 12px;}
+    .nav-btn{padding:11px 16px;}
+    h2.title{font-size:19px;}
   }
 </style>
 </head>
@@ -529,19 +566,25 @@
     <div class="globe">🌍</div>
     <div class="kicker">한백고 1학년부 · 창의적 체험활동(진로)</div>
     <h1 class="title display">2040 지구 행성 대토론회</h1>
-    <p class="narr" style="max-width:520px; margin-left:auto; margin-right:auto;">
-      2040년, 지구의 여러 문제가 더욱 복잡하게 얽혀 있습니다.<br>
-      기후위기, 빈곤, 전쟁, 불평등, 환경오염, 디지털 격차…<br><br>
-      인간만의 힘으로 문제를 해결할 수 있을까요?<br><br>
-      오늘, 전 세계의 청소년들은 특별한 회의를 열기로 했습니다.<br>
-      <b style="color:#fff;">《지구 행성 대토론회》</b><br><br>
-      그런데 이 회의에는 인간만 참석할 수 있는 것이 아닙니다.<br>
-      피해를 입고 있는 동물, 식물, 바다, 숲, 심지어 목소리를 낼 수 없는 존재도<br>
-      누군가가 대신 목소리를 전달할 수 있습니다.<br><br>
-      대표들은 <b style="color:#fff;">2020년대에 기록된 실제 자료</b>를 들고 회의장에 왔습니다.<br>
-      그때 바로잡지 못한 문제가 2040년의 지구를 어떻게 바꾸었는지 들어 보세요.<br><br>
-      당신에게는 <b style="color:var(--human);">대표를 추천하고, 지구의 문제를 의제로 올릴 권한</b>이 주어졌습니다.
-    </p>
+    <div class="intro-text">
+      <p>2040년, 기후위기·빈곤·전쟁·불평등·환경오염·디지털 격차 같은 지구의 문제가 더 복잡하게 얽혀 있습니다. 인간만의 힘으로 해결할 수 있을까요?</p>
+      <p>그래서 전 세계 청소년들이 <b style="color:#fff;">《지구 행성 대토론회》</b>를 열었습니다. 이 회의에는 사람뿐 아니라 동물, 바다, 숲처럼 <b style="color:#fff;">스스로 목소리를 낼 수 없는 존재</b>도 대표로 참석합니다.</p>
+      <p>대표들은 <b style="color:#fff;">2020년대에 기록된 실제 자료</b>를 들고 왔습니다. 그때 해결하지 못한 문제가 2040년의 지구를 어떻게 바꾸었는지 들어 보세요.</p>
+      <p>여러분에게는 <b style="color:var(--human);">대표를 초대하고, 지구의 문제를 의제로 올릴 권한</b>이 주어졌습니다.</p>
+    </div>
+    <div class="route">
+      <div class="rhead">🗺️ 오늘의 활동 순서 (8단계)</div>
+      <ol>
+        <li>SDGs 17가지 목표 살펴보기 <span>· 1개 고르기</span></li>
+        <li>이야기를 들을 대표 초대하기 <span>· 3명</span></li>
+        <li>대표의 기사 읽고 문제 찾기 <span>· 키워드 1개씩</span></li>
+        <li>두 문제가 어떻게 이어지는지 쓰기</li>
+        <li>내 문제와 가장 관련 깊은 목표 고르기</li>
+        <li>대토론회 의제 만들기</li>
+        <li>해결되면 무엇이 달라질지 쓰기</li>
+        <li>결과 카드 확인하고 제출하기</li>
+      </ol>
+    </div>
     <div class="resume-box" id="resumeBox" style="display:none;">
       <div class="rtitle">📝 하던 활동이 저장되어 있어요</div>
       <div class="rsub" id="resumeInfo"></div>
@@ -587,16 +630,16 @@
   <div class="screen" id="screen1">
     <div class="kicker">STEP 1</div>
     <h2 class="title">🌍 우리가 함께 해결해야 할 지구의 과제</h2>
-    <p class="narr">세계의 국가들은 더 나은 지구와 미래를 만들기 위해 함께 해결해야 할 17가지 목표를 약속했습니다.<br><b style="color:#fff;">지속가능발전목표(SDGs)</b>입니다.</p>
+    <p class="narr">세계 여러 나라가 더 나은 지구를 위해 함께 이루기로 약속한 17가지 목표, <b style="color:#fff;">지속가능발전목표(SDGs)</b>입니다.</p>
+    <div class="todo">✅ <b>할 일</b> · 4개 영역을 눌러 펼쳐 보고, 지금 가장 중요하다고 생각하는 목표 <b>1개</b>를 고르세요.</div>
     <p class="narr" style="font-size:12.5px; color:var(--dim);">※ 우리나라는 이 17가지 목표를 우리 상황에 맞게 다듬은 <b style="color:#c6d2dd;">K-SDGs(국가 지속가능발전목표)</b>를 정했습니다. 이 활동에서는 K-SDGs의 목표 이름을 4개 영역으로 묶어 소개합니다.</p>
     <div id="sdgGroupList"></div>
-    <div class="q" style="margin-top:16px;"><b>17가지 목표 중 지금 내가 가장 중요하다고 생각하는 목표는 무엇일까요?</b></div>
-    <p class="narr" style="font-size:12.5px;">각 영역을 펼쳐서 살펴보고, 지금 가장 중요하다고 생각하는 목표를 <b style="color:#fff;">1개</b> 선택해 보세요. 이 선택이 이후 활동을 제한하지는 않아요.</p>
+    <p class="narr" style="font-size:12.5px; color:var(--dim);">지금의 생각을 고르는 것이라 정답은 없어요. 나중에 생각이 바뀌어도 괜찮아요.</p>
     <div class="sdg-pick-note" id="sdgPickNote" style="display:none;"></div>
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
       <span class="step-tag">STEP 1 / 8</span>
-      <button class="nav-btn primary" id="btnStep1Next" onclick="goTo(2)" disabled>대표 초대하러 가기 →</button>
+      <button class="nav-btn primary" id="btnStep1Next" onclick="goTo(2)" disabled>다음: 대표 초대 →</button>
     </div>
   </div>
 
@@ -604,8 +647,8 @@
   <div class="screen" id="screen2">
     <div class="kicker">STEP 2</div>
     <h2 class="title">지구의 미래를 위해, 누구의 목소리를 들어볼까?</h2>
-    <p class="narr">지구의 미래를 위해 꼭 목소리를 들어보고 싶은 대표 <b style="color:#fff;">3명</b>을 초대하세요. 캐릭터를 고르는 것이 아니라, <b style="color:#fff;">누구의 이야기를 들어볼 것인가</b>를 정하는 단계입니다. 사람이 아니어도 괜찮습니다.</p>
-    <div class="counter"><span id="candCount">0</span> / 3명 선택됨</div>
+    <div class="todo">✅ <b>할 일</b> · 이야기를 들어 보고 싶은 대표 <b>3명</b>을 눌러 초대하세요. 사람이 아니어도 괜찮아요. 원하는 대표가 없으면 맨 아래 ➕에서 직접 만들 수 있어요.</div>
+    <div class="counter sticky">👥 초대한 대표 <span id="candCount">0</span> / 3명</div>
     <div class="cand-grid" id="candGrid"></div>
 
     <div class="reason-block" id="addCandidateForm" style="display:none;">
@@ -623,7 +666,7 @@
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
       <span class="step-tag">STEP 2 / 8</span>
-      <button class="nav-btn primary" id="btnStep2Next" onclick="goTo(3)" disabled>대표단 구성 완료 →</button>
+      <button class="nav-btn primary" id="btnStep2Next" onclick="goTo(3)" disabled>다음: 이야기 듣기 →</button>
     </div>
   </div>
 
@@ -631,7 +674,7 @@
   <div class="screen" id="screen3">
     <div class="kicker">STEP 3</div>
     <h2 class="title">대표의 이야기에서 '문제'를 찾아보자</h2>
-    <p class="narr">기사를 꼼꼼히 읽고, 이 대표가 겪고 있는 가장 중요한 문제를 하나의 키워드로 표현해 보세요. 추천 키워드를 참고할 수 있지만, 마지막에는 내가 기사를 읽고 <b style="color:#fff;">직접 발견한 문제</b>를 반드시 적어야 합니다.</p>
+    <div class="todo">✅ <b>할 일</b> · 대표 3명의 기사를 차례로 읽고, 대표마다 가장 중요한 문제를 <b>키워드 1개</b>로 적으세요.</div>
     <div id="speechCards"></div>
   </div>
 
@@ -639,13 +682,13 @@
   <div class="screen" id="screen4">
     <div class="kicker">STEP 4</div>
     <h2 class="title">서로 다른 문제는 어떻게 연결될까?</h2>
-    <p class="narr">내가 초대한 대표들의 문제 중 서로 가장 관련 있다고 생각되는 <b style="color:#fff;">두 문제</b>를 선택해 보세요. 그리고 왜 연결되어 있다고 생각하는지 직접 적어 봅시다.</p>
+    <div class="todo">✅ <b>할 일</b> · ① 서로 관련 있어 보이는 문제 <b>2개</b>를 누르고 → ② 왜 이어져 있는지 <b>한 문장</b>으로 적으세요.</div>
     <div class="chip-wrap" id="step4CandPicker"></div>
     <div id="step4RelationPanel"></div>
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
       <span class="step-tag">STEP 4 / 8</span>
-      <button class="nav-btn primary" id="btnStep4Next" onclick="goTo(5)" disabled>SDGs와 다시 만나기 →</button>
+      <button class="nav-btn primary" id="btnStep4Next" onclick="goTo(5)" disabled>다음: 목표 고르기 →</button>
     </div>
   </div>
 
@@ -653,7 +696,7 @@
   <div class="screen" id="screen5">
     <div class="kicker">STEP 5</div>
     <h2 class="title">🌍 내가 발견한 문제는 어떤 목표와 연결될까?</h2>
-    <p class="narr">지금까지 내가 발견한 문제를 SDGs의 관점에서 다시 살펴봅시다. 내가 발견한 문제와 관련이 깊다고 생각하는 목표를 찾아보고, 그중 <b style="color:#fff;">가장 중요하다고 생각하는 목표 1개</b>를 선택하세요.</p>
+    <div class="todo">✅ <b>할 일</b> · ① 내가 찾은 문제와 가장 관련 깊은 목표 <b>1개</b>를 고르고 → ② 왜 그 목표인지 <b>한 문장</b>으로 적으세요.</div>
 
     <div class="step5-context-box">
       <div class="clabel">🔍 내가 발견한 문제</div>
@@ -664,8 +707,6 @@
       <div class="cval" id="step5MyConn"></div>
     </div>
 
-    <div class="q"><b>이 문제들은 SDGs의 어떤 목표와 연결될까요?</b></div>
-
     <div id="sdgSuggested"></div>
     <button class="sdg-more-btn" id="sdgMoreBtn" onclick="toggleFullSdgGrid()">+ 17가지 목표 전체 살펴보기</button>
     <div id="sdgFullWrap" style="display:none;">
@@ -675,8 +716,7 @@
     <div class="counter" id="sdgCount">아직 선택하지 않았어요 (1개 선택)</div>
 
     <div class="why-box" id="sdgWhyBox" style="display:none;">
-      <div class="fieldlabel" style="margin:0 0 6px;">왜 이 목표가 내가 발견한 문제와 가장 관련 있다고 생각하나요?</div>
-      <div class="fieldlabel" style="margin-top:8px;">✏️ 내가 생각하는 이유</div>
+      <div class="fieldlabel" style="margin:0 0 6px;">✏️ 왜 이 목표가 내가 찾은 문제와 가장 관련 있을까요?</div>
       <input type="text" id="sdgReasonCustom" placeholder="'~ 때문이다'로 끝나는 한 문장으로 적어 보세요.">
       <div class="tip-note">이 항목은 반드시 직접 작성해야 다음 단계로 넘어갈 수 있어요.</div>
     </div>
@@ -684,7 +724,7 @@
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
       <span class="step-tag">STEP 5 / 8</span>
-      <button class="nav-btn primary" id="btnStep5Next" onclick="goTo(6)" disabled>의제 만들러 가기 →</button>
+      <button class="nav-btn primary" id="btnStep5Next" onclick="goTo(6)" disabled>다음: 의제 만들기 →</button>
     </div>
   </div>
 
@@ -692,7 +732,7 @@
   <div class="screen" id="screen6">
     <div class="kicker">STEP 6</div>
     <h2 class="title">나의 대토론회 의제 만들기</h2>
-    <p class="narr">지금까지 발견한 문제와 SDGs를 바탕으로, 내가 대토론회에서 이야기하고 싶은 의제를 만들어 보세요. 정책을 완벽하게 만들 필요는 없어요 — <b style="color:#fff;">어떤 문제가 중요하며 무엇을 해결해야 하는지</b> 표현해 보면 됩니다.</p>
+    <div class="todo">✅ <b>할 일</b> · ① 의제 틀 <b>1개</b>를 고르고 → ② 빈칸을 채우고 → ③ 이 문제가 중요한 이유를 적으세요. 완벽한 정책이 아니어도 괜찮아요.</div>
 
     <div class="compare-box">
       <div class="compare-item">
@@ -704,18 +744,16 @@
         <div class="cval" id="step6MySdgs"></div>
       </div>
     </div>
-    <div class="q"><b>이 문제와 목표를 해결하기 위해 지구 대토론회에서 어떤 의제를 제안할까요?</b></div>
-
-    <div class="fieldlabel">의제 작성 틀 <span style="color:var(--dim); font-weight:400;">(한눈에 비교하고 하나를 선택하세요. 회색 부분은 앞 단계에서 내가 고른 내용이 자동으로 들어가요)</span></div>
+    <div class="fieldlabel" style="margin-top:14px;">① 의제 틀 고르기 <span style="color:var(--dim); font-weight:400;">(회색 글씨는 앞에서 고른 내용이 자동으로 들어가요)</span></div>
     <div class="agenda-template-grid" id="agendaTemplatePicker"></div>
     <div id="agendaBlankArea"></div>
-    <div class="fieldlabel" style="margin-top:16px;">이 문제가 중요한 이유는 무엇일까요?</div>
+    <div class="fieldlabel" style="margin-top:16px;">③ 이 문제가 중요한 이유는 무엇일까요?</div>
     <input type="text" id="agendaReasonCustom" placeholder="이 문제가 중요한 이유를 직접 작성해 보세요.">
     <div class="tip-note">이 항목은 반드시 직접 작성해야 다음 단계로 넘어갈 수 있어요.</div>
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
       <span class="step-tag">STEP 6 / 8</span>
-      <button class="nav-btn primary" id="btnStep6Next" onclick="goTo(7)" disabled>달라지는 것 생각하기 →</button>
+      <button class="nav-btn primary" id="btnStep6Next" onclick="goTo(7)" disabled>다음: 달라질 것 →</button>
     </div>
   </div>
 
@@ -723,7 +761,7 @@
   <div class="screen" id="screen7">
     <div class="kicker">STEP 7</div>
     <h2 class="title">🌱 이 목표가 이루어지면 무엇이 달라질까?</h2>
-    <p class="narr">내가 선택한 SDGs가 이루어지고, 내가 제안한 의제가 해결된다면 누구에게 또는 무엇에게 변화가 생길까요? 최대 <b style="color:#fff;">2개</b>까지 선택해 보세요.</p>
+    <div class="todo">✅ <b>할 일</b> · 내 의제가 이루어지면 변화가 생길 대상을 <b>1~2개</b> 고르고, 어떻게 달라질지 <b>한 문장</b>으로 적으세요.</div>
     <div class="check-grid" id="relatedGrid"></div>
     <div class="fieldlabel" style="margin-top:14px;">✏️ 누구의 삶이(또는 무엇이) 어떻게 달라질까요? 한 문장으로 적어 보세요.</div>
     <input type="text" id="changeSentenceInput" placeholder="'누가/무엇이 + 어떻게 달라진다'의 형태로 적어 보세요.">
@@ -732,7 +770,7 @@
     <div class="nav-row">
       <button class="nav-btn" onclick="goBack()">← 이전</button>
       <span class="step-tag">STEP 7 / 8</span>
-      <button class="nav-btn primary" id="btnStep7Next" onclick="tryGoStep8()">나의 의제 확인하기 →</button>
+      <button class="nav-btn primary" id="btnStep7Next" onclick="tryGoStep8()">결과 카드 보기 →</button>
     </div>
   </div>
 
@@ -1315,6 +1353,12 @@ function speechBack(){
   }
 }
 
+/* 기사 속 수치(%, 명, 가구, 톤 등 단위가 붙은 숫자)를 노란색으로 강조합니다. 연도(년)는 제외합니다. */
+function highlightNumbers(html){
+  return html.replace(/\d[\d,.]*(?:만|억)?(?:\s?\d[\d,.]*)?(?:만|억)?\s?(?:%|명|가구|톤|개|곳|배|마리|원|건|테라와트시|개월)/g,
+    m=>`<b class="num-hl">${m}</b>`);
+}
+
 function normalizeHashtag(raw){
   const v = (raw||'').trim().replace(/\s+/g,'');
   if(!v) return '';
@@ -1348,7 +1392,8 @@ function renderSpeechCard(){
     <div class="article-label">📰 기사 발췌문</div>
     <div class="article-title">“${esc(c.articleTitle)}”</div>
     ${c.articleSource ? `<div class="article-source">${esc(c.articleSource)}</div>` : ''}
-    <div class="quote">${esc(c.quote)}</div>
+    <div class="read-tip">💡 <b style="color:#ffd479;">노란 숫자</b>는 문제가 얼마나 큰지 보여 주는 근거예요. 숫자에 주목하며 읽어 보세요.</div>
+    <div class="quote">${highlightNumbers(esc(c.quote))}</div>
   `;
 
   const card = document.createElement('div');
@@ -1376,7 +1421,7 @@ function renderSpeechCard(){
     <div class="nav-row">
       <button class="nav-btn" id="speechBackBtn">← 이전</button>
       <span class="step-tag">STEP 3 / 8</span>
-      <button class="nav-btn primary" id="speechNextBtn">${isLast ? '문제의 연결 확인하기 →' : '다음 대표의 이야기 듣기 →'}</button>
+      <button class="nav-btn primary" id="speechNextBtn">${isLast ? '다음: 문제 연결 →' : '다음 대표 →'}</button>
     </div>
   `;
   wrap.appendChild(card);
@@ -1642,24 +1687,48 @@ function renderStep5(){
 /* ---------- STEP 6 : 의제 만들기 ---------- */
 /* 회색(fixed) 부분은 앞 단계에서 학생이 고른 SDG·연결한 문제가 자동으로 들어갑니다.
    학생은 빈칸(blank)만 직접 채웁니다. */
-function sdgShort(){
+/* 받침 유무에 따라 조사를 고릅니다. 예) 기후위기 → 를, 대기오염 → 을.
+   마지막 글자가 한글이 아니면 '을(를)'처럼 둘 다 적습니다. */
+function josa(word, withBatchim, withoutBatchim){
+  const w = String(word||'').trim().replace(/[\s'"’”)\]}]+$/,'');
+  const ch = w.charCodeAt(w.length-1);
+  if(!(ch>=0xAC00 && ch<=0xD7A3)) return `${withBatchim}(${withoutBatchim})`;
+  return ((ch-0xAC00)%28) ? withBatchim : withoutBatchim;
+}
+
+function goalName(){
   const s = sdgByNum(state.sdgs[0]);
-  return s ? `목표${s.n}(${s.t})` : '내가 선택한 목표';
+  return s ? s.t : '내가 선택한 목표';
 }
 
 const AGENDA_TEMPLATES = [
   {id:'t1', label:'① 해결 방법 제안형',
-    parts:()=>[{fixed:`${sdgShort()}을(를) 이루기 위해, `},{blank:0},{fixed:'은(는) '},{blank:1}],
-    blanks:['누가? 예) 정부, 기업, 지역 사회, 우리','무엇을 해야 할까요? (“~해야 한다”로 끝내기)']},
+    parts:(v)=>{
+      const g = goalName();
+      return [{fixed:`${g}${josa(g,'을','를')} 이루기 위해, `},{blank:0},
+              {fixed:(v[0]||'').trim() ? `${josa(v[0],'은','는')} ` : '은(는) '},{blank:1}];
+    },
+    blanks:[
+      {label:'누가 나서야 할까요?', ph:'예) 정부, 기업, 지역 사회, 우리 학교'},
+      {label:'무엇을 해야 할까요? (“~해야 한다”로 끝내기)', ph:'예) ○○을(를) 늘려야 한다'}
+    ]},
   {id:'t2', label:'② 연결된 문제 함께 풀기형',
     parts:()=>{
       const [a,b] = connectionTags().map(t=>t.replace(/^#/,''));
-      return [{fixed:`'${a||'문제A'}'와(과) '${b||'문제B'}'을(를) 함께 해결하려면, `},{blank:0}];
+      const A = a||'문제A', B = b||'문제B';
+      return [{fixed:`'${A}'${josa(A,'과','와')} '${B}'${josa(B,'을','를')} 함께 해결하려면, `},{blank:0}];
     },
-    blanks:['무엇이 필요할까요? (“~해야 한다”로 끝내기)']},
+    blanks:[
+      {label:'무엇이 필요할까요? (“~해야 한다”로 끝내기)', ph:'예) ○○ 제도를 만들어야 한다'}
+    ]},
   {id:'t3', label:'③ 토론 질문형',
-    parts:()=>[{fixed:`${sdgShort()}을(를) 위해, `},{blank:0},{fixed:'?'}],
-    blanks:['찬성과 반대로 토론해 보고 싶은 질문 (“~해야 할까”로 끝내기)']}
+    parts:()=>{
+      const g = goalName();
+      return [{fixed:`${g}${josa(g,'을','를')} 위해, `},{blank:0},{fixed:'?'}];
+    },
+    blanks:[
+      {label:'찬성·반대로 토론하고 싶은 질문 (“~해야 할까”로 끝내기)', ph:'예) ○○을(를) 금지해야 할까'}
+    ]}
 ];
 
 function cleanBlank(tplId, v){
@@ -1669,15 +1738,15 @@ function cleanBlank(tplId, v){
 }
 
 function agendaPreviewHtml(tpl, vals){
-  return tpl.parts().map(p=>{
+  return tpl.parts(vals||[]).map(p=>{
     if(p.fixed!==undefined) return `<span style="color:var(--dim);">${esc(p.fixed)}</span>`;
-    const v = cleanBlank(tpl.id, vals[p.blank]);
-    return v ? `<b style="color:#fff;">${esc(v)}</b>` : '<span style="color:var(--dim);">________</span>';
+    const v = cleanBlank(tpl.id, (vals||[])[p.blank]);
+    return v ? `<b style="color:#fff;">${esc(v)}</b>` : '<span style="color:#7fe3d8;">［빈칸］</span>';
   }).join('');
 }
 
 function buildAgenda(tpl, vals){
-  let s = tpl.parts().map(p=> p.fixed!==undefined ? p.fixed : cleanBlank(tpl.id, vals[p.blank])).join('').trim();
+  let s = tpl.parts(vals).map(p=> p.fixed!==undefined ? p.fixed : cleanBlank(tpl.id, vals[p.blank])).join('').trim();
   if(!/[.?!]$/.test(s)) s += '.';
   return s;
 }
@@ -1690,13 +1759,15 @@ function renderAgendaTemplates(){
     const isActive = state.agendaTemplateId===tpl.id;
     const card = document.createElement('div');
     card.className = 'agenda-template-card' + (isActive ? ' active' : '');
-    card.innerHTML = `<div class="tpl-label">${tpl.label}</div><div class="tpl-preview">${agendaPreviewHtml(tpl, isActive ? state.agendaBlanks : [])}</div>`;
+    card.innerHTML = `<div class="tpl-label">${tpl.label}${isActive ? ' ✓' : ''}</div><div class="tpl-preview">${agendaPreviewHtml(tpl, isActive ? state.agendaBlanks : [])}</div>`;
     card.onclick = ()=>{
       if(state.agendaTemplateId===tpl.id) return; // 같은 틀을 다시 눌러도 작성 내용이 지워지지 않게
       state.agendaTemplateId = tpl.id;
       state.agendaBlanks = new Array(tpl.blanks.length).fill('');
       state.myAgenda = '';
       renderAgendaTemplates();
+      const first = document.querySelector('#agendaBlankArea input');
+      if(first) first.focus({preventScroll:true});
     };
     wrap.appendChild(card);
   });
@@ -1710,14 +1781,24 @@ function renderAgendaBlankArea(){
   if(!tpl){ area.innerHTML=''; updateStep6NextState(); return; }
   const box = document.createElement('div');
   box.className = 'fillblank-box';
-  tpl.blanks.forEach((ph,i)=>{
+  box.style.lineHeight = '1.6';
+  const head = document.createElement('div');
+  head.className = 'fieldlabel';
+  head.style.margin = '0 0 4px';
+  head.textContent = '② 빈칸 채우기';
+  box.appendChild(head);
+  tpl.blanks.forEach((b,i)=>{
+    const lab = document.createElement('div');
+    lab.style.cssText = 'font-size:13px; color:#fff; font-weight:600; margin:10px 0 4px;';
+    lab.textContent = `${tpl.blanks.length>1 ? `빈칸 ${i+1} · ` : ''}${b.label}`;
+    box.appendChild(lab);
     const inp = document.createElement('input');
     inp.type='text';
-    inp.placeholder = ph;
+    inp.placeholder = b.ph;
     inp.value = state.agendaBlanks[i]||'';
     inp.style.display='block';
     inp.style.width='100%';
-    inp.style.margin='6px 0';
+    inp.style.margin='0';
     inp.addEventListener('input', e=>{
       state.agendaBlanks[i] = e.target.value;
       computeAgenda();
@@ -1728,9 +1809,7 @@ function renderAgendaBlankArea(){
   });
   const preview = document.createElement('div');
   preview.id = 'agendaPreview';
-  preview.style.marginTop = '10px';
-  preview.style.color = '#fff';
-  preview.style.fontWeight = '700';
+  preview.style.cssText = 'margin-top:14px; padding:10px 12px; border-radius:8px; background:#153731; color:#fff; font-weight:700; font-size:14px; line-height:1.6; display:none;';
   box.appendChild(preview);
   area.innerHTML='';
   area.appendChild(box);
@@ -1743,7 +1822,10 @@ function computeAgenda(){
   const filled = tpl.blanks.every((_,i)=> cleanBlank(tpl.id, state.agendaBlanks[i]).length>0);
   state.myAgenda = filled ? buildAgenda(tpl, state.agendaBlanks) : '';
   const preview = document.getElementById('agendaPreview');
-  if(preview) preview.textContent = state.myAgenda ? `→ ${state.myAgenda}` : '';
+  if(preview){
+    preview.textContent = state.myAgenda ? `📢 완성된 의제: ${state.myAgenda}` : '';
+    preview.style.display = state.myAgenda ? 'block' : 'none';
+  }
   updateStep6NextState();
 }
 
